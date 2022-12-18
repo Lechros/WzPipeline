@@ -164,6 +164,7 @@ namespace WzJson.Gear
                                     {
                                         switch(type)
                                         {
+                                            case GearPropType.reqLevel: gear.req.level = value; break;
                                             case GearPropType.reqJob: gear.req.job = value; break;
                                             case GearPropType.reqSTR: gear.req.STR = value; break;
                                             case GearPropType.reqLUK: gear.req.LUK = value; break;

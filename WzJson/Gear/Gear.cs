@@ -1,27 +1,28 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace WzJson.Gear
 {
     public class GearReq
     {
-        [JsonPropertyOrder(1)]
-        public JobType level;
-        [JsonPropertyOrder(2)]
+        [JsonProperty(Order = 1)]
+        public int level;
+        [JsonProperty(Order = 2, PropertyName = "str")]
         public int STR;
-        [JsonPropertyOrder(3)]
+        [JsonProperty(Order = 3, PropertyName = "luk")]
         public int LUK;
-        [JsonPropertyOrder(4)]
+        [JsonProperty(Order = 4, PropertyName = "dex")]
         public int DEX;
-        [JsonPropertyOrder(5)]
+        [JsonProperty(Order = 5, PropertyName = "int")]
         public int INT;
         //[JsonPropertyOrder(1)]
         // public int POP;
-        [JsonPropertyOrder(6)]
+        [JsonProperty(Order = 6)]
         public int job;
-        [JsonPropertyOrder(7)]
+        [JsonProperty(Order = 7)]
         public int specJob;
 
-        public GearReq(JobType level = 0, int STR = 0, int LUK = 0, int DEX = 0, int INT = 0, int job = 0, int specJob = 0)
+        public GearReq(int level = 0, int STR = 0, int LUK = 0, int DEX = 0, int INT = 0, int job = 0, int specJob = 0)
         {
             this.level = level;
             this.STR = STR;
