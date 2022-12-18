@@ -179,6 +179,10 @@ namespace WzJson.Gear
                                     }
                                     else
                                     {
+                                        if(value == 0 && subNode.Nodes.Count > 0)
+                                        {
+                                            value = 1;
+                                        }
                                         gear.props.Add(subNode.Text, value);
                                     }
                                 }
