@@ -5,6 +5,10 @@ VisualStudioVersion = 17.3.32922.545
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WzJson", "WzJson\WzJson.csproj", "{D32ED182-B271-4CAD-AE90-1D7C59B84E29}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WzJsonTests", "WzJsonTests\WzJsonTests.csproj", "{A1E981BD-B931-4D6E-854D-70AF1944C65A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WzLib", "WzLib\WzLib.csproj", "{2C1614F8-482A-423A-A617-318C04D7CE82}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{D32ED182-B271-4CAD-AE90-1D7C59B84E29}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D32ED182-B271-4CAD-AE90-1D7C59B84E29}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D32ED182-B271-4CAD-AE90-1D7C59B84E29}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1E981BD-B931-4D6E-854D-70AF1944C65A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1E981BD-B931-4D6E-854D-70AF1944C65A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1E981BD-B931-4D6E-854D-70AF1944C65A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1E981BD-B931-4D6E-854D-70AF1944C65A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C1614F8-482A-423A-A617-318C04D7CE82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C1614F8-482A-423A-A617-318C04D7CE82}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C1614F8-482A-423A-A617-318C04D7CE82}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C1614F8-482A-423A-A617-318C04D7CE82}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
