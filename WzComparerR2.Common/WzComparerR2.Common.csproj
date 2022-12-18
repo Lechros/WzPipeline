@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\WzLib\WzComparerR2.WzLib.csproj" />
+  </ItemGroup>
+
 </Project>
