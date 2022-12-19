@@ -157,6 +157,7 @@
         charmEXP,
         // cashForceCharmExp,
         accountShareTag,
+        bossReward,
         noPotential,
         fixedPotential,
         // timeLimited,
