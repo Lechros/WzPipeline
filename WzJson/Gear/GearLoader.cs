@@ -200,7 +200,7 @@ namespace WzJson.Gear
 
         (int, int[]) ResolveIcon(Wz_Node iconRawNode, Wz_Node iconNode)
         {
-            Wz_Node node = iconRawNode ?? iconNode;
+            Wz_Node node = iconNode ?? iconRawNode;
             if(node == null)
             {
                 return (0, new int[] { 0, 0 });
