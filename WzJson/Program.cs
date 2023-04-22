@@ -1,6 +1,7 @@
 ﻿
 using System.Diagnostics;
 using WzJson.Gear;
+using WzJson.SimapleGear;
 using WzJson.Soul;
 using WzJson.Wz;
 
@@ -20,7 +21,8 @@ while(!exitFlag)
     Console.WriteLine("1: export gear data");
     Console.WriteLine("2: export item option data");
     Console.WriteLine("3: export soul data");
-    Console.WriteLine("4: exit");
+    Console.WriteLine("4: [simaple] export gear data");
+    Console.WriteLine("5: exit");
     switch(Console.ReadLine())
     {
         case "1":
@@ -72,6 +74,22 @@ while(!exitFlag)
             }
             break;
         case "4":
+            {
+                Console.WriteLine("Loading gear data...");
+                sw.Restart();
+                SimapleGearLoader gl = new(wz);
+                gl.Load();
+                sw.Stop();
+                Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
+
+                Console.WriteLine("Saving to file...");
+                sw.Restart();
+                gl.Save(@"output\simaple-gear.json");
+                sw.Stop();
+                Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
+            }
+            break;
+        case "5":
             exitFlag = true;
             break;
     }
