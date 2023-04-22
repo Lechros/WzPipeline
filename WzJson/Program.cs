@@ -5,6 +5,8 @@ using WzJson.SimapleGear;
 using WzJson.Soul;
 using WzJson.Wz;
 
+string outputRoot = Path.Join(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\");
+
 Stopwatch sw = new();
 bool exitFlag = false;
 
@@ -36,7 +38,7 @@ while(!exitFlag)
 
                 Console.WriteLine("Saving to file...");
                 sw.Restart();
-                gl.Save(@"output\gear.json");
+                gl.Save(Path.Join(outputRoot, @"output\gear.json"));
                 sw.Stop();
                 Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
             }
@@ -52,7 +54,7 @@ while(!exitFlag)
 
                 Console.WriteLine("Saving to file...");
                 sw.Restart();
-                ol.Save(@"output\itemoption.json");
+                ol.Save(Path.Join(outputRoot, @"output\itemoption.json"));
                 sw.Stop();
                 Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
             }
@@ -68,7 +70,7 @@ while(!exitFlag)
 
                 Console.WriteLine("Saving to file...");
                 sw.Restart();
-                sl.Save(@"output\soul.json");
+                sl.Save(Path.Join(outputRoot, @"output\soul.json"));
                 sw.Stop();
                 Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
             }
@@ -84,7 +86,7 @@ while(!exitFlag)
 
                 Console.WriteLine("Saving to file...");
                 sw.Restart();
-                gl.Save(@"output\simaple-gear.json");
+                gl.Save(Path.Join(outputRoot, @"output\simaple-gear.json"));
                 sw.Stop();
                 Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
             }
