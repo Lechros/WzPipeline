@@ -164,6 +164,7 @@ namespace WzJson.SimapleGear
                                         case GearPropType.reqLevel: gear.req_level += value; break;
                                         case GearPropType.reqJob: gear.req_job += value; break;
                                         case GearPropType.tuc: gear.tuc += value; break;
+                                        case GearPropType.Etuc: gear.etuc += value; break;
 
                                         case GearPropType.incSTR: gear.STR += value; break;
                                         case GearPropType.incDEX: gear.DEX += value; break;

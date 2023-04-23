@@ -93,8 +93,11 @@ namespace WzJson.Gear
 
         [JsonPropertyOrder(8)]
         public int tuc;
-
         [JsonPropertyOrder(9)]
+        public int etuc;
+
+
+        [JsonPropertyOrder(10)]
         public SpecialOption[]? pots;
 
         public bool ShouldSerializedesc() => !string.IsNullOrEmpty(desc);
@@ -108,6 +111,8 @@ namespace WzJson.Gear
         public bool ShouldSerializeoptions() => options.Count > 0;
 
         public bool ShouldSerializetuc() => tuc > 0;
+
+        public bool ShouldSerializeetuc() => etuc > 0;
 
         public bool ShouldSerializepots() => pots != null && pots.Length > 0 && pots[0].option != 0 && pots[0].level != 0;
     }

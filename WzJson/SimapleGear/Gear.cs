@@ -11,6 +11,7 @@ namespace WzJson.SimapleGear
         public int req_level;
         public int req_job;
         public int tuc;
+        public int etuc;
 
         public int STR;
         public int DEX;

@@ -177,6 +177,10 @@ namespace WzJson.Gear
                                     {
                                         gear.tuc = value;
                                     }
+                                    else if(type == GearPropType.Etuc)
+                                    {
+                                        gear.etuc = value;
+                                    }
                                     else
                                     {
                                         if(value == 0 && subNode.Nodes.Count > 0)

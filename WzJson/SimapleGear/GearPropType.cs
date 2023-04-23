@@ -110,6 +110,7 @@
         cash,
         // royalSpecial,
         // masterSpecial,
+        Etuc,
 
         //技能特有属性
         mastery = 300,
