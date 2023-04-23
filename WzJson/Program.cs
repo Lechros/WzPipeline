@@ -1,6 +1,7 @@
 ﻿
 using System.Diagnostics;
 using WzJson.Gear;
+using WzJson.SetItem;
 using WzJson.SimapleGear;
 using WzJson.Soul;
 using WzJson.Wz;
@@ -22,9 +23,10 @@ while(!exitFlag)
     Console.WriteLine("----------\nChoose option:");
     Console.WriteLine("1: export gear data");
     Console.WriteLine("2: export item option data");
-    Console.WriteLine("3: export soul data");
-    Console.WriteLine("4: [simaple] export gear data");
-    Console.WriteLine("5: exit");
+    Console.WriteLine("3: export set item data");
+    Console.WriteLine("4: export soul data");
+    Console.WriteLine("5: [simaple] export gear data");
+    Console.WriteLine("6: exit");
     switch(Console.ReadLine())
     {
         case "1":
@@ -61,6 +63,22 @@ while(!exitFlag)
             break;
         case "3":
             {
+                Console.WriteLine("Loading set item data...");
+                sw.Restart();
+                SetItemLoader sl = new(wz);
+                sl.Load();
+                sw.Stop();
+                Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
+
+                Console.WriteLine("Saving to file...");
+                sw.Restart();
+                sl.Save(Path.Join(outputRoot, @"output\setitem.json"));
+                sw.Stop();
+                Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
+            }
+            break;
+        case "4":
+            {
                 Console.WriteLine("Loading soul data...");
                 sw.Restart();
                 SoulLoader sl = new(wz);
@@ -75,7 +93,7 @@ while(!exitFlag)
                 Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
             }
             break;
-        case "4":
+        case "5":
             {
                 Console.WriteLine("Loading gear data...");
                 sw.Restart();
@@ -91,7 +109,7 @@ while(!exitFlag)
                 Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
             }
             break;
-        case "5":
+        case "6":
             exitFlag = true;
             break;
     }
