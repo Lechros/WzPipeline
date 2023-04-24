@@ -54,6 +54,7 @@ namespace WzJson.SimapleGear
         public bool ShouldSerializereq_level() => req_level != 0;
         public bool ShouldSerializereq_job() => req_job != 0;
         public bool ShouldSerializetuc() => tuc != 0;
+        public bool ShouldSerializeetuc() => etuc != 0;
 
         public bool ShouldSerializeSTR() => STR != 0;
         public bool ShouldSerializeDEX() => DEX != 0;
