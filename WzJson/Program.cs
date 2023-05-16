@@ -2,12 +2,13 @@
 using System.Diagnostics;
 using System.Reflection.Metadata;
 using WzJson.Gear;
+using WzJson.Item;
 using WzJson.SetItem;
 using WzJson.SimapleGear;
 using WzJson.Soul;
 using WzJson.Wz;
 
-string outputRoot = Path.Join(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\");
+string outputRoot = Path.Join(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\output\");
 
 Stopwatch sw = new();
 bool exitFlag = false;
@@ -32,7 +33,7 @@ List<(string, Action)> options = new()
 
         Console.WriteLine("Saving to file...");
         sw.Restart();
-        gl.Save(Path.Join(outputRoot, @"output\gear.json"));
+        gl.Save(Path.Join(outputRoot, @"gear.json"));
         sw.Stop();
         Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
     }
@@ -48,7 +49,7 @@ List<(string, Action)> options = new()
 
         Console.WriteLine("Saving to file...");
         sw.Restart();
-        gl.SaveIcons(Path.Join(outputRoot, @"output\gearicon\"));
+        gl.SaveIcons(Path.Join(outputRoot, @"gearicon\"));
         sw.Stop();
         Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
     }
@@ -64,7 +65,7 @@ List<(string, Action)> options = new()
 
         Console.WriteLine("Saving to file...");
         sw.Restart();
-        ol.Save(Path.Join(outputRoot, @"output\itemoption.json"));
+        ol.Save(Path.Join(outputRoot, @"itemoption.json"));
         sw.Stop();
         Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
     }
@@ -80,7 +81,7 @@ List<(string, Action)> options = new()
 
         Console.WriteLine("Saving to file...");
         sw.Restart();
-        sl.Save(Path.Join(outputRoot, @"output\setitem.json"));
+        sl.Save(Path.Join(outputRoot, @"setitem.json"));
         sw.Stop();
         Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
     }
@@ -96,7 +97,24 @@ List<(string, Action)> options = new()
 
         Console.WriteLine("Saving to file...");
         sw.Restart();
-        sl.Save(Path.Join(outputRoot, @"output\soul.json"));
+        sl.Save(Path.Join(outputRoot, @"soul.json"));
+        sw.Stop();
+        Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
+    }
+    ),
+    ("export items icons + origins (takes long)", () =>
+    {
+        Console.WriteLine("Loading item data...");
+        sw.Restart();
+        ItemLoader il = new(wz);
+        il.Load();
+        sw.Stop();
+        Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
+
+        Console.WriteLine("Saving to file...");
+        sw.Restart();
+        il.Save(Path.Join(outputRoot, @"itemorigin.json"));
+        il.SaveIcons(Path.Join(outputRoot, @"itemicon\"));
         sw.Stop();
         Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
     }
@@ -112,7 +130,7 @@ List<(string, Action)> options = new()
 
         Console.WriteLine("Saving to file...");
         sw.Restart();
-        gl.Save(Path.Join(outputRoot, @"output\simaple-gear.json"));
+        gl.Save(Path.Join(outputRoot, @"simaple-gear.json"));
         sw.Stop();
         Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
     }
