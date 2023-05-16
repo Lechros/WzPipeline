@@ -3,6 +3,7 @@ using WzComparerR2.Common;
 using WzJson.Wz;
 using Newtonsoft.Json;
 using System.Diagnostics;
+using WzJson.SimapleGear;
 
 namespace WzJson.Gear
 {
@@ -25,6 +26,7 @@ namespace WzJson.Gear
 
         Dictionary<int, (string, string?)> nameDesc = new();
         SortedDictionary<int, Gear> gears = new();
+        HashSet<int> icons = new();
 
         public bool Load()
         {
@@ -49,6 +51,63 @@ namespace WzJson.Gear
                 serializer.Serialize(writer, gears);
             }
             return true;
+        }
+
+        public bool SaveIcons(string path)
+        {
+            if(icons.Count <= 0)
+            {
+                return false;
+            }
+
+            Directory.CreateDirectory(Path.GetDirectoryName(path));
+
+            Wz_Node chWz = wz.openedWz!.WzNode.FindNodeByPath(Character);
+
+            foreach(string part in parts)
+            {
+                Wz_Node partNode = chWz.FindNodeByPath(part);
+                foreach(Wz_Node gearNode in partNode.Nodes)
+                {
+                    SaveIcon(gearNode, path);
+                }
+            }
+            return true;
+        }
+
+        void SaveIcon(Wz_Node gearNode, string parentPath)
+        {
+            Wz_Image gearImg = (Wz_Image)gearNode.Value;
+            try
+            {
+                if(!gearImg.TryExtract())
+                {
+                    return;
+                }
+                Wz_Node node = gearImg.Node;
+                if(!int.TryParse(node.Text.Split('.')[0], out int id))
+                {
+                    return;
+                }
+                if(!icons.Contains(id))
+                {
+                    return;
+                }
+                Wz_Node infoNode = node.FindNodeByPath("info");
+                var iconNode = infoNode.FindNodeByPath("iconRaw") ?? infoNode.FindNodeByPath("icon");
+
+                Wz_Png png = (Wz_Png)iconNode.Value;
+                png.ExtractPng().Save(Path.Join(parentPath, $"{id}.png"));
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine("Failed to save icon on " + gearNode.Text);
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                gearImg.Unextract();
+            }
         }
 
         void LoadString()
@@ -129,6 +188,7 @@ namespace WzJson.Gear
                 gear.name = nameDesc[id].Item1;
                 gear.desc = nameDesc[id].Item2;
                 var iconOrigin = ResolveIcon(infoNode.FindNodeByPath("iconRaw"), infoNode.FindNodeByPath("icon"));
+                icons.Add(iconOrigin.Item1);
                 gear.icon = iconOrigin.Item1;
                 gear.origin = iconOrigin.Item2;
                 gear.req = new();
@@ -204,18 +264,8 @@ namespace WzJson.Gear
 
         (int, int[]) ResolveIcon(Wz_Node iconRawNode, Wz_Node iconNode)
         {
-            Wz_Node node = iconNode ?? iconRawNode;
-            if(node == null)
-            {
-                return (0, new int[] { 0, 0 });
-            }
-            Wz_Uol uol;
-            while((uol = node.GetValue<Wz_Uol>(null)) != null)
-            {
-                node = uol.HandleUol(node);
-            }
-
-            var linkNode = node.GetLinkedSourceNode(wz.Find);
+            Wz_Node node = iconRawNode ?? iconNode;
+            var linkNode = ResolveIconNode(iconRawNode, iconNode);
 
             int id;
             int[] origin;
@@ -240,6 +290,22 @@ namespace WzJson.Gear
             }
 
             return (id, origin);
+        }
+
+        Wz_Node? ResolveIconNode(Wz_Node? iconRawNode, Wz_Node? iconNode)
+        {
+            Wz_Node? node = iconRawNode ?? iconNode;
+            if(node == null)
+            {
+                return null;
+            }
+            Wz_Uol uol;
+            while((uol = node.GetValue<Wz_Uol>(null)) != null)
+            {
+                node = uol.HandleUol(node);
+            }
+
+            return node.GetLinkedSourceNode(wz.Find);
         }
     }
 }

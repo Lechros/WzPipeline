@@ -37,6 +37,22 @@ List<(string, Action)> options = new()
         Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
     }
     ),
+    ("export gear icons (takes long)", () =>
+    {
+        Console.WriteLine("Loading gear data...");
+        sw.Restart();
+        GearLoader gl = new(wz);
+        gl.Load();
+        sw.Stop();
+        Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
+
+        Console.WriteLine("Saving to file...");
+        sw.Restart();
+        gl.SaveIcons(Path.Join(outputRoot, @"output\gearicon\"));
+        sw.Stop();
+        Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
+    }
+    ),
     ("export item option data", () =>
     {
         Console.WriteLine("Loading item option data...");
