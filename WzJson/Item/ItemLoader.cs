@@ -36,14 +36,14 @@ namespace WzJson.Item
             return true;
         }
 
-        int[]? Parse(Wz_Node node)
+        int[]? Parse(Wz_Node node, bool raw = false)
         {
             if(!int.TryParse(node.Text, out int id))
             {
                 return null;
             }
             Wz_Node? infoNode = node.FindNodeByPath("info");
-            var iconNode = ResolveIconNode(infoNode.FindNodeByPath("iconRaw"), infoNode.FindNodeByPath("icon"));
+            var iconNode = ResolveIconNode(raw ? infoNode.FindNodeByPath("iconRaw") : infoNode.FindNodeByPath("icon"));
 
             Wz_Node? originNode = iconNode.FindNodeByPath("origin");
             Wz_Vector? vec = originNode?.GetValue<Wz_Vector>();
@@ -81,7 +81,7 @@ namespace WzJson.Item
             return true;
         }
 
-        void SaveIcon(Wz_Node node, string parentPath)
+        void SaveIcon(Wz_Node node, string parentPath, bool raw = false)
         {
             try
             {
@@ -90,7 +90,7 @@ namespace WzJson.Item
                     Console.WriteLine("Skipping: " + node.Text);
                 }
                 Wz_Node infoNode = node.FindNodeByPath("info");
-                var iconNode = ResolveIconNode(infoNode.FindNodeByPath("iconRaw"), infoNode.FindNodeByPath("icon"));
+                var iconNode = ResolveIconNode(raw ? infoNode.FindNodeByPath("iconRaw") : infoNode.FindNodeByPath("icon"));
 
                 Wz_Png png = (Wz_Png)iconNode.Value;
                 png.ExtractPng().Save(Path.Join(parentPath, $"{id}.png"));
@@ -125,9 +125,9 @@ namespace WzJson.Item
             }
         }
 
-        Wz_Node? ResolveIconNode(Wz_Node? iconRawNode, Wz_Node? iconNode)
+        Wz_Node? ResolveIconNode(Wz_Node? iconNode)
         {
-            Wz_Node? node = iconRawNode ?? iconNode;
+            Wz_Node? node = iconNode;
             if(node == null)
             {
                 return null;

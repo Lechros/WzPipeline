@@ -79,8 +79,6 @@ namespace WzJson.Gear
         public string? desc;
         [JsonPropertyOrder(3)]
         public int icon;
-        [JsonPropertyOrder(4)]
-        public int[] origin = new int[] { 0, 0 };
         [JsonPropertyOrder(5)]
         public GearReq? req;
 
