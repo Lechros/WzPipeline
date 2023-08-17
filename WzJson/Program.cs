@@ -1,10 +1,10 @@
 ﻿
 using System.Diagnostics;
-using System.Reflection.Metadata;
 using WzJson.Gear;
 using WzJson.Item;
 using WzJson.SetItem;
 using WzJson.SimapleGear;
+using WzJson.Skill;
 using WzJson.Soul;
 using WzJson.Wz;
 
@@ -38,7 +38,7 @@ List<(string, Action)> options = new()
         Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
     }
     ),
-    ("export gear icons (takes long)", () =>
+    ("export gear icons/origins (takes long)", () =>
     {
         Console.WriteLine("Loading gear data...");
         sw.Restart();
@@ -50,6 +50,24 @@ List<(string, Action)> options = new()
         Console.WriteLine("Saving to file...");
         sw.Restart();
         gl.SaveIcons(Path.Join(outputRoot, @"gearicon\"));
+        gl.SaveOrigins(Path.Join(outputRoot, @"gearorigin.json"));
+        sw.Stop();
+        Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
+    }
+    ),
+    ("export gear raw icons/origins (takes long)", () =>
+    {
+        Console.WriteLine("Loading gear data...");
+        sw.Restart();
+        GearLoader gl = new(wz);
+        gl.Load();
+        sw.Stop();
+        Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
+
+        Console.WriteLine("Saving to file...");
+        sw.Restart();
+        gl.SaveIcons(Path.Join(outputRoot, @"gearrawicon\"), true);
+        gl.SaveOrigins(Path.Join(outputRoot, @"gearraworigin.json"), true);
         sw.Stop();
         Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
     }
@@ -131,6 +149,23 @@ List<(string, Action)> options = new()
         Console.WriteLine("Saving to file...");
         sw.Restart();
         gl.Save(Path.Join(outputRoot, @"simaple-gear.json"));
+        sw.Stop();
+        Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
+    }
+    ),
+    ("export skill icons", () =>
+    {
+        Console.WriteLine("Loading skill data...");
+        sw.Restart();
+        SkillLoader sl = new (wz);
+        sl.Load();
+        sw.Stop();
+        Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
+
+        Console.WriteLine("Saving to file...");
+        Console.WriteLine(Path.GetFullPath(Path.Join(outputRoot, @"skillicon\")));
+        sw.Restart();
+        sl.SaveIcons(Path.Join(outputRoot, @"skillicon\"));
         sw.Stop();
         Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
     }
