@@ -26,7 +26,7 @@ namespace WzJson.Skill
         {
             Directory.CreateDirectory(Path.GetDirectoryName(path));
 
-            foreach(Wz_Node itemNode in GetSkillCanvasNodes())
+            foreach(Wz_Node itemNode in GetSkillNodes())
             {
                 SaveIcon(itemNode, path);
             }
@@ -41,7 +41,7 @@ namespace WzJson.Skill
                 {
                     throw new Exception(node.Text + " is not valid id");
                 }
-                Wz_Node iconNode = node.FindNodeByPath("icon");
+                Wz_Node iconNode = ResolveIconNode(node.FindNodeByPath("icon"));
                 if(iconNode == null)
                 {
                     throw new Exception("icon node doesn't exist.");
@@ -54,6 +54,24 @@ namespace WzJson.Skill
             {
                 Console.WriteLine("Failed to save icon on " + node.Text);
                 Console.WriteLine(ex.Message);
+            }
+        }
+
+        public IEnumerable<Wz_Node> GetSkillNodes()
+        {
+            Wz_Node skillWz = wz.openedWz!.WzNode.FindNodeByPath(Skill);
+
+            foreach(Wz_Node imgNode in skillWz.Nodes)
+            {
+                if(!char.IsDigit(imgNode.Text[0])) continue;
+
+                Wz_Image img = (Wz_Image)imgNode.Value;
+                if(!img.TryExtract()) continue;
+
+                foreach(Wz_Node skillNode in img.Node.FindNodeByPath("skill").Nodes)
+                {
+                    yield return skillNode;
+                }
             }
         }
 

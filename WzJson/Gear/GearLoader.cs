@@ -268,6 +268,7 @@ namespace WzJson.Gear
                 Wz_Node partNode = chWz.FindNodeByPath(part);
                 foreach(Wz_Node gearNode in partNode.Nodes)
                 {
+                    if(gearNode.Text == "_Canvas") continue;
                     Wz_Image gearImg = (Wz_Image)gearNode.Value;
                     try
                     {

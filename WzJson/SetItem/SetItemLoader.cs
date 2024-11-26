@@ -78,7 +78,7 @@ namespace WzJson.SetItem
                         {
                             if(item.Nodes.Count == 0) // ItemID: [id, id, ...]
                             {
-                                set.items.Add(Convert.ToInt32(item.Value));
+                                set.itemIDs.Add(Convert.ToInt32(item.Value));
                             }
                             else // ItemID: {1: {id, id}, 2: {id, id}, ...}
                             {
@@ -91,7 +91,7 @@ namespace WzJson.SetItem
                                         case "byGender": break;
                                         default:
                                             if(int.TryParse(itemDirNode.Text, out int temp) && temp > 0)
-                                                set.items.Add(Convert.ToInt32(itemDirNode.Value));
+                                                set.itemIDs.Add(Convert.ToInt32(itemDirNode.Value));
                                             break;
                                     }
                                 }
@@ -103,7 +103,7 @@ namespace WzJson.SetItem
                         {
                             string partCount = Convert.ToString(effect.Text);
                             Dictionary<string, int> effectDict = new();
-                            set.effect[partCount] = effectDict;
+                            set.effects[partCount] = effectDict;
                             foreach(Wz_Node prop in effect.Nodes)
                             {
                                 switch(prop.Text)

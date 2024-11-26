@@ -12,10 +12,5 @@ namespace WzJson.Skill
         [JsonProperty(Order = 1)]
         public string name;
         public Dictionary<int, Dictionary<string, int>> level;
-
-        void asdf()
-        {
-            
-        }
     }
 }
