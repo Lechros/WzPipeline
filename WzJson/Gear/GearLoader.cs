@@ -1,6 +1,5 @@
 ﻿using WzComparerR2.WzLib;
 using WzComparerR2.Common;
-using WzJson.Wz;
 using Newtonsoft.Json;
 using System.Diagnostics;
 using WzJson.SimapleGear;
@@ -20,12 +19,12 @@ namespace WzJson.Gear
             "Longcoat", "Mechanic", "Pants", "Ring", "Shield", "Shoes", "Weapon",
         };
 
-        public GearLoader(WzLoader wz)
+        public GearLoader(IWzProvider wz)
         {
             this.wz = wz;
         }
 
-        WzLoader wz;
+        IWzProvider wz;
 
         Dictionary<int, (string, string?)> nameDesc = new();
         SortedDictionary<int, Gear> gears = new();
@@ -111,7 +110,7 @@ namespace WzJson.Gear
 
         void LoadString()
         {
-            Wz_Node stringWz = wz.openedWz!.WzNode.FindNodeByPath(StringEqp, true);
+            Wz_Node stringWz = wz.BaseNode.FindNodeByPath(StringEqp);
             stringWz.GetValue<Wz_Image>().TryExtract();
             Wz_Node eqpNode = stringWz.Nodes[0];
 
@@ -261,7 +260,7 @@ namespace WzJson.Gear
 
         public IEnumerable<Wz_Node> GetGearNodes()
         {
-            Wz_Node chWz = wz.openedWz!.WzNode.FindNodeByPath(Character);
+            Wz_Node chWz = wz.BaseNode.FindNodeByPath(Character);
 
             foreach(string part in parts)
             {
@@ -298,7 +297,7 @@ namespace WzJson.Gear
                 node = uol.HandleUol(node);
             }
 
-            return node.GetLinkedSourceNode(wz.Find);
+            return node.GetLinkedSourceNode(wz.FindNodeFunction);
         }
     }
 }

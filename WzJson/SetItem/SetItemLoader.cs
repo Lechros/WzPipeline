@@ -1,6 +1,5 @@
 ﻿using WzComparerR2.WzLib;
 using WzComparerR2.Common;
-using WzJson.Wz;
 using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
@@ -14,13 +13,13 @@ namespace WzJson.SetItem
         static readonly string SetItemPath = @"Etc\SetItemInfo.img";
         static readonly string ItemOptionPath = @"Item\ItemOption.img";
 
-        public SetItemLoader(WzLoader wz)
+        public SetItemLoader(WzProvider wz)
         {
             this.wz = wz;
-            itemOptionNode = wz.openedWz!.WzNode.FindNodeByPath(ItemOptionPath, true);
+            itemOptionNode = wz.BaseNode.FindNodeByPath(ItemOptionPath, true);
         }
 
-        WzLoader wz;
+        WzProvider wz;
 
         Wz_Node itemOptionNode;
 
@@ -28,7 +27,7 @@ namespace WzJson.SetItem
 
         public bool Load()
         {
-            Wz_Node setItemWz = wz.openedWz!.WzNode.FindNodeByPath(SetItemPath, true);
+            Wz_Node setItemWz = wz.BaseNode.FindNodeByPath(SetItemPath, true);
             foreach(Wz_Node node in setItemWz.Nodes)
             {
                 var (id, soul) = Parse(node) ?? (0, null);

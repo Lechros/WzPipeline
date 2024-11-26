@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using WzComparerR2.WzLib;
-using WzJson.Wz;
 
 namespace WzJson.Gear
 {
@@ -9,18 +8,18 @@ namespace WzJson.Gear
     {
         static readonly string ItemOption = @"Item\ItemOption.img";
 
-        public ItemOptionLoader(WzLoader wz)
+        public ItemOptionLoader(WzProvider wz)
         {
             this.wz = wz;
         }
 
-        WzLoader wz;
+        WzProvider wz;
 
         SortedDictionary<int, ItemOption> options = new();
 
         public bool Load()
         {
-            Wz_Node ioWz = wz.openedWz!.WzNode.FindNodeByPath(ItemOption, true);
+            Wz_Node ioWz = wz.BaseNode.FindNodeByPath(ItemOption, true);
 
             foreach(Wz_Node itemOptionNode in ioWz.Nodes)
             {

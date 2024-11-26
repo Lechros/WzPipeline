@@ -1,6 +1,5 @@
 ﻿using WzComparerR2.WzLib;
 using WzComparerR2.Common;
-using WzJson.Wz;
 using Newtonsoft.Json;
 using System.Diagnostics;
 
@@ -16,12 +15,12 @@ namespace WzJson.SimapleGear
             "Longcoat", "Mechanic", "Pants", "Ring", "Shield", "Shoes", "Weapon",
         };
 
-        public SimapleGearLoader(WzLoader wz)
+        public SimapleGearLoader(WzProvider wz)
         {
             this.wz = wz;
         }
 
-        WzLoader wz;
+        WzProvider wz;
 
         Dictionary<int, string> nameDict = new();
         SortedDictionary<int, Gear> gears = new();
@@ -53,7 +52,7 @@ namespace WzJson.SimapleGear
 
         void LoadString()
         {
-            Wz_Node stringWz = wz.openedWz!.WzNode.FindNodeByPath(StringEqp, true);
+            Wz_Node stringWz = wz.BaseNode.FindNodeByPath(StringEqp, true);
             stringWz.GetValue<Wz_Image>().TryExtract();
             Wz_Node eqpNode = stringWz.Nodes[0];
 
@@ -77,7 +76,7 @@ namespace WzJson.SimapleGear
 
         void LoadData()
         {
-            Wz_Node chWz = wz.openedWz!.WzNode.FindNodeByPath(Character);
+            Wz_Node chWz = wz.BaseNode.FindNodeByPath(Character);
 
             foreach(string part in parts)
             {

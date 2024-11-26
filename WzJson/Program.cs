@@ -1,12 +1,11 @@
-﻿
-using System.Diagnostics;
+﻿using System.Diagnostics;
+using WzJson;
 using WzJson.Gear;
 using WzJson.Item;
 using WzJson.SetItem;
 using WzJson.SimapleGear;
 using WzJson.Skill;
 using WzJson.Soul;
-using WzJson.Wz;
 
 string outputRoot = Path.Join(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\output\");
 
@@ -15,8 +14,7 @@ bool exitFlag = false;
 
 Console.WriteLine("Loading wz...");
 sw.Restart();
-WzLoader wz = new();
-wz.Load(@"C:\Nexon\Maple");
+WzProvider wz = new(@"C:\Nexon\Maple");
 sw.Stop();
 Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
 

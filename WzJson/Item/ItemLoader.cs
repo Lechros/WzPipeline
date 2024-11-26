@@ -2,7 +2,6 @@
 using System.IO;
 using WzComparerR2.Common;
 using WzComparerR2.WzLib;
-using WzJson.Wz;
 
 namespace WzJson.Item
 {
@@ -14,12 +13,12 @@ namespace WzJson.Item
             "Cash", "Consume", "Etc"
         };
 
-        public ItemLoader(WzLoader wz)
+        public ItemLoader(WzProvider wz)
         {
             this.wz = wz;
         }
 
-        WzLoader wz;
+        WzProvider wz;
 
         SortedDictionary<int, int[]> origins = new();
 
@@ -104,7 +103,7 @@ namespace WzJson.Item
 
         public IEnumerable<Wz_Node> GetItemNodes()
         {
-            Wz_Node itemWz = wz.openedWz!.WzNode.FindNodeByPath(Item);
+            Wz_Node itemWz = wz.BaseNode.FindNodeByPath(Item);
 
             foreach(string part in parts)
             {
@@ -138,7 +137,7 @@ namespace WzJson.Item
                 node = uol.HandleUol(node);
             }
 
-            return node.GetLinkedSourceNode(wz.Find);
+            return node.GetLinkedSourceNode(wz.FindNodeFunction);
         }
     }
 }

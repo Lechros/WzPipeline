@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using WzComparerR2.WzLib;
 using WzJson.Gear;
-using WzJson.Wz;
 
 namespace WzJson.Soul
 {
@@ -17,12 +16,12 @@ namespace WzJson.Soul
         static readonly string SoulPath = @"Item\Consume\0259.img";
         static readonly string StringConsume = @"String\Consume.img";
 
-        public SoulLoader(WzLoader wz)
+        public SoulLoader(WzProvider wz)
         {
             this.wz = wz;
         }
 
-        WzLoader wz;
+        WzProvider wz;
 
         Dictionary<int, (string, string?)> nameDesc = new();
         SortedDictionary<int, Soul> souls = new();
@@ -54,7 +53,7 @@ namespace WzJson.Soul
 
         void LoadString()
         {
-            Wz_Node stringWz = wz.openedWz!.WzNode.FindNodeByPath(StringConsume, true);
+            Wz_Node stringWz = wz.BaseNode.FindNodeByPath(StringConsume, true);
             stringWz.GetValue<Wz_Image>().TryExtract();
 
             foreach(Wz_Node itemNode in stringWz.Nodes)
@@ -81,7 +80,7 @@ namespace WzJson.Soul
 
         void LoadData()
         {
-            Wz_Node soulWz = wz.openedWz!.WzNode.FindNodeByPath(SoulPath, true);
+            Wz_Node soulWz = wz.BaseNode.FindNodeByPath(SoulPath, true);
             foreach(Wz_Node node in soulWz.Nodes)
             {
                 var (id, soul) = Parse(node) ?? (0, null);

@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using WzComparerR2.Common;
 using WzComparerR2.WzLib;
-using WzJson.Wz;
 
 namespace WzJson.Skill
 {
@@ -10,12 +9,12 @@ namespace WzJson.Skill
         static readonly string Skill = @"Skill";
         static readonly string SkillCanvas = @"Skill\_Canvas";
 
-        public SkillLoader(WzLoader wz)
+        public SkillLoader(WzProvider wz)
         {
             this.wz = wz;
         }
 
-        WzLoader wz;
+        WzProvider wz;
 
         public bool Load()
         {
@@ -59,7 +58,7 @@ namespace WzJson.Skill
 
         public IEnumerable<Wz_Node> GetSkillNodes()
         {
-            Wz_Node skillWz = wz.openedWz!.WzNode.FindNodeByPath(Skill);
+            Wz_Node skillWz = wz.BaseNode.FindNodeByPath(Skill);
 
             foreach(Wz_Node imgNode in skillWz.Nodes)
             {
@@ -77,7 +76,7 @@ namespace WzJson.Skill
 
         public IEnumerable<Wz_Node> GetSkillCanvasNodes()
         {
-            Wz_Node canvasWz = wz.openedWz!.WzNode.FindNodeByPath(SkillCanvas);
+            Wz_Node canvasWz = wz.BaseNode.FindNodeByPath(SkillCanvas);
 
             foreach(Wz_Node imgNode in canvasWz.Nodes)
             {
@@ -117,7 +116,7 @@ namespace WzJson.Skill
                 node = uol.HandleUol(node);
             }
 
-            return node.GetLinkedSourceNode(wz.Find);
+            return node.GetLinkedSourceNode(wz.FindNodeFunction);
         }
     }
 }
