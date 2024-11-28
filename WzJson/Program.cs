@@ -36,6 +36,17 @@ void ExportDatas(IList<IData> datas)
     }
 }
 
+void DisposeDatas(IList<IData> datas)
+{
+    foreach (var data in datas)
+    {
+        if (data is IDisposable disposable)
+        {
+            disposable.Dispose();
+        }
+    }
+}
+
 List<(string, Action)> options = new()
 {
     ("export gear data", () =>
@@ -51,6 +62,7 @@ List<(string, Action)> options = new()
             Console.WriteLine("Saving to file...");
             sw.Restart();
             ExportDatas(datas);
+            DisposeDatas(datas);
             sw.Stop();
             Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
         }
@@ -69,6 +81,7 @@ List<(string, Action)> options = new()
             Console.WriteLine("Saving to file...");
             sw.Restart();
             ExportDatas(datas);
+            DisposeDatas(datas);
             sw.Stop();
             Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
         }
@@ -87,6 +100,7 @@ List<(string, Action)> options = new()
             Console.WriteLine("Saving to file...");
             sw.Restart();
             ExportDatas(datas);
+            DisposeDatas(datas);
             sw.Stop();
             Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
         }
@@ -103,6 +117,7 @@ List<(string, Action)> options = new()
             Console.WriteLine("Saving to file...");
             sw.Restart();
             ExportDatas(datas);
+            DisposeDatas(datas);
             sw.Stop();
             Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
         }

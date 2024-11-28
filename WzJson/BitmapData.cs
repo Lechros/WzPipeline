@@ -2,7 +2,7 @@ using System.Drawing;
 
 namespace WzJson;
 
-public class BitmapData : IData
+public class BitmapData : IData, IDisposable
 {
     public BitmapData(string path, IDictionary<string, Bitmap>? items = null)
     {
@@ -10,11 +10,26 @@ public class BitmapData : IData
         Items = items ?? new Dictionary<string, Bitmap>();
     }
 
+    ~BitmapData()
+    {
+        Dispose();
+    }
+
     public string Path { get; }
     public IDictionary<string, Bitmap> Items { get; }
-    
+
     public void Add<T>(string name, T item) where T : notnull
     {
         Items.Add(name, item as Bitmap);
+    }
+
+    public void Dispose()
+    {
+        foreach (var bitmap in Items.Values)
+        {
+            bitmap.Dispose();
+        }
+
+        GC.SuppressFinalize(this);
     }
 }
