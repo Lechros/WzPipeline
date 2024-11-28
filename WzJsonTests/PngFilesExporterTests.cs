@@ -118,15 +118,15 @@ public class PngFilesExporterTests : OutputPathTestSupport
         Assert.IsTrue(File.Exists(expectedFile2));
     }
 
-    private class NonBitmapData : IData<Bitmap>
+    private class NonBitmapData : IData
     {
-        public NonBitmapData(string name)
+        public NonBitmapData(string path)
         {
-            Name = name;
+            Path = path;
             Items = new Dictionary<string, Bitmap>();
         }
 
-        public string Name { get; }
+        public string Path { get; }
         public IDictionary<string, Bitmap> Items { get; }
     }
 }

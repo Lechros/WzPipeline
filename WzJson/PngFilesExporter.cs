@@ -9,19 +9,20 @@ public class PngFilesExporter : AbstractFileExporter
     {
     }
 
-    public override bool Supports<T>(IData<T> data)
+    public override bool Supports(IData data)
     {
         return data is BitmapData;
     }
 
-    protected override void ExportItems<T>(IData<T> data)
+    protected override void ExportItems(IData data)
     {
-        var items = (IReadOnlyDictionary<string, Bitmap>)data.Items;
+        var bitmapData = (BitmapData)data;
+        var items = bitmapData.Items;
 
         Parallel.ForEach(items, e =>
         {
             var (name, bitmap) = e;
-            var filename = Path.Join(OutputPath, data.Name, name);
+            var filename = Path.Join(OutputPath, bitmapData.Path, name);
             SavePng(bitmap, filename);
         });
     }

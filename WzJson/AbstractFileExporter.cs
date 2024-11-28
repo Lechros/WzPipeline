@@ -13,9 +13,9 @@ public abstract class AbstractFileExporter : IExporter
 
     protected string OutputPath { get; }
 
-    public abstract bool Supports<T>(IData<T> data);
+    public abstract bool Supports(IData data);
 
-    public void Export<T>(IData<T> data)
+    public void Export(IData data)
     {
         if (!Supports(data))
         {
@@ -26,7 +26,7 @@ public abstract class AbstractFileExporter : IExporter
         ExportItems(data);
     }
 
-    protected abstract void ExportItems<T>(IData<T> data);
+    protected abstract void ExportItems(IData data);
 
     protected void EnsureDirectory(string path)
     {

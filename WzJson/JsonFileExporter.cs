@@ -12,27 +12,17 @@ public class JsonFileExporter : AbstractFileExporter
         this.serializer = serializer;
     }
 
-    public override bool Supports<T>(IData<T> data)
+    public override bool Supports(IData data)
     {
-        var type = data.GetType();
-        while (type != null)
-        {
-            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(JsonData<>))
-            {
-                return true;
-            }
-
-            type = type.BaseType;
-        }
-
-        return false;
+        return data is JsonData;
     }
 
-    protected override void ExportItems<T>(IData<T> data)
+    protected override void ExportItems(IData data)
     {
-        var sortedItems = data.Items.ToImmutableSortedDictionary();
+        var jsonData = (JsonData)data;
+        var sortedItems = jsonData.Items.ToImmutableSortedDictionary();
 
-        var filename = Path.Join(OutputPath, data.Name);
+        var filename = Path.Join(OutputPath, jsonData.Path);
         EnsureDirectory(filename);
 
         using StreamWriter sw = new(filename);

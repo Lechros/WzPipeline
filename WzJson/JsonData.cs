@@ -1,13 +1,13 @@
 namespace WzJson;
 
-public class JsonData<T> : IData<T>
+public class JsonData : IData
 {
-    public JsonData(string name, IDictionary<string, T>? items = null)
+    public JsonData(string path, IDictionary<string, object>? items = null)
     {
-        Name = name;
-        Items = items ?? new Dictionary<string, T>();
+        Path = path;
+        Items = items ?? new Dictionary<string, object>();
     }
 
-    public string Name { get; }
-    public IDictionary<string, T> Items { get; }
+    public string Path { get; }
+    public IDictionary<string, object> Items { get; }
 }

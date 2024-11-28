@@ -26,7 +26,7 @@ public class JsonFileExporterTests : OutputPathTestSupport
     public void Supports_JsonData_ReturnsTrue()
     {
         var exporter = new JsonFileExporter(OutputPath, jsonSerializer);
-        var data = new JsonData<string>("test.json", new Dictionary<string, string>());
+        var data = new JsonData("test.json", new Dictionary<string, object>());
 
         Assert.IsTrue(exporter.Supports(data));
     }
@@ -35,7 +35,7 @@ public class JsonFileExporterTests : OutputPathTestSupport
     public void Supports_NonJsonData_ReturnsFalse()
     {
         var exporter = new JsonFileExporter(OutputPath, jsonSerializer);
-        var data = new NonJsonData<string>("test.not.json");
+        var data = new NonJsonData("test.not.json");
 
         Assert.IsFalse(exporter.Supports(data));
     }
@@ -50,7 +50,7 @@ public class JsonFileExporterTests : OutputPathTestSupport
         string expectedContent = @"{""key"":""value""}";
 
         var exporter = new JsonFileExporter(OutputPath, jsonSerializer);
-        var data = new JsonData<string>(Name, new Dictionary<string, string> { [Key] = Value });
+        var data = new JsonData(Name, new Dictionary<string, object> { [Key] = Value });
         exporter.Export(data);
 
         Assert.IsTrue(File.Exists(expectedFilename));
@@ -68,7 +68,7 @@ public class JsonFileExporterTests : OutputPathTestSupport
         string expectedContent = @"{""key"":""value""}";
 
         var exporter = new JsonFileExporter(OutputPath, jsonSerializer);
-        var data = new JsonData<string>(Name, new Dictionary<string, string> { [Key] = Value });
+        var data = new JsonData(Name, new Dictionary<string, object> { [Key] = Value });
 
         exporter.Export(data);
 
@@ -77,15 +77,15 @@ public class JsonFileExporterTests : OutputPathTestSupport
         Assert.AreEqual(expectedContent, content);
     }
 
-    private class NonJsonData<T> : IData<T>
+    private class NonJsonData : IData
     {
-        public NonJsonData(string name)
+        public NonJsonData(string path)
         {
-            Name = name;
-            Items = new Dictionary<string, T>();
+            Path = path;
+            Items = new Dictionary<string, object>();
         }
 
-        public string Name { get; }
-        public IDictionary<string, T> Items { get; }
+        public string Path { get; }
+        public IDictionary<string, object> Items { get; }
     }
 }

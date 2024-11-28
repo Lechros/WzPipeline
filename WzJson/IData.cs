@@ -1,7 +1,5 @@
 namespace WzJson;
 
-public interface IData<T>
+public interface IData
 {
-    public string Name { get; }
-    public IDictionary<string, T> Items { get; }
 }
