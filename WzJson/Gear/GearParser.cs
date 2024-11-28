@@ -31,21 +31,28 @@ public class GearParser : IWzParser
     public IList<IData> Parse()
     {
         var converters = GetConverters();
-        var datas = new List<IData>();
+        var datas = converters.Select(converter => converter.NewData()).ToList();
 
-        foreach (var converter in converters)
+        foreach (var node in gearNodeRepository.GetNodes())
         {
-            var data = converter.Convert(gearNodeRepository.GetNodes());
-            datas.Add(data);
+            for (var i = 0; i < converters.Count; i++)
+            {
+                var converter = converters[i];
+                var data = datas[i];
+                var name = converter.GetNodeName(node);
+                var item = converter.ConvertNode(node, name);
+                if (item != null)
+                    data.Add(name, item);
+            }
         }
 
         return datas;
     }
 
-    private IList<INodeConverter<IData>> GetConverters()
+    private IList<INodeConverter<object>> GetConverters()
     {
         var nameDescData = new NameDescConverter().Convert(stringEqpNodeRepository.GetNodes());
-        var converters = new List<INodeConverter<IData>>();
+        var converters = new List<INodeConverter<object>>();
         if (ParseGearData)
             converters.Add(new GearConverter(GearDataJsonPath, nameDescData, wzProvider.FindNodeFunction));
         if (ParseGearIconOrigin)

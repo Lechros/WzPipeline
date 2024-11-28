@@ -15,7 +15,16 @@ public class ItemOptionParser : IWzParser
     public IList<IData> Parse()
     {
         var converter = new ItemOptionConverter(ItemOptionJsonName);
-        var data = converter.Convert(itemOptionNodeRepository.GetNodes());
+        var data = converter.NewData();
+
+        foreach (var node in itemOptionNodeRepository.GetNodes())
+        {
+            var name = converter.GetNodeName(node);
+            var item = converter.ConvertNode(node, name);
+            if (item != null)
+                data.Add(name, item);
+        }
+
         return new List<IData> { data };
     }
 }

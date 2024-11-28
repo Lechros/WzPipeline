@@ -25,7 +25,7 @@ public class NameDescConverterTests
         
         Assert.IsNotNull(node);
 
-        var (name, desc) = converter.ConvertNode(node);
+        var (name, desc) = converter.ConvertNode(node, string.Empty);
         
         Assert.AreEqual(expectedName, name);
         Assert.AreEqual(expectedDesc, desc);

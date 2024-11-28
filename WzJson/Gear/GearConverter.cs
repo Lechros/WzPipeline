@@ -3,7 +3,7 @@ using WzComparerR2.WzLib;
 
 namespace WzJson.Gear;
 
-public class GearConverter : INodeConverter<JsonData>
+public class GearConverter : INodeConverter<Gear>
 {
     private readonly string dataName;
     private readonly GlobalFindNodeFunction findNodeFunction;
@@ -16,18 +16,14 @@ public class GearConverter : INodeConverter<JsonData>
         this.nameDescData = nameDescData;
     }
 
-    public JsonData Convert(IEnumerable<Wz_Node> nodes)
+    public IData NewData()
     {
-        var data = new JsonData(dataName);
-        foreach (var node in nodes)
-        {
-            var name = WzUtility.GetNodeCode(node);
-            var gear = ConvertNode(node, name);
-            if (gear != null)
-                data.Items.Add(name, gear);
-        }
+        return new JsonData(dataName);
+    }
 
-        return data;
+    public string GetNodeName(Wz_Node node)
+    {
+        return WzUtility.GetNodeCode(node);
     }
 
     public Gear? ConvertNode(Wz_Node node, string name)
