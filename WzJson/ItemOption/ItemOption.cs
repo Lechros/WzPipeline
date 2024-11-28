@@ -1,33 +1,23 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
-namespace WzJson.ItemOption
+namespace WzJson.ItemOption;
+
+public class ItemOption
 {
-    public class ItemOption
-    {
-        public ItemOption()
-        {
-            level = new JObject();
-            for (int i = 1; i <= 25; i++)
-            {
-                level.Add(i.ToString(), new JObject());
-            }
-        }
+    [JsonProperty(Order = 1, PropertyName = "optionType")]
+    public int OptionType { get; set; }
 
-        [JsonProperty(Order = 1)] public int optionType;
-        [JsonProperty(Order = 2)] public int reqLevel;
+    [JsonProperty(Order = 2, PropertyName = "reqLevel")]
+    public int ReqLevel { get; set; }
 
-        [JsonProperty(Order = 3, PropertyName = "string")]
-        public string? @string;
+    [JsonProperty(Order = 3, PropertyName = "string")]
+    public string? String { get; set; }
 
-        [JsonProperty(Order = 4)] public JObject level;
+    [JsonProperty(Order = 4, PropertyName = "level")]
+    public SortedDictionary<int, Dictionary<string, object>> Level { get; set; } = new();
 
-        public void addOption(string level, string option, JToken? value)
-        {
-            (this.level.GetValue(level) as JObject)!.Add(option, value);
-        }
-
-        public bool ShouldSerializeoptionType() => optionType > 0;
-        public bool ShouldSerializereqLevel() => reqLevel > 0;
-    }
+    public bool ShouldSerializeOptionType() => OptionType > 0;
+    public bool ShouldSerializeReqLevel() => ReqLevel > 0;
+    public bool ShouldSerializeString() => String != null;
+    public bool ShouldSerializeLevel() => Level.Count > 0;
 }
