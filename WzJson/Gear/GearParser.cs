@@ -2,7 +2,7 @@ using WzComparerR2.WzLib;
 
 namespace WzJson.Gear;
 
-public class GearParser : IWzParser
+public class GearParser : AbstractWzParser
 {
     public const string GearDataJsonPath = "gear-data.json";
     public const string GearIconOriginJsonPath = "gear-origin.json";
@@ -28,28 +28,12 @@ public class GearParser : IWzParser
     public bool ParseGearIcon { get; set; }
     public bool ParseGearIconRaw { get; set; }
 
-    public IList<IData> Parse()
+    protected override IEnumerable<Wz_Node> GetNodes()
     {
-        var converters = GetConverters();
-        var datas = converters.Select(converter => converter.NewData()).ToList();
-
-        foreach (var node in gearNodeRepository.GetNodes())
-        {
-            for (var i = 0; i < converters.Count; i++)
-            {
-                var converter = converters[i];
-                var data = datas[i];
-                var name = converter.GetNodeName(node);
-                var item = converter.ConvertNode(node, name);
-                if (item != null)
-                    data.Add(name, item);
-            }
-        }
-
-        return datas;
+        return gearNodeRepository.GetNodes();
     }
 
-    private IList<INodeConverter<object>> GetConverters()
+    protected override IList<INodeConverter<object>> GetConverters()
     {
         var nameDescData = new NameDescConverter().Convert(stringEqpNodeRepository.GetNodes());
         var converters = new List<INodeConverter<object>>();

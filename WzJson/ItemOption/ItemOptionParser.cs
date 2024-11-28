@@ -1,30 +1,28 @@
+using WzComparerR2.WzLib;
+
 namespace WzJson.ItemOption;
 
-public class ItemOptionParser : IWzParser
+public class ItemOptionParser : AbstractWzParser
 {
     public const string ItemOptionJsonName = "item-option.json";
 
     private readonly ItemOptionNodeRepository itemOptionNodeRepository;
-
 
     public ItemOptionParser(ItemOptionNodeRepository itemOptionNodeRepository)
     {
         this.itemOptionNodeRepository = itemOptionNodeRepository;
     }
 
-    public IList<IData> Parse()
+    protected override IEnumerable<Wz_Node> GetNodes()
     {
-        var converter = new ItemOptionConverter(ItemOptionJsonName);
-        var data = converter.NewData();
+        return itemOptionNodeRepository.GetNodes();
+    }
 
-        foreach (var node in itemOptionNodeRepository.GetNodes())
+    protected override IList<INodeConverter<object>> GetConverters()
+    {
+        return new List<INodeConverter<object>>
         {
-            var name = converter.GetNodeName(node);
-            var item = converter.ConvertNode(node, name);
-            if (item != null)
-                data.Add(name, item);
-        }
-
-        return new List<IData> { data };
+            new ItemOptionConverter(ItemOptionJsonName)
+        };
     }
 }
