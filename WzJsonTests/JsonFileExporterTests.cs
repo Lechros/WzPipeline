@@ -43,14 +43,14 @@ public class JsonFileExporterTests : OutputPathTestSupport
     [TestMethod]
     public void Export_JsonData_SavesSingleJsonFileWithName()
     {
-        const string Name = "test.json";
+        const string Filename = "test.json";
         const string Key = "key";
         const string Value = "value";
-        string expectedFilename = Path.Join(OutputPath, Name);
+        string expectedFilename = Path.Join(OutputPath, Filename);
         string expectedContent = @"{""key"":""value""}";
 
         var exporter = new JsonFileExporter(OutputPath, jsonSerializer);
-        var data = new JsonData(Name, new Dictionary<string, object> { [Key] = Value });
+        var data = new JsonData(Filename, new Dictionary<string, object> { [Key] = Value });
         exporter.Export(data);
 
         Assert.IsTrue(File.Exists(expectedFilename));
@@ -61,14 +61,14 @@ public class JsonFileExporterTests : OutputPathTestSupport
     [TestMethod]
     public void Export_NestedPathName_SaveSuccesses()
     {
-        const string Name = "nested/path/test.json";
+        const string Filename = "nested/path/test.json";
         const string Key = "key";
         const string Value = "value";
-        string expectedFilename = Path.Join(OutputPath, Name);
+        string expectedFilename = Path.Join(OutputPath, Filename);
         string expectedContent = @"{""key"":""value""}";
 
         var exporter = new JsonFileExporter(OutputPath, jsonSerializer);
-        var data = new JsonData(Name, new Dictionary<string, object> { [Key] = Value });
+        var data = new JsonData(Filename, new Dictionary<string, object> { [Key] = Value });
 
         exporter.Export(data);
 

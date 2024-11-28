@@ -41,17 +41,17 @@ public class PngFilesExporterTests : OutputPathTestSupport
     [TestMethod]
     public void Export_BitmapData_SavesPngFilesInsideNameFolder()
     {
-        const string Name = "test-images";
+        const string Filename = "test-images";
         const string Key1 = "test1.png";
         const string Key2 = "test2.png";
         using Bitmap Value1 = new(1, 1);
         using Bitmap Value2 = new(1, 1);
-        string expectedOutputDirectory = Path.Join(OutputPath, Name);
+        string expectedOutputDirectory = Path.Join(OutputPath, Filename);
         string expectedFile1 = Path.Join(expectedOutputDirectory, Key1);
         string expectedFile2 = Path.Join(expectedOutputDirectory, Key2);
 
         var exporter = new PngFilesExporter(OutputPath);
-        var data = new BitmapData(Name, new Dictionary<string, Bitmap>
+        var data = new BitmapData(Filename, new Dictionary<string, Bitmap>
         {
             [Key1] = Value1,
             [Key2] = Value2
@@ -68,17 +68,17 @@ public class PngFilesExporterTests : OutputPathTestSupport
     [TestMethod]
     public void Export_NestedPathName_SaveSuccesses()
     {
-        const string Name = "/nested/path/test-images";
+        const string Filename = "/nested/path/test-images";
         const string Key1 = "test1.png";
         const string Key2 = "test2.png";
         using Bitmap Value1 = new(1, 1);
         using Bitmap Value2 = new(1, 1);
-        string expectedOutputDirectory = Path.Join(OutputPath, Name);
+        string expectedOutputDirectory = Path.Join(OutputPath, Filename);
         string expectedFile1 = Path.Join(expectedOutputDirectory, Key1);
         string expectedFile2 = Path.Join(expectedOutputDirectory, Key2);
 
         var exporter = new PngFilesExporter(OutputPath);
-        var data = new BitmapData(Name, new Dictionary<string, Bitmap>
+        var data = new BitmapData(Filename, new Dictionary<string, Bitmap>
         {
             [Key1] = Value1,
             [Key2] = Value2
@@ -95,17 +95,17 @@ public class PngFilesExporterTests : OutputPathTestSupport
     [TestMethod]
     public void Export_NestedPathKey_SaveSuccesses()
     {
-        const string Name = "test-images";
+        const string Filename = "test-images";
         const string Key1 = "/nested/path/test1.png";
         const string Key2 = "/another/nested/path/test2.png";
         using Bitmap Value1 = new(1, 1);
         using Bitmap Value2 = new(1, 1);
-        string expectedOutputDirectory = Path.Join(OutputPath, Name);
+        string expectedOutputDirectory = Path.Join(OutputPath, Filename);
         string expectedFile1 = Path.Join(expectedOutputDirectory, Key1);
         string expectedFile2 = Path.Join(expectedOutputDirectory, Key2);
 
         var exporter = new PngFilesExporter(OutputPath);
-        var data = new BitmapData(Name, new Dictionary<string, Bitmap>
+        var data = new BitmapData(Filename, new Dictionary<string, Bitmap>
         {
             [Key1] = Value1,
             [Key2] = Value2
