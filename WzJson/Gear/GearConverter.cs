@@ -3,7 +3,7 @@ using WzComparerR2.WzLib;
 
 namespace WzJson.Gear;
 
-public class GearConverter : IDataConverter<JsonData>
+public class GearConverter : INodeConverter<JsonData>
 {
     private readonly string dataName;
     private readonly GlobalFindNodeFunction findNodeFunction;

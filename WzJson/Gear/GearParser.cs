@@ -42,10 +42,10 @@ public class GearParser : IWzParser
         return datas;
     }
 
-    private IList<IDataConverter<IData>> GetConverters()
+    private IList<INodeConverter<IData>> GetConverters()
     {
         var nameDescData = new NameDescConverter().Convert(stringEqpNodeRepository.GetNodes());
-        var converters = new List<IDataConverter<IData>>();
+        var converters = new List<INodeConverter<IData>>();
         if (ParseGearData)
             converters.Add(new GearConverter(GearDataJsonPath, nameDescData, wzProvider.FindNodeFunction));
         if (ParseGearIconOrigin)

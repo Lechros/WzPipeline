@@ -4,7 +4,7 @@ using WzComparerR2.WzLib;
 
 namespace WzJson.Gear;
 
-public class IconBitmapConverter : IDataConverter<BitmapData>
+public class IconBitmapConverter : INodeConverter<BitmapData>
 {
     private readonly string dataName;
     private readonly string iconNodePath;

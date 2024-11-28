@@ -2,7 +2,7 @@ using WzComparerR2.WzLib;
 
 namespace WzJson;
 
-public class NameDescConverter : IDataConverter<NameDescData>
+public class NameDescConverter : INodeConverter<NameDescData>
 {
     public NameDescData Convert(IEnumerable<Wz_Node> nodes)
     {

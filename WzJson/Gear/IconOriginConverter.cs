@@ -2,7 +2,7 @@ using WzComparerR2.WzLib;
 
 namespace WzJson.Gear;
 
-public class IconOriginConverter : IDataConverter<JsonData>
+public class IconOriginConverter : INodeConverter<JsonData>
 {
     private readonly string dataName;
     private readonly string originNodePath;
