@@ -2,7 +2,7 @@ using WzComparerR2.WzLib;
 
 namespace WzJson;
 
-public class IconOriginConverter : INodeConverter<int[]>
+public class IconOriginConverter : AbstractNodeConverter<int[]>
 {
     private readonly string dataName;
     private readonly string originNodePath;
@@ -12,19 +12,18 @@ public class IconOriginConverter : INodeConverter<int[]>
         this.dataName = dataName;
         this.originNodePath = originNodePath;
     }
-
-
-    public IData NewData()
+    
+    public override IData NewData()
     {
         return new JsonData(dataName);
     }
 
-    public string GetNodeName(Wz_Node node)
+    public override string GetNodeName(Wz_Node node)
     {
         return WzUtility.GetNodeCode(node);
     }
 
-    public int[]? ConvertNode(Wz_Node node, string _)
+    public override int[]? ConvertNode(Wz_Node node, string _)
     {
         var originNode = node.FindNodeByPath(originNodePath);
         var vector = originNode?.GetValue<Wz_Vector?>();

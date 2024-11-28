@@ -4,7 +4,7 @@ using WzComparerR2.WzLib;
 
 namespace WzJson;
 
-public class IconBitmapConverter : INodeConverter<Bitmap>
+public class IconBitmapConverter : AbstractNodeConverter<Bitmap>
 {
     private readonly string dataName;
     private readonly string iconNodePath;
@@ -17,18 +17,18 @@ public class IconBitmapConverter : INodeConverter<Bitmap>
         this.findNodeFunction = findNodeFunction;
     }
 
-    public IData NewData()
+    public override IData NewData()
     {
         return new BitmapData(dataName);
     }
 
-    public string GetNodeName(Wz_Node node)
+    public override string GetNodeName(Wz_Node node)
     {
         var code = WzUtility.GetNodeCode(node);
         return $"{code}.png";
     }
 
-    public Bitmap? ConvertNode(Wz_Node node, string _)
+    public override Bitmap? ConvertNode(Wz_Node node, string _)
     {
         var iconNode = node.FindNodeByPath(iconNodePath);
         if (iconNode == null) return null;

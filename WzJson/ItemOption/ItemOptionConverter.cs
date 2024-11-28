@@ -3,7 +3,7 @@ using WzComparerR2.WzLib;
 
 namespace WzJson.ItemOption;
 
-public class ItemOptionConverter : INodeConverter<ItemOption>
+public class ItemOptionConverter : AbstractNodeConverter<ItemOption>
 {
     private readonly string dataName;
 
@@ -12,17 +12,22 @@ public class ItemOptionConverter : INodeConverter<ItemOption>
         this.dataName = dataName;
     }
 
-    public IData NewData()
+    public new JsonData Convert(IEnumerable<Wz_Node> nodes)
+    {
+        return (JsonData)base.Convert(nodes);
+    }
+
+    public override IData NewData()
     {
         return new JsonData(dataName);
     }
 
-    public string GetNodeName(Wz_Node node)
+    public override string GetNodeName(Wz_Node node)
     {
         return WzUtility.GetNodeCode(node);
     }
 
-    public ItemOption? ConvertNode(Wz_Node node, string _)
+    public override ItemOption? ConvertNode(Wz_Node node, string _)
     {
         var infoNode = node.FindNodeByPath("info") ?? throw new InvalidDataException("info node not found");
         var levelNode = node.FindNodeByPath("level") ?? throw new InvalidDataException("level node not found");

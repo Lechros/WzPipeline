@@ -3,7 +3,7 @@ using WzComparerR2.WzLib;
 
 namespace WzJson.Gear;
 
-public class GearConverter : INodeConverter<Gear>
+public class GearConverter : AbstractNodeConverter<Gear>
 {
     private readonly string dataName;
     private readonly GlobalFindNodeFunction findNodeFunction;
@@ -16,17 +16,17 @@ public class GearConverter : INodeConverter<Gear>
         this.nameDescData = nameDescData;
     }
 
-    public IData NewData()
+    public override IData NewData()
     {
         return new JsonData(dataName);
     }
 
-    public string GetNodeName(Wz_Node node)
+    public override string GetNodeName(Wz_Node node)
     {
         return WzUtility.GetNodeCode(node);
     }
 
-    public Gear? ConvertNode(Wz_Node node, string name)
+    public override Gear? ConvertNode(Wz_Node node, string name)
     {
         nameDescData.Items.TryGetValue(name, out var nameDesc);
         if (nameDesc?.Name == null) return null;

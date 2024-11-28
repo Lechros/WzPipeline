@@ -2,31 +2,24 @@ using WzComparerR2.WzLib;
 
 namespace WzJson;
 
-public class NameDescConverter : INodeConverter<NameDesc>
+public class NameDescConverter : AbstractNodeConverter<NameDesc>
 {
-    public NameDescData Convert(IEnumerable<Wz_Node> nodes)
+    public new NameDescData Convert(IEnumerable<Wz_Node> nodes)
     {
-        var data = new NameDescData();
-        foreach (var node in nodes)
-        {
-            var name = GetNodeName(node);
-            data.Items[node.Text] = ConvertNode(node, name);
-        }
-
-        return data;
+        return (NameDescData)base.Convert(nodes);
     }
 
-    public IData NewData()
+    public override IData NewData()
     {
         return new NameDescData();
     }
 
-    public string GetNodeName(Wz_Node node)
+    public override string GetNodeName(Wz_Node node)
     {
         return node.Text;
     }
 
-    public NameDesc ConvertNode(Wz_Node node, string _)
+    public override NameDesc ConvertNode(Wz_Node node, string _)
     {
         var name = node.FindNodeByPath("name")?.GetValue<string>();
         var desc = node.FindNodeByPath("desc")?.GetValue<string>();
