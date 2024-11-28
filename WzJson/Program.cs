@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using WzJson;
 using WzJson.Gear;
 using WzJson.Item;
+using WzJson.ItemOption;
 using WzJson.SetItem;
 using WzJson.SimapleGear;
 using WzJson.Skill;
@@ -18,6 +19,7 @@ sw.Restart();
 WzProvider wz = new(@"C:\Nexon\Maple");
 var gearNodeRepository = new GearNodeRepository(wz);
 var stringEqpNodeRepository = new StringEqpNodeRepository(wz);
+var itemOptionNodeRepository = new ItemOptionNodeRepository(wz);
 var exporters = new List<IExporter>
 {
     new JsonFileExporter(outputRoot, JsonSerializer.CreateDefault()),
@@ -93,14 +95,14 @@ List<(string, Action)> options = new()
         {
             Console.WriteLine("Loading item option data...");
             sw.Restart();
-            ItemOptionLoader ol = new(wz);
-            ol.Load();
+            var parser = new ItemOptionParser(itemOptionNodeRepository);
+            var datas = parser.Parse();
             sw.Stop();
             Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
 
             Console.WriteLine("Saving to file...");
             sw.Restart();
-            ol.Save(Path.Join(outputRoot, @"itemoption.json"));
+            ExportDatas(datas);
             sw.Stop();
             Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
         }
