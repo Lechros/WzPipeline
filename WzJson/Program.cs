@@ -20,6 +20,7 @@ WzProvider wz = new(@"C:\Nexon\Maple");
 var gearNodeRepository = new GearNodeRepository(wz);
 var stringEqpNodeRepository = new StringEqpNodeRepository(wz);
 var itemOptionNodeRepository = new ItemOptionNodeRepository(wz);
+var itemNodeRepository = new ItemNodeRepository(wz);
 var exporters = new List<IExporter>
 {
     new JsonFileExporter(outputRoot, JsonSerializer.CreateDefault()),
@@ -158,15 +159,15 @@ List<(string, Action)> options = new()
         {
             Console.WriteLine("Loading item data...");
             sw.Restart();
-            ItemLoader il = new(wz);
-            il.Load();
+            var parser = new ItemParser(itemNodeRepository, wz.FindNodeFunction);
+            var datas = parser.Parse();
             sw.Stop();
             Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
 
             Console.WriteLine("Saving to file...");
             sw.Restart();
-            il.Save(Path.Join(outputRoot, @"itemorigin.json"));
-            il.SaveIcons(Path.Join(outputRoot, @"itemicon\"));
+            ExportDatas(datas);
+            DisposeDatas(datas);
             sw.Stop();
             Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
         }

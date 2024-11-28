@@ -2,7 +2,7 @@ using System.Drawing;
 using WzComparerR2.Common;
 using WzComparerR2.WzLib;
 
-namespace WzJson.Gear;
+namespace WzJson;
 
 public class IconBitmapConverter : INodeConverter<Bitmap>
 {

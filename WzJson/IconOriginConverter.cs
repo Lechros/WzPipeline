@@ -1,6 +1,6 @@
 using WzComparerR2.WzLib;
 
-namespace WzJson.Gear;
+namespace WzJson;
 
 public class IconOriginConverter : INodeConverter<int[]>
 {
