@@ -20,7 +20,7 @@ public class JsonFileExporter : AbstractFileExporter
     protected override void ExportItems(IData data)
     {
         var jsonData = (JsonData)data;
-        var sortedItems = jsonData.Items.ToImmutableSortedDictionary();
+        var sortedItems = jsonData.Items.ToImmutableSortedDictionary(new NaturalStringComparer());
 
         var filename = Path.Join(OutputPath, jsonData.Path);
         EnsureDirectory(filename);

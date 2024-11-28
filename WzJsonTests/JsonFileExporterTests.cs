@@ -77,6 +77,30 @@ public class JsonFileExporterTests : OutputPathTestSupport
         Assert.AreEqual(expectedContent, content);
     }
 
+    [TestMethod]
+    public void Export_NumberKeys_SortedInNaturalOrder()
+    {
+        const string Filename = "test.json";
+        string expectedFilename = Path.Join(OutputPath, Filename);
+        var dict = new Dictionary<string, object>
+        {
+            ["1"] = "1",
+            ["11"] = "11",
+            ["2"] = "2",
+            ["21"] = "21",
+            ["10"] = "10"
+        };
+        var expectedContent = @"{""1"":""1"",""2"":""2"",""10"":""10"",""11"":""11"",""21"":""21""}";
+        
+        var exporter = new JsonFileExporter(OutputPath, jsonSerializer);
+        var data = new JsonData(Filename, dict);
+        
+        exporter.Export(data);
+        
+        var content = File.ReadAllText(expectedFilename);
+        Assert.AreEqual(expectedContent, content);
+    }
+
     private class NonJsonData : IData
     {
         public NonJsonData(string path)
@@ -87,7 +111,7 @@ public class JsonFileExporterTests : OutputPathTestSupport
 
         public string Path { get; }
         public IDictionary<string, object> Items { get; }
-        
+
         public void Add<T>(string name, T item)
         {
             throw new NotImplementedException();
