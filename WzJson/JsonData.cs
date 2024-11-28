@@ -10,4 +10,9 @@ public class JsonData : IData
 
     public string Path { get; }
     public IDictionary<string, object> Items { get; }
+
+    public void Add<T>(string name, T item) where T : notnull
+    {
+        Items.Add(name, item);
+    }
 }

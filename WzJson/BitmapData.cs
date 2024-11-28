@@ -12,4 +12,9 @@ public class BitmapData : IData
 
     public string Path { get; }
     public IDictionary<string, Bitmap> Items { get; }
+    
+    public void Add<T>(string name, T item) where T : notnull
+    {
+        Items.Add(name, item as Bitmap);
+    }
 }

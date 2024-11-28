@@ -29,4 +29,17 @@ public class BitmapDataTests
         Assert.AreEqual(1, data.Items.Count);
         Assert.AreEqual(Value, data.Items[Key]);
     }
+
+    [TestMethod]
+    public void Add_NewKeyValuePair_ItemsContainsPair()
+    {
+        const string Path = "test-data.json";
+        const string Key = "1234567";
+        Bitmap Value = new(1, 1);
+        var data = new BitmapData(Path);
+
+        data.Add(Key, Value);
+
+        Assert.AreEqual(Value, data.Items[Key]);
+    }
 }

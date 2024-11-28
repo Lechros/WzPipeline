@@ -128,5 +128,10 @@ public class PngFilesExporterTests : OutputPathTestSupport
 
         public string Path { get; }
         public IDictionary<string, Bitmap> Items { get; }
+
+        public void Add<T>(string name, T item)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
