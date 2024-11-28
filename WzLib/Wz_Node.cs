@@ -111,23 +111,23 @@ namespace WzComparerR2.WzLib
             return this.Text + " " + (this.value != null ? this.value.ToString() : "-") + " " + this.nodes.Count;
         }
 
-        public Wz_Node FindNodeByPath(string fullPath)
+        public Wz_Node? FindNodeByPath(string fullPath)
         {
             return FindNodeByPath(fullPath, false);
         }
 
-        public Wz_Node FindNodeByPath(string fullPath, bool extractImage)
+        public Wz_Node? FindNodeByPath(string fullPath, bool extractImage)
         {
             string[] patten = fullPath.Split('\\');
             return FindNodeByPath(extractImage, patten);
         }
 
-        public Wz_Node FindNodeByPath(bool extractImage, params string[] fullPath)
+        public Wz_Node? FindNodeByPath(bool extractImage, params string[] fullPath)
         {
             return FindNodeByPath(extractImage, false, fullPath);
         }
 
-        public Wz_Node FindNodeByPath(bool extractImage, bool ignoreCase, params string[] fullPath)
+        public Wz_Node? FindNodeByPath(bool extractImage, bool ignoreCase, params string[] fullPath)
         {
             Wz_Node node = this;
 
@@ -552,9 +552,9 @@ namespace WzComparerR2.WzLib
             return 0;
         }
 
-        public static Wz_Image GetNodeWzImage(this Wz_Node node)
+        public static Wz_Image? GetNodeWzImage(this Wz_Node node)
         {
-            Wz_Image wzImg = null;
+            Wz_Image? wzImg = null;
             while (node != null)
             {
                 if ((wzImg = node.Value as Wz_Image) != null
