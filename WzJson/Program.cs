@@ -21,6 +21,7 @@ var gearNodeRepository = new GearNodeRepository(wz);
 var stringEqpNodeRepository = new StringEqpNodeRepository(wz);
 var itemOptionNodeRepository = new ItemOptionNodeRepository(wz);
 var itemNodeRepository = new ItemNodeRepository(wz);
+var skillNodeRepository = new SkillNodeRepository(wz);
 var exporters = new List<IExporter>
 {
     new JsonFileExporter(outputRoot, JsonSerializer.CreateDefault()),
@@ -193,15 +194,16 @@ List<(string, Action)> options = new()
         {
             Console.WriteLine("Loading skill data...");
             sw.Restart();
-            SkillLoader sl = new(wz);
-            sl.Load();
+            var parser = new SkillParser(skillNodeRepository, wz.FindNodeFunction);
+            var datas = parser.Parse();
             sw.Stop();
             Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
 
             Console.WriteLine("Saving to file...");
             Console.WriteLine(Path.GetFullPath(Path.Join(outputRoot, @"skillicon\")));
             sw.Restart();
-            sl.SaveIcons(Path.Join(outputRoot, @"skillicon\"));
+            ExportDatas(datas);
+            DisposeDatas(datas);
             sw.Stop();
             Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
         }
