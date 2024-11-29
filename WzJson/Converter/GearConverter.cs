@@ -7,7 +7,7 @@ using WzJson.Model;
 
 namespace WzJson.Converter;
 
-public class GearConverter(string dataName, NameDescData nameDescData, GlobalFindNodeFunction findNodeFunction)
+public class GearConverter(string dataName, NameDescData nameDescData, GlobalFindNodeFunction findNode)
     : AbstractNodeConverter<Gear>
 {
     public override IData NewData() => new JsonData(dataName);
@@ -38,7 +38,7 @@ public class GearConverter(string dataName, NameDescData nameDescData, GlobalFin
                 case "iconRaw":
                     if (gear.icon == 0)
                     {
-                        var resolvedIconNode = WzUtility.ResolveLinkedNode(propNode, findNodeFunction);
+                        var resolvedIconNode = WzUtility.ResolveLinkedNode(propNode, findNode);
                         var linkedGearNode = resolvedIconNode.ParentNode.ParentNode;
                         gear.icon = int.Parse(WzUtility.GetNodeCode(linkedGearNode));
                     }

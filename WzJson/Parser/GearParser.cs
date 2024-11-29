@@ -8,7 +8,7 @@ using WzJson.Repository;
 namespace WzJson.Parser;
 
 public class GearParser(
-    GlobalFindNodeFunction findNodeFunction,
+    GlobalFindNodeFunction findNode,
     GearNodeRepository gearNodeRepository,
     StringEqpNodeRepository stringEqpNodeRepository)
     : AbstractWzParser
@@ -32,15 +32,15 @@ public class GearParser(
         var nameDescData = new NameDescConverter().Convert(stringEqpNodeRepository.GetNodes());
         var converters = new List<INodeConverter<object>>();
         if (ParseGearData)
-            converters.Add(new GearConverter(GearDataJsonPath, nameDescData, findNodeFunction));
+            converters.Add(new GearConverter(GearDataJsonPath, nameDescData, findNode));
         if (ParseGearIconOrigin)
             converters.Add(new IconOriginConverter(GearIconOriginJsonPath, @"info\icon\origin"));
         if (ParseGearIconRawOrigin)
             converters.Add(new IconOriginConverter(GearIconRawOriginJsonPath, @"info\iconRaw\origin"));
         if (ParseGearIcon)
-            converters.Add(new IconBitmapConverter(GearIconPath, @"info\icon", findNodeFunction));
+            converters.Add(new IconBitmapConverter(GearIconPath, @"info\icon", findNode));
         if (ParseGearIconRaw)
-            converters.Add(new IconBitmapConverter(GearIconRawPath, @"info\iconRaw", findNodeFunction));
+            converters.Add(new IconBitmapConverter(GearIconRawPath, @"info\iconRaw", findNode));
 
         return converters;
     }

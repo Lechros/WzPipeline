@@ -6,7 +6,7 @@ using WzJson.Repository;
 
 namespace WzJson.Parser;
 
-public class ItemParser(ItemNodeRepository itemNodeRepository, GlobalFindNodeFunction findNodeFunction)
+public class ItemParser(ItemNodeRepository itemNodeRepository, GlobalFindNodeFunction findNode)
     : AbstractWzParser
 {
     public const string ItemIconOriginJsonPath = "item-origin.json";
@@ -17,6 +17,6 @@ public class ItemParser(ItemNodeRepository itemNodeRepository, GlobalFindNodeFun
     protected override IList<INodeConverter<object>> GetConverters() =>
     [
         new IconOriginConverter(ItemIconOriginJsonPath, @"info\icon\origin"),
-        new IconBitmapConverter(ItemIconPath, @"info\icon", findNodeFunction)
+        new IconBitmapConverter(ItemIconPath, @"info\icon", findNode)
     ];
 }
