@@ -2,10 +2,9 @@ using Newtonsoft.Json;
 
 namespace WzJson.Tests;
 
-[TestClass]
 public class ItemOptionTests
 {
-    [TestMethod]
+    [Fact]
     public void JsonSerialize_WithAllProperties_EqualsExpectedJson()
     {
         const string expectedJson =
@@ -26,10 +25,10 @@ public class ItemOptionTests
 
         var json = JsonConvert.SerializeObject(itemOption);
 
-        Assert.AreEqual(expectedJson, json);
+        Assert.Equal(expectedJson, json);
     }
 
-    [TestMethod]
+    [Fact]
     public void JsonSerialize_WithNoProperties_EqualsExpectedJson()
     {
         const string expectedJson = @"{}";
@@ -38,6 +37,6 @@ public class ItemOptionTests
 
         var json = JsonConvert.SerializeObject(itemOption);
 
-        Assert.AreEqual(expectedJson, json);
+        Assert.Equal(expectedJson, json);
     }
 }

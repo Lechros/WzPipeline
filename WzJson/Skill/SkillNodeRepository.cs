@@ -1,4 +1,5 @@
 using WzComparerR2.WzLib;
+using WzJson.Common;
 
 namespace WzJson.Skill;
 

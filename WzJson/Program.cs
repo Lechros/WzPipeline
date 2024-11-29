@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using Newtonsoft.Json;
-using WzJson;
+using WzJson.Common;
+using WzJson.Common.Exporter;
 using WzJson.Gear;
 using WzJson.Item;
 using WzJson.ItemOption;

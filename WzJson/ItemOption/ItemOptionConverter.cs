@@ -1,4 +1,6 @@
 using WzComparerR2.WzLib;
+using WzJson.Common;
+using WzJson.Common.Data;
 
 namespace WzJson.ItemOption;
 
