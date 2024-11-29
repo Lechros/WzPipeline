@@ -4,44 +4,43 @@ using WzJson.Common.Exporter;
 
 namespace WzJson.Common.Tests;
 
-[TestClass]
 public class JsonFileExporterTests : OutputPathTestSupport
 {
     private readonly JsonSerializer jsonSerializer = new();
 
-    [TestMethod]
+    [Fact]
     public void Ctor_FileOutputPath_ThrowsArgumentException()
     {
         var path = Path.Join(OutputPath, "test.json");
 
-        Assert.ThrowsException<ArgumentException>(() => new JsonFileExporter(path, jsonSerializer));
+        Assert.Throws<ArgumentException>(() => new JsonFileExporter(path, jsonSerializer));
     }
 
-    [TestMethod]
+    [Fact]
     public void Ctor_DirectoryOutputPath_DoesNotThrow()
     {
         var exporter = new JsonFileExporter(OutputPath, jsonSerializer);
     }
 
-    [TestMethod]
+    [Fact]
     public void Supports_JsonData_ReturnsTrue()
     {
         var exporter = new JsonFileExporter(OutputPath, jsonSerializer);
         var data = new JsonData("test.json", new Dictionary<string, object>());
 
-        Assert.IsTrue(exporter.Supports(data));
+        Assert.True(exporter.Supports(data));
     }
 
-    [TestMethod]
+    [Fact]
     public void Supports_NonJsonData_ReturnsFalse()
     {
         var exporter = new JsonFileExporter(OutputPath, jsonSerializer);
         var data = new NonJsonData("test.not.json");
 
-        Assert.IsFalse(exporter.Supports(data));
+        Assert.False(exporter.Supports(data));
     }
 
-    [TestMethod]
+    [Fact]
     public void Export_JsonData_SavesSingleJsonFileWithName()
     {
         const string filename = "test.json";
@@ -54,12 +53,12 @@ public class JsonFileExporterTests : OutputPathTestSupport
         var data = new JsonData(filename, new Dictionary<string, object> { [key] = value });
         exporter.Export(data);
 
-        Assert.IsTrue(File.Exists(expectedFilename));
+        Assert.True(File.Exists(expectedFilename));
         var content = File.ReadAllText(expectedFilename);
-        Assert.AreEqual(expectedContent, content);
+        Assert.Equal(expectedContent, content);
     }
 
-    [TestMethod]
+    [Fact]
     public void Export_NestedPathName_SaveSuccesses()
     {
         const string filename = "nested/path/test.json";
@@ -73,12 +72,12 @@ public class JsonFileExporterTests : OutputPathTestSupport
 
         exporter.Export(data);
 
-        Assert.IsTrue(File.Exists(expectedFilename));
+        Assert.True(File.Exists(expectedFilename));
         var content = File.ReadAllText(expectedFilename);
-        Assert.AreEqual(expectedContent, content);
+        Assert.Equal(expectedContent, content);
     }
 
-    [TestMethod]
+    [Fact]
     public void Export_NumberKeys_SortedInNaturalOrder()
     {
         const string filename = "test.json";
@@ -101,7 +100,7 @@ public class JsonFileExporterTests : OutputPathTestSupport
         exporter.Export(data);
 
         var content = File.ReadAllText(expectedFilename);
-        Assert.AreEqual(expectedContent, content);
+        Assert.Equal(expectedContent, content);
     }
 
     private class NonJsonData : IData

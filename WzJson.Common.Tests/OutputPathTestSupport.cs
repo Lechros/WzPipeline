@@ -1,11 +1,10 @@
 namespace WzJson.Common.Tests;
 
-public abstract class OutputPathTestSupport
+public abstract class OutputPathTestSupport : IDisposable
 {
-    protected string OutputPath = "";
+    protected readonly string OutputPath;
 
-    [TestInitialize]
-    public void setup_outputPath()
+    protected OutputPathTestSupport()
     {
         string path;
         do
@@ -16,13 +15,11 @@ public abstract class OutputPathTestSupport
         OutputPath = path + Path.DirectorySeparatorChar;
     }
 
-    [TestCleanup]
-    public void remove_outputPath()
+    public void Dispose()
     {
         // Safety checks to not delete the wrong directory.
-        Assert.AreEqual(OutputPath.Length, 37, "Output path is not GUID but was: " + OutputPath);
-        Assert.IsFalse(OutputPath[..36].Contains(Path.DirectorySeparatorChar),
-            "Output path contains invalid separator: " + OutputPath);
+        Assert.Equal(37, OutputPath.Length);
+        Assert.DoesNotContain(Path.DirectorySeparatorChar.ToString(), OutputPath[..36]);
 
         if (Directory.Exists(OutputPath)) Directory.Delete(OutputPath, true);
     }

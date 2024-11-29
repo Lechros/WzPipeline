@@ -2,18 +2,17 @@ using WzJson.Common.Data;
 
 namespace WzJson.Common.Tests;
 
-[TestClass]
 public class NameDescDataTests
 {
-    [TestMethod]
+    [Fact]
     public void Ctor_Empty_PropertiesReturn()
     {
         var data = new NameDescData();
 
-        Assert.IsInstanceOfType(data.Items, typeof(IDictionary<string, NameDesc>));
+        Assert.IsAssignableFrom<IDictionary<string, NameDesc>>(data.Items);
     }
 
-    [TestMethod]
+    [Fact]
     public void Add_NewKeyValuePair_ItemsContainsPair()
     {
         const string key = "1234567";
@@ -22,6 +21,6 @@ public class NameDescDataTests
 
         data.Add(key, value);
 
-        Assert.AreEqual(value, data.Items[key]);
+        Assert.Equal(value, data.Items[key]);
     }
 }

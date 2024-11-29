@@ -2,29 +2,27 @@ using WzComparerR2.WzLib;
 
 namespace WzJson.Common.Tests;
 
-[TestClass]
 public class WzLibLearningTests
 {
     private const string MaplePath = @"C:\Nexon\Maple";
-    private IWzProvider wzProvider;
+    private readonly IWzProvider wzProvider;
 
-    [TestInitialize]
-    public void SetupWzProvider()
+    public WzLibLearningTests()
     {
         wzProvider = new WzProvider(MaplePath);
     }
 
-    [TestMethod]
+    [Fact]
     public void FindNodeByPath_StringEqpNodeWithExtractParamTrue_ContainsChildNodes()
     {
         const string stringEqpNodePath = @"String\Eqp.img\Eqp";
 
         var stringEqpNode = wzProvider.BaseNode.FindNodeByPath(stringEqpNodePath, true);
 
-        Assert.IsTrue(stringEqpNode.Nodes.Count > 0);
+        Assert.True(stringEqpNode.Nodes.Count > 0);
     }
 
-    [TestMethod]
+    [Fact]
     public void GetNodeWzImage_NotWzImageChildNode_ReturnsNull()
     {
         const string stringEqpNodePath = "String";
@@ -32,10 +30,10 @@ public class WzLibLearningTests
 
         var nodeWzImage = stringEqpNode.GetNodeWzImage();
 
-        Assert.IsNull(nodeWzImage);
+        Assert.Null(nodeWzImage);
     }
 
-    [TestMethod]
+    [Fact]
     public void GetNodeWzImage_WzImageChildNode_DoesNotThrow()
     {
         const string stringEqpNodePath = @"String\Eqp.img\Eqp";
@@ -44,7 +42,7 @@ public class WzLibLearningTests
         var nodeWzImage = stringEqpNode.GetNodeWzImage();
     }
 
-    [TestMethod]
+    [Fact]
     public void GetNodeWzImage_WzImageChildNode_ReturnsFirstParentImgNode()
     {
         const string stringEqpImgPath = @"String\Eqp.img";
@@ -55,10 +53,10 @@ public class WzLibLearningTests
 
         var nodeWzImage = stringEqpNode.GetNodeWzImage();
 
-        Assert.AreEqual(expected, nodeWzImage);
+        Assert.Equal(expected, nodeWzImage);
     }
 
-    [TestMethod]
+    [Fact]
     public void Unextract_WzImageOfNonImageNode_DoesNotThrow()
     {
         const string stringEqpNodePath = @"String\Eqp.img\Eqp";
@@ -68,7 +66,7 @@ public class WzLibLearningTests
         nodeWzImage.Unextract();
     }
 
-    [TestMethod]
+    [Fact]
     public void GetValueAsInt_Int32Value_ReturnsIntValue()
     {
         const string path = @"Character\Weapon\01702565.img\info\cash";
@@ -76,7 +74,7 @@ public class WzLibLearningTests
 
         var value = node.GetValue<int>();
 
-        Assert.IsInstanceOfType(value, typeof(int));
-        Assert.AreEqual(1, value);
+        Assert.IsType<int>(value);
+        Assert.Equal(1, value);
     }
 }

@@ -2,20 +2,19 @@ using WzJson.Common.Data;
 
 namespace WzJson.Common.Tests;
 
-[TestClass]
 public class JsonDataTests
 {
-    [TestMethod]
+    [Fact]
     public void Ctor_Name_PropertiesReturn()
     {
         const string path = "test-data.json";
 
         var data = new JsonData(path);
 
-        Assert.AreEqual(path, data.Path);
+        Assert.Equal(path, data.Path);
     }
 
-    [TestMethod]
+    [Fact]
     public void Ctor_NameAndDictionary_PropertiesReturn()
     {
         const string path = "test-data.json";
@@ -27,12 +26,12 @@ public class JsonDataTests
             [key] = 123
         });
 
-        Assert.AreEqual(path, data.Path);
-        Assert.AreEqual(1, data.Items.Count);
-        Assert.AreEqual(value, data.Items[key]);
+        Assert.Equal(path, data.Path);
+        Assert.Equal(1, data.Items.Count);
+        Assert.Equal(value, data.Items[key]);
     }
 
-    [TestMethod]
+    [Fact]
     public void Add_NewKeyValuePair_ItemsContainsPair()
     {
         const string path = "test-data.json";
@@ -42,6 +41,6 @@ public class JsonDataTests
 
         data.Add(key, value);
 
-        Assert.AreEqual(value, data.Items[key]);
+        Assert.Equal(value, data.Items[key]);
     }
 }

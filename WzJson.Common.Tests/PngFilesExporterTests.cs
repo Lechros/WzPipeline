@@ -4,42 +4,41 @@ using WzJson.Common.Exporter;
 
 namespace WzJson.Common.Tests;
 
-[TestClass]
 public class PngFilesExporterTests : OutputPathTestSupport
 {
-    [TestMethod]
+    [Fact]
     public void Ctor_FileOutputPath_ThrowsArgumentException()
     {
         var path = Path.Join(OutputPath, "test.png");
 
-        Assert.ThrowsException<ArgumentException>(() => new PngFilesExporter(path));
+        Assert.Throws<ArgumentException>(() => new PngFilesExporter(path));
     }
 
-    [TestMethod]
+    [Fact]
     public void Ctor_DirectoryOutputPath_DoesNotThrow()
     {
         var exporter = new PngFilesExporter(OutputPath);
     }
 
-    [TestMethod]
+    [Fact]
     public void Supports_BitmapData_ReturnsTrue()
     {
         var exporter = new PngFilesExporter(OutputPath);
         var data = new BitmapData("test-images", new Dictionary<string, Bitmap>());
 
-        Assert.IsTrue(exporter.Supports(data));
+        Assert.True(exporter.Supports(data));
     }
 
-    [TestMethod]
+    [Fact]
     public void Supports_NonBitmapData_ReturnsFalse()
     {
         var exporter = new PngFilesExporter(OutputPath);
         var data = new NonBitmapData("test-images");
 
-        Assert.IsFalse(exporter.Supports(data));
+        Assert.False(exporter.Supports(data));
     }
 
-    [TestMethod]
+    [Fact]
     public void Export_BitmapData_SavesPngFilesInsideNameFolder()
     {
         const string filename = "test-images";
@@ -60,13 +59,13 @@ public class PngFilesExporterTests : OutputPathTestSupport
 
         exporter.Export(data);
 
-        Assert.IsTrue(Directory.Exists(expectedOutputDirectory));
-        Assert.AreEqual(2, Directory.EnumerateFiles(expectedOutputDirectory).Count());
-        Assert.IsTrue(File.Exists(expectedFile1));
-        Assert.IsTrue(File.Exists(expectedFile2));
+        Assert.True(Directory.Exists(expectedOutputDirectory));
+        Assert.Equal(2, Directory.EnumerateFiles(expectedOutputDirectory).Count());
+        Assert.True(File.Exists(expectedFile1));
+        Assert.True(File.Exists(expectedFile2));
     }
 
-    [TestMethod]
+    [Fact]
     public void Export_NestedPathName_SaveSuccesses()
     {
         const string filename = "/nested/path/test-images";
@@ -87,13 +86,13 @@ public class PngFilesExporterTests : OutputPathTestSupport
 
         exporter.Export(data);
 
-        Assert.IsTrue(Directory.Exists(expectedOutputDirectory));
-        Assert.AreEqual(2, Directory.EnumerateFiles(expectedOutputDirectory).Count());
-        Assert.IsTrue(File.Exists(expectedFile1));
-        Assert.IsTrue(File.Exists(expectedFile2));
+        Assert.True(Directory.Exists(expectedOutputDirectory));
+        Assert.Equal(2, Directory.EnumerateFiles(expectedOutputDirectory).Count());
+        Assert.True(File.Exists(expectedFile1));
+        Assert.True(File.Exists(expectedFile2));
     }
 
-    [TestMethod]
+    [Fact]
     public void Export_NestedPathKey_SaveSuccesses()
     {
         const string filename = "test-images";
@@ -114,9 +113,9 @@ public class PngFilesExporterTests : OutputPathTestSupport
 
         exporter.Export(data);
 
-        Assert.IsTrue(Directory.Exists(expectedOutputDirectory));
-        Assert.IsTrue(File.Exists(expectedFile1));
-        Assert.IsTrue(File.Exists(expectedFile2));
+        Assert.True(Directory.Exists(expectedOutputDirectory));
+        Assert.True(File.Exists(expectedFile1));
+        Assert.True(File.Exists(expectedFile2));
     }
 
     private class NonBitmapData : IData
