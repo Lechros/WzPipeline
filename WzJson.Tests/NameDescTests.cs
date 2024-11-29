@@ -1,6 +1,4 @@
-using WzJson;
-
-namespace WzJsonTests;
+namespace WzJson.Tests;
 
 [TestClass]
 public class NameDescTests

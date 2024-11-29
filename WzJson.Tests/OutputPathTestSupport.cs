@@ -1,4 +1,4 @@
-namespace WzJsonTests;
+namespace WzJson.Tests;
 
 public abstract class OutputPathTestSupport
 {
@@ -24,9 +24,6 @@ public abstract class OutputPathTestSupport
         Assert.IsFalse(OutputPath[..36].Contains(Path.DirectorySeparatorChar),
             "Output path contains invalid separator: " + OutputPath);
 
-        if (Directory.Exists(OutputPath))
-        {
-            Directory.Delete(OutputPath, true);
-        }
+        if (Directory.Exists(OutputPath)) Directory.Delete(OutputPath, true);
     }
 }

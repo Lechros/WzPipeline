@@ -5,7 +5,7 @@ VisualStudioVersion = 17.3.32922.545
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WzJson", "WzJson\WzJson.csproj", "{D32ED182-B271-4CAD-AE90-1D7C59B84E29}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WzJsonTests", "WzJsonTests\WzJsonTests.csproj", "{A1E981BD-B931-4D6E-854D-70AF1944C65A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WzJson.Tests", "WzJson.Tests\WzJson.Tests.csproj", "{A1E981BD-B931-4D6E-854D-70AF1944C65A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WzComparerR2.WzLib", "WzLib\WzComparerR2.WzLib.csproj", "{2C1614F8-482A-423A-A617-318C04D7CE82}"
 EndProject

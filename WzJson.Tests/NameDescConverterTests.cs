@@ -1,6 +1,4 @@
-using WzJson;
-
-namespace WzJsonTests;
+namespace WzJson.Tests;
 
 [TestClass]
 public class NameDescConverterTests
@@ -22,11 +20,11 @@ public class NameDescConverterTests
         var path = @$"String\Eqp.img\Eqp\Cap\{code}";
         var node = wzProvider.BaseNode.FindNodeByPath(path, true);
         var converter = new NameDescConverter();
-        
+
         Assert.IsNotNull(node);
 
         var (name, desc) = converter.ConvertNode(node, string.Empty);
-        
+
         Assert.AreEqual(expectedName, name);
         Assert.AreEqual(expectedDesc, desc);
     }

@@ -1,7 +1,6 @@
 using System.Drawing;
-using WzJson;
 
-namespace WzJsonTests;
+namespace WzJson.Tests;
 
 [TestClass]
 public class PngFilesExporterTests : OutputPathTestSupport
@@ -9,7 +8,7 @@ public class PngFilesExporterTests : OutputPathTestSupport
     [TestMethod]
     public void Ctor_FileOutputPath_ThrowsArgumentException()
     {
-        string path = Path.Join(OutputPath, "test.png");
+        var path = Path.Join(OutputPath, "test.png");
 
         Assert.ThrowsException<ArgumentException>(() => new PngFilesExporter(path));
     }
@@ -41,20 +40,20 @@ public class PngFilesExporterTests : OutputPathTestSupport
     [TestMethod]
     public void Export_BitmapData_SavesPngFilesInsideNameFolder()
     {
-        const string Filename = "test-images";
-        const string Key1 = "test1.png";
-        const string Key2 = "test2.png";
-        using Bitmap Value1 = new(1, 1);
-        using Bitmap Value2 = new(1, 1);
-        string expectedOutputDirectory = Path.Join(OutputPath, Filename);
-        string expectedFile1 = Path.Join(expectedOutputDirectory, Key1);
-        string expectedFile2 = Path.Join(expectedOutputDirectory, Key2);
+        const string filename = "test-images";
+        const string key1 = "test1.png";
+        const string key2 = "test2.png";
+        using var value1 = new Bitmap(1, 1);
+        using var value2 = new Bitmap(1, 1);
+        var expectedOutputDirectory = Path.Join(OutputPath, filename);
+        var expectedFile1 = Path.Join(expectedOutputDirectory, key1);
+        var expectedFile2 = Path.Join(expectedOutputDirectory, key2);
 
         var exporter = new PngFilesExporter(OutputPath);
-        var data = new BitmapData(Filename, new Dictionary<string, Bitmap>
+        var data = new BitmapData(filename, new Dictionary<string, Bitmap>
         {
-            [Key1] = Value1,
-            [Key2] = Value2
+            [key1] = value1,
+            [key2] = value2
         });
 
         exporter.Export(data);
@@ -68,20 +67,20 @@ public class PngFilesExporterTests : OutputPathTestSupport
     [TestMethod]
     public void Export_NestedPathName_SaveSuccesses()
     {
-        const string Filename = "/nested/path/test-images";
-        const string Key1 = "test1.png";
-        const string Key2 = "test2.png";
-        using Bitmap Value1 = new(1, 1);
-        using Bitmap Value2 = new(1, 1);
-        string expectedOutputDirectory = Path.Join(OutputPath, Filename);
-        string expectedFile1 = Path.Join(expectedOutputDirectory, Key1);
-        string expectedFile2 = Path.Join(expectedOutputDirectory, Key2);
+        const string filename = "/nested/path/test-images";
+        const string key1 = "test1.png";
+        const string key2 = "test2.png";
+        using var value1 = new Bitmap(1, 1);
+        using var value2 = new Bitmap(1, 1);
+        var expectedOutputDirectory = Path.Join(OutputPath, filename);
+        var expectedFile1 = Path.Join(expectedOutputDirectory, key1);
+        var expectedFile2 = Path.Join(expectedOutputDirectory, key2);
 
         var exporter = new PngFilesExporter(OutputPath);
-        var data = new BitmapData(Filename, new Dictionary<string, Bitmap>
+        var data = new BitmapData(filename, new Dictionary<string, Bitmap>
         {
-            [Key1] = Value1,
-            [Key2] = Value2
+            [key1] = value1,
+            [key2] = value2
         });
 
         exporter.Export(data);
@@ -95,20 +94,20 @@ public class PngFilesExporterTests : OutputPathTestSupport
     [TestMethod]
     public void Export_NestedPathKey_SaveSuccesses()
     {
-        const string Filename = "test-images";
-        const string Key1 = "/nested/path/test1.png";
-        const string Key2 = "/another/nested/path/test2.png";
-        using Bitmap Value1 = new(1, 1);
-        using Bitmap Value2 = new(1, 1);
-        string expectedOutputDirectory = Path.Join(OutputPath, Filename);
-        string expectedFile1 = Path.Join(expectedOutputDirectory, Key1);
-        string expectedFile2 = Path.Join(expectedOutputDirectory, Key2);
+        const string filename = "test-images";
+        const string key1 = "/nested/path/test1.png";
+        const string key2 = "/another/nested/path/test2.png";
+        using var value1 = new Bitmap(1, 1);
+        using var value2 = new Bitmap(1, 1);
+        var expectedOutputDirectory = Path.Join(OutputPath, filename);
+        var expectedFile1 = Path.Join(expectedOutputDirectory, key1);
+        var expectedFile2 = Path.Join(expectedOutputDirectory, key2);
 
         var exporter = new PngFilesExporter(OutputPath);
-        var data = new BitmapData(Filename, new Dictionary<string, Bitmap>
+        var data = new BitmapData(filename, new Dictionary<string, Bitmap>
         {
-            [Key1] = Value1,
-            [Key2] = Value2
+            [key1] = value1,
+            [key2] = value2
         });
 
         exporter.Export(data);
@@ -129,7 +128,7 @@ public class PngFilesExporterTests : OutputPathTestSupport
         public string Path { get; }
         public IDictionary<string, Bitmap> Items { get; }
 
-        public void Add<T>(string name, T item)
+        public void Add<T>(string name, T item) where T : notnull
         {
             throw new NotImplementedException();
         }

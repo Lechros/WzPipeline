@@ -1,17 +1,16 @@
 using Newtonsoft.Json;
-using WzJson;
 
-namespace WzJsonTests;
+namespace WzJson.Tests;
 
 [TestClass]
 public class JsonFileExporterTests : OutputPathTestSupport
 {
-    private JsonSerializer jsonSerializer = new();
+    private readonly JsonSerializer jsonSerializer = new();
 
     [TestMethod]
     public void Ctor_FileOutputPath_ThrowsArgumentException()
     {
-        string path = Path.Join(OutputPath, "test.json");
+        var path = Path.Join(OutputPath, "test.json");
 
         Assert.ThrowsException<ArgumentException>(() => new JsonFileExporter(path, jsonSerializer));
     }
@@ -43,14 +42,14 @@ public class JsonFileExporterTests : OutputPathTestSupport
     [TestMethod]
     public void Export_JsonData_SavesSingleJsonFileWithName()
     {
-        const string Filename = "test.json";
-        const string Key = "key";
-        const string Value = "value";
-        string expectedFilename = Path.Join(OutputPath, Filename);
-        string expectedContent = @"{""key"":""value""}";
+        const string filename = "test.json";
+        const string key = "key";
+        const string value = "value";
+        var expectedFilename = Path.Join(OutputPath, filename);
+        var expectedContent = @"{""key"":""value""}";
 
         var exporter = new JsonFileExporter(OutputPath, jsonSerializer);
-        var data = new JsonData(Filename, new Dictionary<string, object> { [Key] = Value });
+        var data = new JsonData(filename, new Dictionary<string, object> { [key] = value });
         exporter.Export(data);
 
         Assert.IsTrue(File.Exists(expectedFilename));
@@ -61,14 +60,14 @@ public class JsonFileExporterTests : OutputPathTestSupport
     [TestMethod]
     public void Export_NestedPathName_SaveSuccesses()
     {
-        const string Filename = "nested/path/test.json";
-        const string Key = "key";
-        const string Value = "value";
-        string expectedFilename = Path.Join(OutputPath, Filename);
-        string expectedContent = @"{""key"":""value""}";
+        const string filename = "nested/path/test.json";
+        const string key = "key";
+        const string value = "value";
+        var expectedFilename = Path.Join(OutputPath, filename);
+        var expectedContent = @"{""key"":""value""}";
 
         var exporter = new JsonFileExporter(OutputPath, jsonSerializer);
-        var data = new JsonData(Filename, new Dictionary<string, object> { [Key] = Value });
+        var data = new JsonData(filename, new Dictionary<string, object> { [key] = value });
 
         exporter.Export(data);
 
@@ -80,8 +79,8 @@ public class JsonFileExporterTests : OutputPathTestSupport
     [TestMethod]
     public void Export_NumberKeys_SortedInNaturalOrder()
     {
-        const string Filename = "test.json";
-        string expectedFilename = Path.Join(OutputPath, Filename);
+        const string filename = "test.json";
+        var expectedFilename = Path.Join(OutputPath, filename);
         var dict = new Dictionary<string, object>
         {
             ["1"] = "1",
@@ -89,13 +88,13 @@ public class JsonFileExporterTests : OutputPathTestSupport
             ["2"] = "2",
             ["21"] = "21",
             ["10"] = "10",
-            ["-1"] = "-1",
+            ["-1"] = "-1"
         };
         var expectedContent =
             @"{""-1"":""-1"",""1"":""1"",""2"":""2"",""10"":""10"",""11"":""11"",""21"":""21""}";
 
         var exporter = new JsonFileExporter(OutputPath, jsonSerializer);
-        var data = new JsonData(Filename, dict);
+        var data = new JsonData(filename, dict);
 
         exporter.Export(data);
 
@@ -114,7 +113,7 @@ public class JsonFileExporterTests : OutputPathTestSupport
         public string Path { get; }
         public IDictionary<string, object> Items { get; }
 
-        public void Add<T>(string name, T item)
+        public void Add<T>(string name, T item) where T : notnull
         {
             throw new NotImplementedException();
         }

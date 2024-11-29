@@ -1,7 +1,6 @@
 using WzComparerR2.WzLib;
-using WzJson;
 
-namespace WzJsonTests;
+namespace WzJson.Tests;
 
 [TestClass]
 public class WzProviderTests

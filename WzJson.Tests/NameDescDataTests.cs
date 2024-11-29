@@ -1,6 +1,4 @@
-using WzJson;
-
-namespace WzJsonTests;
+namespace WzJson.Tests;
 
 [TestClass]
 public class NameDescDataTests
@@ -16,12 +14,12 @@ public class NameDescDataTests
     [TestMethod]
     public void Add_NewKeyValuePair_ItemsContainsPair()
     {
-        const string Key = "1234567";
+        const string key = "1234567";
         var value = new NameDesc("name", "desc");
         var data = new NameDescData();
 
-        data.Add(Key, value);
+        data.Add(key, value);
 
-        Assert.AreEqual(value, data.Items[Key]);
+        Assert.AreEqual(value, data.Items[key]);
     }
 }
