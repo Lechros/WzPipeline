@@ -39,15 +39,15 @@ public class GearParser : AbstractWzParser
         var nameDescData = new NameDescConverter().Convert(stringEqpNodeRepository.GetNodes());
         var converters = new List<INodeConverter<object>>();
         if (ParseGearData)
-            converters.Add(new GearConverter(GearDataJsonPath, nameDescData, wzProvider.FindNodeFunction));
+            converters.Add(new GearConverter(GearDataJsonPath, nameDescData, wzProvider.FindNode));
         if (ParseGearIconOrigin)
             converters.Add(new IconOriginConverter(GearIconOriginJsonPath, @"info\icon\origin"));
         if (ParseGearIconRawOrigin)
             converters.Add(new IconOriginConverter(GearIconRawOriginJsonPath, @"info\iconRaw\origin"));
         if (ParseGearIcon)
-            converters.Add(new IconBitmapConverter(GearIconPath, @"info\icon", wzProvider.FindNodeFunction));
+            converters.Add(new IconBitmapConverter(GearIconPath, @"info\icon", wzProvider.FindNode));
         if (ParseGearIconRaw)
-            converters.Add(new IconBitmapConverter(GearIconRawPath, @"info\iconRaw", wzProvider.FindNodeFunction));
+            converters.Add(new IconBitmapConverter(GearIconRawPath, @"info\iconRaw", wzProvider.FindNode));
 
         return converters;
     }

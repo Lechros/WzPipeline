@@ -161,7 +161,7 @@ List<(string, Action)> options = new()
         {
             Console.WriteLine("Loading item data...");
             sw.Restart();
-            var parser = new ItemParser(itemNodeRepository, wz.FindNodeFunction);
+            var parser = new ItemParser(itemNodeRepository, wz.FindNode);
             var datas = parser.Parse();
             sw.Stop();
             Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
@@ -178,7 +178,7 @@ List<(string, Action)> options = new()
         {
             Console.WriteLine("Loading skill data...");
             sw.Restart();
-            var parser = new SkillParser(skillNodeRepository, wz.FindNodeFunction);
+            var parser = new SkillParser(skillNodeRepository, wz.FindNode);
             var datas = parser.Parse();
             sw.Stop();
             Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");

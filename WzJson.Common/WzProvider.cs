@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Text;
-using WzComparerR2.Common;
 using WzComparerR2.WzLib;
 
 namespace WzJson.Common;
@@ -36,8 +35,6 @@ public class WzProvider : IWzProvider
         }
     }
 
-    public GlobalFindNodeFunction FindNodeFunction => FindNode;
-
     [MemberNotNull(nameof(openedWz))]
     private void EnsureLoaded()
     {
@@ -66,7 +63,7 @@ public class WzProvider : IWzProvider
         openedWz = wz;
     }
 
-    private Wz_Node? FindNode(string fullPath)
+    public Wz_Node? FindNode(string fullPath)
     {
         EnsureLoaded();
 
