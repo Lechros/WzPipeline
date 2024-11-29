@@ -5,7 +5,6 @@ using WzJson.Gear;
 using WzJson.Item;
 using WzJson.ItemOption;
 using WzJson.SetItem;
-using WzJson.SimapleGear;
 using WzJson.Skill;
 using WzJson.Soul;
 
@@ -170,22 +169,6 @@ List<(string, Action)> options = new()
             sw.Restart();
             ExportDatas(datas);
             DisposeDatas(datas);
-            sw.Stop();
-            Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
-        }
-    ),
-    ("[simaple] export gear data", () =>
-        {
-            Console.WriteLine("Loading gear data...");
-            sw.Restart();
-            SimapleGearLoader gl = new(wz);
-            gl.Load();
-            sw.Stop();
-            Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
-
-            Console.WriteLine("Saving to file...");
-            sw.Restart();
-            gl.Save(Path.Join(outputRoot, @"simaple-gear.json"));
             sw.Stop();
             Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
         }

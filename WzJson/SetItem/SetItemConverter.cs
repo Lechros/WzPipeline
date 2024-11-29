@@ -1,5 +1,5 @@
 using WzComparerR2.WzLib;
-using WzJson.SimapleGear;
+using WzJson.Gear;
 
 namespace WzJson.SetItem;
 
