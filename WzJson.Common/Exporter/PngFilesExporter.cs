@@ -4,12 +4,8 @@ using BitmapData = WzJson.Common.Data.BitmapData;
 
 namespace WzJson.Common.Exporter;
 
-public class PngFilesExporter : AbstractFileExporter
+public class PngFilesExporter(string outputPath) : AbstractFileExporter(outputPath)
 {
-    public PngFilesExporter(string outputPath) : base(outputPath)
-    {
-    }
-
     public override bool Supports(IData data)
     {
         return data is BitmapData;

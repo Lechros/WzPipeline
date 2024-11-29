@@ -5,19 +5,9 @@ using WzJson.Common.Data;
 
 namespace WzJson.Common.Converter;
 
-public class IconBitmapConverter : AbstractNodeConverter<Bitmap>
+public class IconBitmapConverter(string dataName, string iconNodePath, GlobalFindNodeFunction findNodeFunction)
+    : AbstractNodeConverter<Bitmap>
 {
-    private readonly string dataName;
-    private readonly string iconNodePath;
-    private readonly GlobalFindNodeFunction findNodeFunction;
-
-    public IconBitmapConverter(string dataName, string iconNodePath, GlobalFindNodeFunction findNodeFunction)
-    {
-        this.dataName = dataName;
-        this.iconNodePath = iconNodePath;
-        this.findNodeFunction = findNodeFunction;
-    }
-
     public override IData NewData() => new BitmapData(dataName);
 
     public override string GetNodeKey(Wz_Node node) => $"{WzUtility.GetNodeCode(node)}.png";
