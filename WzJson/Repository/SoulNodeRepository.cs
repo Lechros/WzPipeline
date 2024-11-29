@@ -3,31 +3,18 @@ using WzJson.Common;
 
 namespace WzJson.Repository;
 
-public class SoulNodeRepository : INodeRepository
+public class SoulNodeRepository(IWzProvider wzProvider) : AbstractNodeRepository(wzProvider)
 {
-    private const string SoulNodePath = @"Item\Consume\0259.img";
+    protected override string RootNodePath => @"Item\Consume\0259.img";
 
-    private readonly IWzProvider wzProvider;
-
-    public SoulNodeRepository(IWzProvider wzProvider)
+    public override IEnumerable<Wz_Node> GetNodes()
     {
-        this.wzProvider = wzProvider;
-    }
-
-    public IEnumerable<Wz_Node> GetNodes()
-    {
-        var soulRootNode = GetSoulNode();
-        foreach (var soulNode in soulRootNode.Nodes)
+        var rootNode = GetRootNode();
+        foreach (var soulNode in rootNode.Nodes)
         {
             yield return soulNode;
         }
 
-        soulRootNode.GetNodeWzImage()?.Unextract();
-    }
-
-    private Wz_Node GetSoulNode()
-    {
-        return wzProvider.BaseNode.FindNodeByPath(SoulNodePath, true)
-               ?? throw new ApplicationException("Cannot find Soul node at: " + SoulNodePath);
+        rootNode.GetNodeWzImage()?.Unextract();
     }
 }

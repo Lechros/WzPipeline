@@ -3,22 +3,13 @@ using WzJson.Common;
 
 namespace WzJson.Repository;
 
-public class SkillNodeRepository : INodeRepository
+public class SkillNodeRepository(IWzProvider wzProvider) : AbstractNodeRepository(wzProvider)
 {
-    private const string SkillNodePath = "Skill";
+    protected override string RootNodePath => "Skill";
 
-    private readonly IWzProvider wzProvider;
-    private readonly Wz_Node skillRootNode;
-
-    public SkillNodeRepository(IWzProvider wzProvider)
+    public override IEnumerable<Wz_Node> GetNodes()
     {
-        this.wzProvider = wzProvider;
-        skillRootNode = GetSkillNode();
-    }
-
-    public IEnumerable<Wz_Node> GetNodes()
-    {
-        foreach (var jobNode in skillRootNode.Nodes)
+        foreach (var jobNode in GetRootNode().Nodes)
         {
             if (!IsJobSkillNode(jobNode)) continue;
 
@@ -38,11 +29,5 @@ public class SkillNodeRepository : INodeRepository
     private bool IsJobSkillNode(Wz_Node node)
     {
         return char.IsDigit(node.Text[0]);
-    }
-
-    private Wz_Node GetSkillNode()
-    {
-        return wzProvider.BaseNode.FindNodeByPath(SkillNodePath)
-               ?? throw new ApplicationException("Cannot find Skill node at: " + SkillNodePath);
     }
 }

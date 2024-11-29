@@ -3,31 +3,18 @@ using WzJson.Common;
 
 namespace WzJson.Repository;
 
-public class ItemOptionNodeRepository : INodeRepository
+public class ItemOptionNodeRepository(IWzProvider wzProvider) : AbstractNodeRepository(wzProvider)
 {
-    private const string ItemOptionNodePath = @"Item\ItemOption.img";
+    protected override string RootNodePath => @"Item\ItemOption.img";
 
-    private readonly IWzProvider wzProvider;
-
-    public ItemOptionNodeRepository(IWzProvider wzProvider)
+    public override IEnumerable<Wz_Node> GetNodes()
     {
-        this.wzProvider = wzProvider;
-    }
-
-    public IEnumerable<Wz_Node> GetNodes()
-    {
-        var itemOptionNode = GetItemOptionNode();
-        foreach (var optionNode in itemOptionNode.Nodes)
+        var rootNode = GetRootNode();
+        foreach (var optionNode in rootNode.Nodes)
         {
             yield return optionNode;
         }
 
-        itemOptionNode.GetNodeWzImage()?.Unextract();
-    }
-
-    private Wz_Node GetItemOptionNode()
-    {
-        return wzProvider.BaseNode.FindNodeByPath(ItemOptionNodePath, true)
-               ?? throw new ApplicationException("Cannot find String Eqp node at: " + ItemOptionNodePath);
+        rootNode.GetNodeWzImage()?.Unextract();
     }
 }

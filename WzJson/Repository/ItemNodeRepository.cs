@@ -3,29 +3,18 @@ using WzJson.Common;
 
 namespace WzJson.Repository;
 
-public class ItemNodeRepository : INodeRepository
+public class ItemNodeRepository(IWzProvider wzProvider) : AbstractNodeRepository(wzProvider)
 {
-    private const string ItemNodePath = "Item";
+    private static readonly HashSet<string> PartNames = ["Cash", "Consume", "Etc"];
 
-    private static readonly ISet<string> PartNames = new HashSet<string>
+    protected override string RootNodePath => "Item";
+
+    public override IEnumerable<Wz_Node> GetNodes()
     {
-        "Cash", "Consume", "Etc"
-    };
-
-    private readonly IWzProvider wzProvider;
-    private readonly Wz_Node itemRootNode;
-
-    public ItemNodeRepository(IWzProvider wzProvider)
-    {
-        this.wzProvider = wzProvider;
-        itemRootNode = GetItemNode();
-    }
-
-    public IEnumerable<Wz_Node> GetNodes()
-    {
-        foreach (var partNode in itemRootNode.Nodes)
+        foreach (var partNode in GetRootNode().Nodes)
         {
             if (!PartNames.Contains(partNode.Text)) continue;
+            
             foreach (var itemListNode in partNode.Nodes)
             {
                 var wzImage = itemListNode.GetNodeWzImage();
@@ -39,11 +28,5 @@ public class ItemNodeRepository : INodeRepository
                 wzImage.Unextract();
             }
         }
-    }
-
-    private Wz_Node GetItemNode()
-    {
-        return wzProvider.BaseNode.FindNodeByPath(ItemNodePath)
-               ?? throw new ApplicationException("Cannot find Item node at: " + ItemNodePath);
     }
 }

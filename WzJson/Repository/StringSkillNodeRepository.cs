@@ -3,31 +3,18 @@ using WzJson.Common;
 
 namespace WzJson.Repository;
 
-public class StringSkillNodeRepository : INodeRepository
+public class StringSkillNodeRepository(IWzProvider wzProvider) : AbstractNodeRepository(wzProvider)
 {
-    private const string StringSkillNode = @"String\Skill.img";
+    protected override string RootNodePath => @"String\Skill.img";
 
-    private readonly IWzProvider wzProvider;
-
-    public StringSkillNodeRepository(IWzProvider wzProvider)
+    public override IEnumerable<Wz_Node> GetNodes()
     {
-        this.wzProvider = wzProvider;
-    }
-
-    public IEnumerable<Wz_Node> GetNodes()
-    {
-        var stringSkillNode = GetStringSkillNode();
-        foreach (var skillNode in stringSkillNode.Nodes)
+        var rootNode = GetRootNode();
+        foreach (var skillNode in rootNode.Nodes)
         {
             yield return skillNode;
         }
 
-        stringSkillNode.GetNodeWzImage()?.Unextract();
-    }
-
-    private Wz_Node GetStringSkillNode()
-    {
-        return wzProvider.BaseNode.FindNodeByPath(StringSkillNode, true)
-               ?? throw new ApplicationException("Cannot find String Skill node at: " + StringSkillNode);
+        rootNode.GetNodeWzImage()?.Unextract();
     }
 }

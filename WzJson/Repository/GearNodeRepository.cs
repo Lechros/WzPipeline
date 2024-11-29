@@ -3,31 +3,24 @@ using WzJson.Common;
 
 namespace WzJson.Repository;
 
-public class GearNodeRepository : INodeRepository
+public class GearNodeRepository(IWzProvider wzProvider) : AbstractNodeRepository(wzProvider)
 {
-    private const string CharacterNodePath = "Character";
     private const string CanvasNodeText = "_Canvas";
 
-    private static readonly ISet<string> PartNames = new HashSet<string>
-    {
+    private static readonly HashSet<string> PartNames =
+    [
         "Accessory", "Android", "Cap", "Cape", "Coat", "Dragon", "Glove", "Longcoat", "Mechanic", "Pants", "Ring",
         "Shield", "Shoes", "Weapon"
-    };
+    ];
 
-    private readonly IWzProvider wzProvider;
-    private readonly Wz_Node characterNode;
+    protected override string RootNodePath => "Character";
 
-    public GearNodeRepository(IWzProvider wzProvider)
+    public override IEnumerable<Wz_Node> GetNodes()
     {
-        this.wzProvider = wzProvider;
-        characterNode = GetCharacterNode();
-    }
-
-    public IEnumerable<Wz_Node> GetNodes()
-    {
-        foreach (var partNode in characterNode.Nodes)
+        foreach (var partNode in GetRootNode().Nodes)
         {
             if (!PartNames.Contains(partNode.Text)) continue;
+            
             foreach (var gearNode in partNode.Nodes)
             {
                 if (gearNode.Text == CanvasNodeText) continue;
@@ -40,11 +33,5 @@ public class GearNodeRepository : INodeRepository
                 wzImage.Unextract();
             }
         }
-    }
-
-    private Wz_Node GetCharacterNode()
-    {
-        return wzProvider.BaseNode.FindNodeByPath(CharacterNodePath)
-               ?? throw new ApplicationException("Cannot find Character node at: " + CharacterNodePath);
     }
 }

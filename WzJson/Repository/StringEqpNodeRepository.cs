@@ -3,41 +3,29 @@ using WzJson.Common;
 
 namespace WzJson.Repository;
 
-public class StringEqpNodeRepository : INodeRepository
+public class StringEqpNodeRepository(IWzProvider wzProvider) : AbstractNodeRepository(wzProvider)
 {
-    private const string StringEqpNodePath = @"String\Eqp.img\Eqp";
-
-    private static readonly ISet<string> PartNames = new HashSet<string>
-    {
+    private static readonly HashSet<string> PartNames =
+    [
         "Accessory", "Android", "Cap", "Cape", "Coat", "Dragon", "Glove", "Longcoat", "Mechanic", "Pants", "Ring",
         "Shield", "Shoes", "Weapon"
-    };
+    ];
 
-    private readonly IWzProvider wzProvider;
+    protected override string RootNodePath => @"String\Eqp.img\Eqp";
 
-    public StringEqpNodeRepository(IWzProvider wzProvider)
+    public override IEnumerable<Wz_Node> GetNodes()
     {
-        this.wzProvider = wzProvider;
-    }
-
-    public IEnumerable<Wz_Node> GetNodes()
-    {
-        var stringEqpNode = GetStringEqpNode();
-        foreach (var partNode in stringEqpNode.Nodes)
+        var rootNode = GetRootNode();
+        foreach (var partNode in rootNode.Nodes)
         {
             if (!PartNames.Contains(partNode.Text)) continue;
+            
             foreach (var gearNode in partNode.Nodes)
             {
                 yield return gearNode;
             }
         }
 
-        stringEqpNode.GetNodeWzImage()?.Unextract();
-    }
-
-    private Wz_Node GetStringEqpNode()
-    {
-        return wzProvider.BaseNode.FindNodeByPath(StringEqpNodePath, true)
-               ?? throw new ApplicationException("Cannot find String Eqp node at: " + StringEqpNodePath);
+        rootNode.GetNodeWzImage()?.Unextract();
     }
 }

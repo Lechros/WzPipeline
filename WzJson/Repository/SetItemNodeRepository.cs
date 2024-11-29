@@ -3,31 +3,18 @@ using WzJson.Common;
 
 namespace WzJson.Repository;
 
-public class SetItemNodeRepository : INodeRepository
+public class SetItemNodeRepository(IWzProvider wzProvider) : AbstractNodeRepository(wzProvider)
 {
-    private const string SetItemInfoNodePath = @"Etc\SetItemInfo.img";
-
-    private readonly IWzProvider wzProvider;
-
-    public SetItemNodeRepository(IWzProvider wzProvider)
+    protected override string RootNodePath => @"Etc\SetItemInfo.img";
+    
+    public override IEnumerable<Wz_Node> GetNodes()
     {
-        this.wzProvider = wzProvider;
-    }
-
-    public IEnumerable<Wz_Node> GetNodes()
-    {
-        var setItemInfoNode = GetSetItemInfoNode();
-        foreach (var node in setItemInfoNode.Nodes)
+        var rootNode = GetRootNode();
+        foreach (var node in rootNode.Nodes)
         {
             yield return node;
         }
 
-        setItemInfoNode.GetNodeWzImage()?.Unextract();
-    }
-
-    private Wz_Node GetSetItemInfoNode()
-    {
-        return wzProvider.BaseNode.FindNodeByPath(SetItemInfoNodePath, true)
-               ?? throw new ApplicationException("Cannot find SetItemInfo node at: " + SetItemInfoNodePath);
+        rootNode.GetNodeWzImage()?.Unextract();
     }
 }
