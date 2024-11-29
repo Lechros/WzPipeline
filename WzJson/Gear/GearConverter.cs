@@ -16,15 +16,9 @@ public class GearConverter : AbstractNodeConverter<Gear>
         this.nameDescData = nameDescData;
     }
 
-    public override IData NewData()
-    {
-        return new JsonData(dataName);
-    }
+    public override IData NewData() => new JsonData(dataName);
 
-    public override string GetNodeName(Wz_Node node)
-    {
-        return WzUtility.GetNodeCode(node);
-    }
+    public override string GetNodeName(Wz_Node node) => WzUtility.GetNodeCode(node);
 
     public override Gear? ConvertNode(Wz_Node node, string name)
     {

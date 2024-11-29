@@ -28,10 +28,7 @@ public class GearParser : AbstractWzParser
     public bool ParseGearIcon { get; set; }
     public bool ParseGearIconRaw { get; set; }
 
-    protected override IEnumerable<Wz_Node> GetNodes()
-    {
-        return gearNodeRepository.GetNodes();
-    }
+    protected override IEnumerable<Wz_Node> GetNodes() => gearNodeRepository.GetNodes();
 
     protected override IList<INodeConverter<object>> GetConverters()
     {

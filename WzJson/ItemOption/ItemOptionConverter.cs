@@ -11,20 +11,11 @@ public class ItemOptionConverter : AbstractNodeConverter<ItemOption>
         this.dataName = dataName;
     }
 
-    public new JsonData Convert(IEnumerable<Wz_Node> nodes)
-    {
-        return (JsonData)base.Convert(nodes);
-    }
+    public new JsonData Convert(IEnumerable<Wz_Node> nodes) => (JsonData)base.Convert(nodes);
 
-    public override IData NewData()
-    {
-        return new JsonData(dataName);
-    }
+    public override IData NewData() => new JsonData(dataName);
 
-    public override string GetNodeName(Wz_Node node)
-    {
-        return WzUtility.GetNodeCode(node);
-    }
+    public override string GetNodeName(Wz_Node node) => WzUtility.GetNodeCode(node);
 
     public override ItemOption? ConvertNode(Wz_Node node, string _)
     {

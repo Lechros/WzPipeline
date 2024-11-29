@@ -16,10 +16,7 @@ public class SetItemParser : AbstractWzParser
         this.itemOptionNodeRepository = itemOptionNodeRepository;
     }
 
-    protected override IEnumerable<Wz_Node> GetNodes()
-    {
-        return setItemNodeRepository.GetNodes();
-    }
+    protected override IEnumerable<Wz_Node> GetNodes() => setItemNodeRepository.GetNodes();
 
     protected override IList<INodeConverter<object>> GetConverters()
     {

@@ -14,15 +14,9 @@ public class SetItemConverter : AbstractNodeConverter<SetItem>
         this.itemOptionData = itemOptionData;
     }
 
-    public override IData NewData()
-    {
-        return new JsonData(dataName);
-    }
+    public override IData NewData() => new JsonData(dataName);
 
-    public override string GetNodeName(Wz_Node node)
-    {
-        return WzUtility.GetNodeCode(node);
-    }
+    public override string GetNodeName(Wz_Node node) => WzUtility.GetNodeCode(node);
 
     public override SetItem? ConvertNode(Wz_Node node, string _)
     {

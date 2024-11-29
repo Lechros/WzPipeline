@@ -17,16 +17,9 @@ public class IconBitmapConverter : AbstractNodeConverter<Bitmap>
         this.findNodeFunction = findNodeFunction;
     }
 
-    public override IData NewData()
-    {
-        return new BitmapData(dataName);
-    }
+    public override IData NewData() => new BitmapData(dataName);
 
-    public override string GetNodeName(Wz_Node node)
-    {
-        var code = WzUtility.GetNodeCode(node);
-        return $"{code}.png";
-    }
+    public override string GetNodeName(Wz_Node node) => $"{WzUtility.GetNodeCode(node)}.png";
 
     public override Bitmap? ConvertNode(Wz_Node node, string _)
     {

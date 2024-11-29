@@ -13,10 +13,7 @@ public class ItemOptionParser : AbstractWzParser
         this.itemOptionNodeRepository = itemOptionNodeRepository;
     }
 
-    protected override IEnumerable<Wz_Node> GetNodes()
-    {
-        return itemOptionNodeRepository.GetNodes();
-    }
+    protected override IEnumerable<Wz_Node> GetNodes() => itemOptionNodeRepository.GetNodes();
 
     protected override IList<INodeConverter<object>> GetConverters()
     {

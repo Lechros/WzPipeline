@@ -17,10 +17,7 @@ public class ItemParser : AbstractWzParser
         this.findNodeFunction = findNodeFunction;
     }
 
-    protected override IEnumerable<Wz_Node> GetNodes()
-    {
-        return itemNodeRepository.GetNodes();
-    }
+    protected override IEnumerable<Wz_Node> GetNodes() => itemNodeRepository.GetNodes();
 
     protected override IList<INodeConverter<object>> GetConverters()
     {

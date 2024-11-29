@@ -9,15 +9,9 @@ public class NameDescConverter : AbstractNodeConverter<NameDesc>
         return (NameDescData)base.Convert(nodes);
     }
 
-    public override IData NewData()
-    {
-        return new NameDescData();
-    }
+    public override IData NewData() => new NameDescData();
 
-    public override string GetNodeName(Wz_Node node)
-    {
-        return node.Text;
-    }
+    public override string GetNodeName(Wz_Node node) => node.Text;
 
     public override NameDesc ConvertNode(Wz_Node node, string _)
     {
