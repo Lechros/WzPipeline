@@ -127,14 +127,15 @@ List<(string, Action)> options = new()
         {
             Console.WriteLine("Loading set item data...");
             sw.Restart();
-            SetItemLoader sl = new(wz);
-            sl.Load();
+            var parser = new SetItemParser(new SetItemNodeRepository(wz), itemOptionNodeRepository);
+            var datas = parser.Parse();
             sw.Stop();
             Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
 
             Console.WriteLine("Saving to file...");
             sw.Restart();
-            sl.Save(Path.Join(outputRoot, @"setitem.json"));
+            ExportDatas(datas);
+            DisposeDatas(datas);
             sw.Stop();
             Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
         }

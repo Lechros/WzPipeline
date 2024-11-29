@@ -1,29 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+﻿using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
-namespace WzJson.SetItem
+namespace WzJson.SetItem;
+
+public class SetItem
 {
-    internal class SetItem
-    {
-        [JsonPropertyOrder(1)]
-        public string name = "";
-        [JsonPropertyOrder(2)]
-        public List<int> itemIDs = new();
-        [JsonPropertyOrder(3)]
-        public SortedDictionary<string, Dictionary<string, int>> effects = new();
-        [JsonPropertyOrder(4)]
-        public bool jokerPossible;
-        [JsonPropertyOrder(5)]
-        public bool zeroWeaponJokerPossible;
+    [JsonProperty(Order = 1, PropertyName = "name")]
+    public string? Name { get; set; }
 
-        public bool ShouldSerializename() => !string.IsNullOrEmpty(name);
-        public bool ShouldSerializeitems() => itemIDs.Count > 0;
-        public bool ShouldSerializeeffect() => effects.Count > 0;
-        public bool ShouldSerializejokerPossible() => jokerPossible != false;
-        public bool ShouldSerializezeroWeaponJokerPossible() => zeroWeaponJokerPossible != false;
-    }
+    [JsonProperty(Order = 2, PropertyName = "itemIds")]
+    public List<int> ItemIds { get; set; } = new();
+
+    [JsonProperty(Order = 3, PropertyName = "effects")]
+    public SortedDictionary<int, Dictionary<string, int>> Effects { get; set; } = new();
+
+    [JsonProperty(Order = 4, PropertyName = "jokerPossible")]
+    public bool JokerPossible { get; set; }
+
+    [JsonProperty(Order = 5, PropertyName = "zeroWeaponJokerPossible")]
+    public bool ZeroWeaponJokerPossible { get; set; }
+
+    public bool ShouldSerializeName() => Name != null;
+    public bool ShouldSerializeItems() => ItemIds.Count > 0;
+    public bool ShouldSerializeEffect() => Effects.Count > 0;
+    public bool ShouldSerializeJokerPossible() => JokerPossible;
+    public bool ShouldSerializeZeroWeaponJokerPossible() => ZeroWeaponJokerPossible;
 }
