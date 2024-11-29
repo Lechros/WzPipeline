@@ -2,12 +2,8 @@
 using Newtonsoft.Json;
 using WzJson.Common;
 using WzJson.Common.Exporter;
-using WzJson.Gear;
-using WzJson.Item;
-using WzJson.ItemOption;
-using WzJson.SetItem;
-using WzJson.Skill;
-using WzJson.Soul;
+using WzJson.Parser;
+using WzJson.Repository;
 
 string outputRoot = Path.Join(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\output\");
 

@@ -1,11 +1,11 @@
 using WzComparerR2.WzLib;
 using WzJson.Common;
 using WzJson.Common.Data;
-using WzJson.Gear;
+using WzJson.Domain;
 
-namespace WzJson.SetItem;
+namespace WzJson.Converter;
 
-public class SetItemConverter : AbstractNodeConverter<SetItem>
+public class SetItemConverter : AbstractNodeConverter<Model.SetItem>
 {
     private readonly string dataName;
     private readonly JsonData itemOptionData;
@@ -20,9 +20,9 @@ public class SetItemConverter : AbstractNodeConverter<SetItem>
 
     public override string GetNodeName(Wz_Node node) => WzUtility.GetNodeCode(node);
 
-    public override SetItem? ConvertNode(Wz_Node node, string _)
+    public override Model.SetItem? ConvertNode(Wz_Node node, string _)
     {
-        var setItem = new SetItem();
+        var setItem = new Model.SetItem();
         foreach (var subNode in node.Nodes)
         {
             switch (subNode.Text)
@@ -108,7 +108,7 @@ public class SetItemConverter : AbstractNodeConverter<SetItem>
 
     private (string, int) ConvertToProp(int option, int level)
     {
-        var itemOption = (ItemOption.ItemOption)itemOptionData.Items[option.ToString()];
+        var itemOption = (Model.ItemOption)itemOptionData.Items[option.ToString()];
         var props = itemOption.Level[level];
         switch (props.Count)
         {

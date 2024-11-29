@@ -2,9 +2,9 @@ using WzComparerR2.WzLib;
 using WzJson.Common;
 using WzJson.Common.Data;
 
-namespace WzJson.ItemOption;
+namespace WzJson.Converter;
 
-public class ItemOptionConverter : AbstractNodeConverter<ItemOption>
+public class ItemOptionConverter : AbstractNodeConverter<Model.ItemOption>
 {
     private readonly string dataName;
 
@@ -19,12 +19,12 @@ public class ItemOptionConverter : AbstractNodeConverter<ItemOption>
 
     public override string GetNodeName(Wz_Node node) => WzUtility.GetNodeCode(node);
 
-    public override ItemOption? ConvertNode(Wz_Node node, string _)
+    public override Model.ItemOption? ConvertNode(Wz_Node node, string _)
     {
         var infoNode = node.FindNodeByPath("info") ?? throw new InvalidDataException("info node not found");
         var levelListNode = node.FindNodeByPath("level") ?? throw new InvalidDataException("level node not found");
 
-        var itemOption = new ItemOption();
+        var itemOption = new Model.ItemOption();
         foreach (var subNode in infoNode.Nodes)
         {
             switch (subNode.Text)

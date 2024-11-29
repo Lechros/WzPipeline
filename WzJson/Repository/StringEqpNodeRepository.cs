@@ -1,7 +1,7 @@
 using WzComparerR2.WzLib;
 using WzJson.Common;
 
-namespace WzJson.Gear;
+namespace WzJson.Repository;
 
 public class StringEqpNodeRepository : INodeRepository
 {

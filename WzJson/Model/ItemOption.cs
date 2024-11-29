@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace WzJson.ItemOption;
+namespace WzJson.Model;
 
 public class ItemOption
 {

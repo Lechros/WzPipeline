@@ -1,7 +1,7 @@
 using WzComparerR2.WzLib;
 using WzJson.Common;
 
-namespace WzJson.Skill;
+namespace WzJson.Repository;
 
 public class SkillNodeRepository : INodeRepository
 {

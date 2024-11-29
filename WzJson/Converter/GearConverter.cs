@@ -2,10 +2,12 @@ using WzComparerR2.Common;
 using WzComparerR2.WzLib;
 using WzJson.Common;
 using WzJson.Common.Data;
+using WzJson.Domain;
+using WzJson.Model;
 
-namespace WzJson.Gear;
+namespace WzJson.Converter;
 
-public class GearConverter : AbstractNodeConverter<Gear>
+public class GearConverter : AbstractNodeConverter<Model.Gear>
 {
     private readonly string dataName;
     private readonly GlobalFindNodeFunction findNodeFunction;
@@ -22,7 +24,7 @@ public class GearConverter : AbstractNodeConverter<Gear>
 
     public override string GetNodeName(Wz_Node node) => WzUtility.GetNodeCode(node);
 
-    public override Gear? ConvertNode(Wz_Node node, string name)
+    public override Model.Gear? ConvertNode(Wz_Node node, string name)
     {
         nameDescData.Items.TryGetValue(name, out var nameDesc);
         if (nameDesc?.Name == null) return null;
@@ -31,7 +33,7 @@ public class GearConverter : AbstractNodeConverter<Gear>
         var cashNode = infoNode.FindNodeByPath("cash");
         if (cashNode != null && cashNode.GetValue<int>() != 0) return null;
 
-        var gear = new Gear
+        var gear = new Model.Gear
         {
             name = nameDesc.Name,
             desc = nameDesc.Desc,

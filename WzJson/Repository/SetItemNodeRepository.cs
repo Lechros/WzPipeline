@@ -1,7 +1,7 @@
 using WzComparerR2.WzLib;
 using WzJson.Common;
 
-namespace WzJson.SetItem;
+namespace WzJson.Repository;
 
 public class SetItemNodeRepository : INodeRepository
 {

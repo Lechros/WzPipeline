@@ -1,4 +1,4 @@
-﻿namespace WzJson.Gear
+﻿namespace WzJson.Domain
 {
     public enum GearPropType
     {

@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
-namespace WzJson.Gear
+namespace WzJson.Model
 {
     public class GearReq
     {

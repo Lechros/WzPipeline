@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace WzJson.Soul;
+namespace WzJson.Model;
 
 public class Soul
 {

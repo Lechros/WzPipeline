@@ -1,8 +1,10 @@
 using WzComparerR2.WzLib;
 using WzJson.Common;
 using WzJson.Common.Converter;
+using WzJson.Converter;
+using WzJson.Repository;
 
-namespace WzJson.Gear;
+namespace WzJson.Parser;
 
 public class GearParser : AbstractWzParser
 {

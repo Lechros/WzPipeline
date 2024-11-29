@@ -2,7 +2,7 @@ using System.Reflection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace WzJson.Soul;
+namespace WzJson.Model;
 
 [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
 public class GearOption

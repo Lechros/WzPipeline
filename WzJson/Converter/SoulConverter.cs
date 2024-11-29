@@ -2,10 +2,12 @@ using System.Text.RegularExpressions;
 using WzComparerR2.WzLib;
 using WzJson.Common;
 using WzJson.Common.Data;
+using WzJson.Domain;
+using WzJson.Model;
 
-namespace WzJson.Soul;
+namespace WzJson.Converter;
 
-public partial class SoulConverter : INodeConverter<Soul>
+public partial class SoulConverter : INodeConverter<Model.Soul>
 {
     public const string SoulDataJsonName = "soul-data.json";
 
@@ -25,7 +27,7 @@ public partial class SoulConverter : INodeConverter<Soul>
 
     public string GetNodeName(Wz_Node node) => WzUtility.GetNodeCode(node);
 
-    public Soul? ConvertNode(Wz_Node node, string name)
+    public Model.Soul? ConvertNode(Wz_Node node, string name)
     {
         nameDescData.Items.TryGetValue(name, out var nameDesc);
         if (nameDesc?.Name == null) return null;
@@ -36,7 +38,7 @@ public partial class SoulConverter : INodeConverter<Soul>
         if (magnificent && tradeBlock || !magnificent && !tradeBlock) return null;
 
         var mobName = GetSoulMobName(nameDesc.Name);
-        var soul = new Soul
+        var soul = new Model.Soul
         {
             Name = nameDesc.Name,
             Skill = GetSoulSkillName(mobName, magnificent),
@@ -118,7 +120,7 @@ public partial class SoulConverter : INodeConverter<Soul>
         };
     }
 
-    private Soul.RandomOptions GetSoulRandomOptions(string mobName)
+    private Model.Soul.RandomOptions GetSoulRandomOptions(string mobName)
     {
         var soulTier = SoulResource.KnownSoulTiers[mobName];
         return SoulResource.SoulRandomOptions[soulTier];

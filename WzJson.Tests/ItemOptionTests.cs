@@ -10,7 +10,7 @@ public class ItemOptionTests
         const string expectedJson =
             @"{""optionType"":10,""reqLevel"":200,""string"":""test string"",""level"":{""2"":{""test-prop 1"":1},""10"":{""test-prop 2"":6},""24"":{""test-prop 3"":20,""test-prop 4"":3}}}";
 
-        var itemOption = new ItemOption.ItemOption
+        var itemOption = new Model.ItemOption
         {
             OptionType = 10,
             ReqLevel = 200,
@@ -33,7 +33,7 @@ public class ItemOptionTests
     {
         const string expectedJson = @"{}";
 
-        var itemOption = new ItemOption.ItemOption();
+        var itemOption = new Model.ItemOption();
 
         var json = JsonConvert.SerializeObject(itemOption);
 

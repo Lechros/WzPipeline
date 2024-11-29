@@ -1,6 +1,7 @@
 using System.Collections.Immutable;
+using WzJson.Model;
 
-namespace WzJson.Soul;
+namespace WzJson.Domain;
 
 public static class SoulResource
 {
@@ -200,8 +201,8 @@ public static class SoulResource
         [KnownSoulNames.크세르크세스] = SoulTier.Normal
     };
 
-    public static readonly IReadOnlyDictionary<SoulTier, Soul.RandomOptions> SoulRandomOptions =
-        new Dictionary<SoulTier, Soul.RandomOptions>
+    public static readonly IReadOnlyDictionary<SoulTier, Model.Soul.RandomOptions> SoulRandomOptions =
+        new Dictionary<SoulTier, Model.Soul.RandomOptions>
         {
             [SoulTier.Tier1] = new()
             {

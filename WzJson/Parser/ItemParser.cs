@@ -2,8 +2,9 @@ using WzComparerR2.Common;
 using WzComparerR2.WzLib;
 using WzJson.Common;
 using WzJson.Common.Converter;
+using WzJson.Repository;
 
-namespace WzJson.Item;
+namespace WzJson.Parser;
 
 public class ItemParser : AbstractWzParser
 {

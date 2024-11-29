@@ -1,7 +1,7 @@
 using WzComparerR2.WzLib;
 using WzJson.Common;
 
-namespace WzJson.Item;
+namespace WzJson.Repository;
 
 public class ItemNodeRepository : INodeRepository
 {

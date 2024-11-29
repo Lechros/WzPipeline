@@ -1,7 +1,6 @@
-﻿using System.Text.Json.Serialization;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
-namespace WzJson.SetItem;
+namespace WzJson.Model;
 
 public class SetItem
 {

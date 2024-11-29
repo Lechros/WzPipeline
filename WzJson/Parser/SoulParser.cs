@@ -1,8 +1,9 @@
 using WzComparerR2.WzLib;
 using WzJson.Common;
 using WzJson.Common.Converter;
+using WzJson.Repository;
 
-namespace WzJson.Soul;
+namespace WzJson.Parser;
 
 public class SoulParser : AbstractWzParser
 {
@@ -26,7 +27,7 @@ public class SoulParser : AbstractWzParser
         var soulSkillNameData = new NameDescConverter().Convert(stringSkillNodeRepository.GetNodes());
         return new List<INodeConverter<object>>
         {
-            new SoulConverter(nameDescData, soulSkillNameData)
+            new Converter.SoulConverter(nameDescData, soulSkillNameData)
         };
     }
 }

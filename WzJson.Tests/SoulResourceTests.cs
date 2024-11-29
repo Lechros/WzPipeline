@@ -1,6 +1,6 @@
 using WzComparerR2.WzLib;
 using WzJson.Common;
-using WzJson.Soul;
+using WzJson.Domain;
 
 namespace WzJson.Tests;
 
