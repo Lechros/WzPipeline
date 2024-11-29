@@ -6,9 +6,7 @@ public abstract class AbstractFileExporter : IExporter
     {
         OutputPath = outputPath;
         if (!Path.EndsInDirectorySeparator(OutputPath))
-        {
             throw new ArgumentException("OutputPath must be path but was: " + outputPath);
-        }
     }
 
     protected string OutputPath { get; }
@@ -18,9 +16,7 @@ public abstract class AbstractFileExporter : IExporter
     public void Export(IData data)
     {
         if (!Supports(data))
-        {
             throw new NotSupportedException("Cannot export data of type " + data.GetType().Name);
-        }
 
         EnsureDirectory(OutputPath);
         ExportItems(data);

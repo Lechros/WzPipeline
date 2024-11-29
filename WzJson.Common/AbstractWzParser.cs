@@ -8,7 +8,7 @@ public abstract class AbstractWzParser : IWzParser
     {
         var converters = GetConverters();
         var pairs = converters.Select(converter => new ConverterDataPair(converter)).ToArray();
-        
+
         foreach (var node in GetNodes())
         {
             foreach (var pair in pairs)

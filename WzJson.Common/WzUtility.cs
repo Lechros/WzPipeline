@@ -14,9 +14,7 @@ public static class WzUtility
     {
         Wz_Uol? uol;
         while ((uol = node.GetValue<Wz_Uol?>(null)) != null)
-        {
             node = uol.HandleUol(node);
-        }
 
         return node.GetLinkedSourceNode(findNodeFunction)!;
     }

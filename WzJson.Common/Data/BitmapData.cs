@@ -10,11 +10,6 @@ public class BitmapData : IData, IDisposable
         Items = items ?? new Dictionary<string, Bitmap>();
     }
 
-    ~BitmapData()
-    {
-        Dispose();
-    }
-
     public string Path { get; }
     public IDictionary<string, Bitmap> Items { get; }
 
@@ -26,10 +21,13 @@ public class BitmapData : IData, IDisposable
     public void Dispose()
     {
         foreach (var bitmap in Items.Values)
-        {
             bitmap.Dispose();
-        }
 
         GC.SuppressFinalize(this);
+    }
+
+    ~BitmapData()
+    {
+        Dispose();
     }
 }

@@ -58,10 +58,7 @@ public sealed class NaturalStringComparer : IComparer<string>
                 continue;
             }
 
-            if (charA != charB)
-            {
-                return charA - charB;
-            }
+            if (charA != charB) return charA - charB;
 
             ++ai;
             ++bi;
