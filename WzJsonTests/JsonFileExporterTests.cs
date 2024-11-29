@@ -88,15 +88,17 @@ public class JsonFileExporterTests : OutputPathTestSupport
             ["11"] = "11",
             ["2"] = "2",
             ["21"] = "21",
-            ["10"] = "10"
+            ["10"] = "10",
+            ["-1"] = "-1",
         };
-        var expectedContent = @"{""1"":""1"",""2"":""2"",""10"":""10"",""11"":""11"",""21"":""21""}";
-        
+        var expectedContent =
+            @"{""-1"":""-1"",""1"":""1"",""2"":""2"",""10"":""10"",""11"":""11"",""21"":""21""}";
+
         var exporter = new JsonFileExporter(OutputPath, jsonSerializer);
         var data = new JsonData(Filename, dict);
-        
+
         exporter.Export(data);
-        
+
         var content = File.ReadAllText(expectedFilename);
         Assert.AreEqual(expectedContent, content);
     }
