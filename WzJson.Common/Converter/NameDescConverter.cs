@@ -12,15 +12,15 @@ public class NameDescConverter : AbstractNodeConverter<NameDesc>
         return (NameDescData)base.Convert(nodes);
     }
 
-    public NameDescData Convert(IEnumerable<Wz_Node> nodes, Func<Wz_Node, string> getNodeName)
+    public NameDescData Convert(IEnumerable<Wz_Node> nodes, Func<Wz_Node, string> getNodeKey)
     {
         var data = (NameDescData)NewData();
         foreach (var node in nodes)
         {
-            var name = getNodeName(node);
-            var item = ConvertNode(node, name);
+            var key = getNodeKey(node);
+            var item = ConvertNode(node, key);
             if (item != null)
-                data.Add(name, item);
+                data.Add(key, item);
         }
 
         return data;
@@ -28,7 +28,7 @@ public class NameDescConverter : AbstractNodeConverter<NameDesc>
 
     public override IData NewData() => new NameDescData();
 
-    public override string GetNodeName(Wz_Node node) => node.Text;
+    public override string GetNodeKey(Wz_Node node) => node.Text;
 
     public override NameDesc ConvertNode(Wz_Node node, string _)
     {

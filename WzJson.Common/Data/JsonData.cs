@@ -11,8 +11,8 @@ public class JsonData : IData
     public string Path { get; }
     public IDictionary<string, object> Items { get; }
 
-    public void Add<T>(string name, T item) where T : notnull
+    public void Add<T>(string key, T item) where T : notnull
     {
-        Items.Add(name, item);
+        Items.Add(key, item);
     }
 }

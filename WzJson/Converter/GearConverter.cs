@@ -12,11 +12,11 @@ public class GearConverter(string dataName, NameDescData nameDescData, GlobalFin
 {
     public override IData NewData() => new JsonData(dataName);
 
-    public override string GetNodeName(Wz_Node node) => WzUtility.GetNodeCode(node);
+    public override string GetNodeKey(Wz_Node node) => WzUtility.GetNodeCode(node);
 
-    public override Gear? ConvertNode(Wz_Node node, string name)
+    public override Gear? ConvertNode(Wz_Node node, string key)
     {
-        nameDescData.Items.TryGetValue(name, out var nameDesc);
+        nameDescData.Items.TryGetValue(key, out var nameDesc);
         if (nameDesc?.Name == null) return null;
         var infoNode = node.FindNodeByPath("info");
         if (infoNode == null) return null;

@@ -15,11 +15,11 @@ public partial class SoulConverter(string dataName, NameDescData nameDescData, N
 
     public IData NewData() => new JsonData(dataName);
 
-    public string GetNodeName(Wz_Node node) => WzUtility.GetNodeCode(node);
+    public string GetNodeKey(Wz_Node node) => WzUtility.GetNodeCode(node);
 
-    public Soul? ConvertNode(Wz_Node node, string name)
+    public Soul? ConvertNode(Wz_Node node, string key)
     {
-        nameDescData.Items.TryGetValue(name, out var nameDesc);
+        nameDescData.Items.TryGetValue(key, out var nameDesc);
         if (nameDesc?.Name == null) return null;
         if (!IsSoulName(nameDesc.Name)) return null;
 

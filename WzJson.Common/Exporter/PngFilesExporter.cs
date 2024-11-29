@@ -22,8 +22,8 @@ public class PngFilesExporter : AbstractFileExporter
 
         Parallel.ForEach(items, e =>
         {
-            var (name, bitmap) = e;
-            var filename = Path.Join(OutputPath, bitmapData.Path, name);
+            var (key, bitmap) = e;
+            var filename = Path.Join(OutputPath, bitmapData.Path, key);
             SavePng(bitmap, filename);
         });
     }

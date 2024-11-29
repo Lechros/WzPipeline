@@ -11,7 +11,7 @@ public class ItemOptionConverter(string dataName) : AbstractNodeConverter<ItemOp
 
     public override IData NewData() => new JsonData(dataName);
 
-    public override string GetNodeName(Wz_Node node) => WzUtility.GetNodeCode(node);
+    public override string GetNodeKey(Wz_Node node) => WzUtility.GetNodeCode(node);
 
     public override ItemOption? ConvertNode(Wz_Node node, string _)
     {

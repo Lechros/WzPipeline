@@ -13,7 +13,7 @@ public abstract class AbstractWzParser : IWzParser
         {
             foreach (var pair in pairs)
             {
-                var name = pair.Converter.GetNodeName(node);
+                var name = pair.Converter.GetNodeKey(node);
                 var item = pair.Converter.ConvertNode(node, name);
                 if (item != null)
                     pair.Data.Add(name, item);

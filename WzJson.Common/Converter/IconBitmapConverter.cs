@@ -20,7 +20,7 @@ public class IconBitmapConverter : AbstractNodeConverter<Bitmap>
 
     public override IData NewData() => new BitmapData(dataName);
 
-    public override string GetNodeName(Wz_Node node) => $"{WzUtility.GetNodeCode(node)}.png";
+    public override string GetNodeKey(Wz_Node node) => $"{WzUtility.GetNodeCode(node)}.png";
 
     public override Bitmap? ConvertNode(Wz_Node node, string _)
     {

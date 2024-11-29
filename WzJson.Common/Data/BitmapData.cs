@@ -13,9 +13,9 @@ public class BitmapData : IData, IDisposable
     public string Path { get; }
     public IDictionary<string, Bitmap> Items { get; }
 
-    public void Add<T>(string name, T item) where T : notnull
+    public void Add<T>(string key, T item) where T : notnull
     {
-        Items.Add(name, item as Bitmap);
+        Items.Add(key, item as Bitmap);
     }
 
     public void Dispose()
