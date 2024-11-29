@@ -7,27 +7,17 @@ using WzJson.Model;
 
 namespace WzJson.Converter;
 
-public partial class SoulConverter : INodeConverter<Model.Soul>
+public partial class SoulConverter(string dataName, NameDescData nameDescData, NameDescData soulSkillNameData)
+    : INodeConverter<Soul>
 {
-    public const string SoulDataJsonName = "soul-data.json";
-
     [GeneratedRegex(@"추가 잠재능력 : ([\w가-힣]+) \+(\d+)")]
     private static partial Regex SoulDescOptionRegex();
 
-    private readonly NameDescData nameDescData;
-    private readonly NameDescData soulSkillNameData;
-
-    public SoulConverter(NameDescData nameDescData, NameDescData soulSkillNameData)
-    {
-        this.nameDescData = nameDescData;
-        this.soulSkillNameData = soulSkillNameData;
-    }
-
-    public IData NewData() => new JsonData(SoulDataJsonName);
+    public IData NewData() => new JsonData(dataName);
 
     public string GetNodeName(Wz_Node node) => WzUtility.GetNodeCode(node);
 
-    public Model.Soul? ConvertNode(Wz_Node node, string name)
+    public Soul? ConvertNode(Wz_Node node, string name)
     {
         nameDescData.Items.TryGetValue(name, out var nameDesc);
         if (nameDesc?.Name == null) return null;
@@ -38,7 +28,7 @@ public partial class SoulConverter : INodeConverter<Model.Soul>
         if (magnificent && tradeBlock || !magnificent && !tradeBlock) return null;
 
         var mobName = GetSoulMobName(nameDesc.Name);
-        var soul = new Model.Soul
+        var soul = new Soul
         {
             Name = nameDesc.Name,
             Skill = GetSoulSkillName(mobName, magnificent),
@@ -120,7 +110,7 @@ public partial class SoulConverter : INodeConverter<Model.Soul>
         };
     }
 
-    private Model.Soul.RandomOptions GetSoulRandomOptions(string mobName)
+    private Soul.RandomOptions GetSoulRandomOptions(string mobName)
     {
         var soulTier = SoulResource.KnownSoulTiers[mobName];
         return SoulResource.SoulRandomOptions[soulTier];

@@ -7,24 +7,14 @@ using WzJson.Model;
 
 namespace WzJson.Converter;
 
-public class GearConverter : AbstractNodeConverter<Model.Gear>
+public class GearConverter(string dataName, NameDescData nameDescData, GlobalFindNodeFunction findNodeFunction)
+    : AbstractNodeConverter<Gear>
 {
-    private readonly string dataName;
-    private readonly GlobalFindNodeFunction findNodeFunction;
-    private readonly NameDescData nameDescData;
-
-    public GearConverter(string dataName, NameDescData nameDescData, GlobalFindNodeFunction findNodeFunction)
-    {
-        this.dataName = dataName;
-        this.findNodeFunction = findNodeFunction;
-        this.nameDescData = nameDescData;
-    }
-
     public override IData NewData() => new JsonData(dataName);
 
     public override string GetNodeName(Wz_Node node) => WzUtility.GetNodeCode(node);
 
-    public override Model.Gear? ConvertNode(Wz_Node node, string name)
+    public override Gear? ConvertNode(Wz_Node node, string name)
     {
         nameDescData.Items.TryGetValue(name, out var nameDesc);
         if (nameDesc?.Name == null) return null;
@@ -33,7 +23,7 @@ public class GearConverter : AbstractNodeConverter<Model.Gear>
         var cashNode = infoNode.FindNodeByPath("cash");
         if (cashNode != null && cashNode.GetValue<int>() != 0) return null;
 
-        var gear = new Model.Gear
+        var gear = new Gear
         {
             name = nameDesc.Name,
             desc = nameDesc.Desc,

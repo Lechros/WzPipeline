@@ -6,26 +6,15 @@ using WzJson.Repository;
 
 namespace WzJson.Parser;
 
-public class SkillParser : AbstractWzParser
+public class SkillParser(SkillNodeRepository skillNodeRepository, GlobalFindNodeFunction findNodeFunction)
+    : AbstractWzParser
 {
     public const string SkillIconPath = "skill-icon";
 
-    private readonly SkillNodeRepository skillNodeRepository;
-    private readonly GlobalFindNodeFunction findNodeFunction;
-
-    public SkillParser(SkillNodeRepository skillNodeRepository, GlobalFindNodeFunction findNodeFunction)
-    {
-        this.skillNodeRepository = skillNodeRepository;
-        this.findNodeFunction = findNodeFunction;
-    }
-
     protected override IEnumerable<Wz_Node> GetNodes() => skillNodeRepository.GetNodes();
 
-    protected override IList<INodeConverter<object>> GetConverters()
-    {
-        return new List<INodeConverter<object>>
-        {
-            new IconBitmapConverter(SkillIconPath, "icon", findNodeFunction)
-        };
-    }
+    protected override IList<INodeConverter<object>> GetConverters() =>
+    [
+        new IconBitmapConverter(SkillIconPath, "icon", findNodeFunction)
+    ];
 }

@@ -3,29 +3,12 @@ using WzJson.Model;
 
 namespace WzJson.Domain;
 
-public static class SoulResource
+public static partial class SoulResource
 {
-    public enum SoulTier
-    {
-        Tier1,
-        Tier2,
-        Tier3,
-        Tier3_AttackPowerTier2,
-        Tier3_MagicPowerTier2,
-        Tier3_AllStatTier2,
-        Tier3_MaxHpTier2,
-        Tier3_CriticalRateTier2,
-        Tier4,
-        Tier5,
-        Tier6,
-        Normal,
-    }
-
     public static readonly ImmutableArray<string> KnownSoulNamePrefixes =
         ["기운찬", "날렵한", "총명한", "놀라운", "화려한", "강력한", "빛나는", "강인한", "풍부한", "위대한"];
 
-    public static readonly ImmutableArray<string> KnownSoulNameSuffixes =
-        ["의 소울", "소울"];
+    public static readonly ImmutableArray<string> KnownSoulNameSuffixes = ["의 소울", "소울"];
 
     public static class KnownSoulNames
     {
@@ -201,8 +184,8 @@ public static class SoulResource
         [KnownSoulNames.크세르크세스] = SoulTier.Normal
     };
 
-    public static readonly IReadOnlyDictionary<SoulTier, Model.Soul.RandomOptions> SoulRandomOptions =
-        new Dictionary<SoulTier, Model.Soul.RandomOptions>
+    public static readonly IReadOnlyDictionary<SoulTier, Soul.RandomOptions> SoulRandomOptions =
+        new Dictionary<SoulTier, Soul.RandomOptions>
         {
             [SoulTier.Tier1] = new()
             {

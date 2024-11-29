@@ -1,30 +1,24 @@
 using WzComparerR2.WzLib;
 using WzJson.Common;
 using WzJson.Common.Data;
+using WzJson.Model;
 
 namespace WzJson.Converter;
 
-public class ItemOptionConverter : AbstractNodeConverter<Model.ItemOption>
+public class ItemOptionConverter(string dataName) : AbstractNodeConverter<ItemOption>
 {
-    private readonly string dataName;
-
-    public ItemOptionConverter(string dataName)
-    {
-        this.dataName = dataName;
-    }
-
     public new JsonData Convert(IEnumerable<Wz_Node> nodes) => (JsonData)base.Convert(nodes);
 
     public override IData NewData() => new JsonData(dataName);
 
     public override string GetNodeName(Wz_Node node) => WzUtility.GetNodeCode(node);
 
-    public override Model.ItemOption? ConvertNode(Wz_Node node, string _)
+    public override ItemOption? ConvertNode(Wz_Node node, string _)
     {
         var infoNode = node.FindNodeByPath("info") ?? throw new InvalidDataException("info node not found");
         var levelListNode = node.FindNodeByPath("level") ?? throw new InvalidDataException("level node not found");
 
-        var itemOption = new Model.ItemOption();
+        var itemOption = new ItemOption();
         foreach (var subNode in infoNode.Nodes)
         {
             switch (subNode.Text)

@@ -54,7 +54,7 @@ List<(string, Action)> options = new()
         {
             Console.WriteLine("Loading gear data...");
             sw.Restart();
-            var parser = new GearParser(wz, gearNodeRepository, stringEqpNodeRepository);
+            var parser = new GearParser(wz.FindNode, gearNodeRepository, stringEqpNodeRepository);
             parser.ParseGearData = true;
             var datas = parser.Parse();
             sw.Stop();
@@ -72,7 +72,7 @@ List<(string, Action)> options = new()
         {
             Console.WriteLine("Loading gear data...");
             sw.Restart();
-            var parser = new GearParser(wz, gearNodeRepository, stringEqpNodeRepository);
+            var parser = new GearParser(wz.FindNode, gearNodeRepository, stringEqpNodeRepository);
             parser.ParseGearIcon = true;
             parser.ParseGearIconOrigin = true;
             var datas = parser.Parse();
@@ -91,7 +91,7 @@ List<(string, Action)> options = new()
         {
             Console.WriteLine("Loading gear data...");
             sw.Restart();
-            var parser = new GearParser(wz, gearNodeRepository, stringEqpNodeRepository);
+            var parser = new GearParser(wz.FindNode, gearNodeRepository, stringEqpNodeRepository);
             parser.ParseGearIconRaw = true;
             parser.ParseGearIconRawOrigin = true;
             var datas = parser.Parse();
