@@ -22,6 +22,9 @@ var stringEqpNodeRepository = new StringEqpNodeRepository(wz);
 var itemOptionNodeRepository = new ItemOptionNodeRepository(wz);
 var itemNodeRepository = new ItemNodeRepository(wz);
 var skillNodeRepository = new SkillNodeRepository(wz);
+var soulNodeRepository = new SoulNodeRepository(wz);
+var soulStringNodeRepository = new SoulStringNodeRepository(wz);
+var stringSkillNodeRepository = new StringSkillNodeRepository(wz);
 var exporters = new List<IExporter>
 {
     new JsonFileExporter(outputRoot, JsonSerializer.CreateDefault()),
@@ -145,14 +148,15 @@ List<(string, Action)> options = new()
         {
             Console.WriteLine("Loading soul data...");
             sw.Restart();
-            SoulLoader sl = new(wz);
-            sl.Load();
+            SoulParser parser = new SoulParser(soulNodeRepository, soulStringNodeRepository, stringSkillNodeRepository);
+            var datas = parser.Parse();
             sw.Stop();
             Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
 
             Console.WriteLine("Saving to file...");
             sw.Restart();
-            sl.Save(Path.Join(outputRoot, @"soul.json"));
+            ExportDatas(datas);
+            DisposeDatas(datas);
             sw.Stop();
             Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
         }

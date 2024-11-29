@@ -1,23 +1,52 @@
-﻿namespace WzJson.Soul
+﻿using Newtonsoft.Json;
+
+namespace WzJson.Soul;
+
+public class Soul
 {
-    internal class Soul
+    [JsonProperty(Order = 1, PropertyName = "name")]
+    public required string Name { get; set; }
+
+    [JsonProperty(Order = 2, PropertyName = "skill")]
+    public required string Skill { get; set; }
+
+    [JsonProperty(Order = 3, PropertyName = "multiplier")]
+    public int ChargeFactor { get; set; }
+
+    [JsonProperty(Order = 4, PropertyName = "magnificent")]
+    public bool Magnificent { get; set; }
+
+    [JsonProperty(Order = 5, PropertyName = "option")]
+    public GearOption? Option { get; set; }
+
+    [JsonProperty(Order = 6, PropertyName = "options")]
+    public RandomOptions? Options { get; set; }
+
+    public bool ShouldSerializeMagnificent() => Magnificent;
+    public bool ShouldSerializeOption() => Option?.Count() > 0;
+    public bool ShouldSerializeOptions() => Options != null;
+
+    public class RandomOptions
     {
-        public string name = "";
+        [JsonProperty(Order = 1, PropertyName = "attackPower")]
+        public required GearOption AttackPower { get; set; }
 
-        public string skill = "";
+        [JsonProperty(Order = 2, PropertyName = "magicPower")]
+        public required GearOption MagicPower { get; set; }
 
-        public int multiplier;
+        [JsonProperty(Order = 3, PropertyName = "allStat")]
+        public required GearOption AllStat { get; set; }
 
-        public bool magnificent = false;
+        [JsonProperty(Order = 4, PropertyName = "maxHp")]
+        public required GearOption MaxHp { get; set; }
 
-        public Dictionary<string, int>? option;
+        [JsonProperty(Order = 5, PropertyName = "criticalRate")]
+        public required GearOption CriticalRate { get; set; }
 
-        public Dictionary<string, Dictionary<string, int>>? options;
+        [JsonProperty(Order = 6, PropertyName = "bossDamage")]
+        public required GearOption BossDamage { get; set; }
 
-        public bool ShouldSerializemagnificent() => magnificent;
-
-        public bool ShouldSerializeoption() => option != null && option.Count > 0;
-
-        public bool ShouldSerializeoptions() => options != null && options.Count > 0;
+        [JsonProperty(Order = 7, PropertyName = "ignoreMonsterArmor")]
+        public required GearOption IgnoreMonsterArmor { get; set; }
     }
 }
