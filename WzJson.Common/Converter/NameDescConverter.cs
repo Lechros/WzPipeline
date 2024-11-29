@@ -5,9 +5,25 @@ namespace WzJson.Common.Converter;
 
 public class NameDescConverter : AbstractNodeConverter<NameDesc>
 {
+    public static NameDescConverter Instance { get; } = new();
+    
     public new NameDescData Convert(IEnumerable<Wz_Node> nodes)
     {
         return (NameDescData)base.Convert(nodes);
+    }
+
+    public NameDescData Convert(IEnumerable<Wz_Node> nodes, Func<Wz_Node, string> getNodeName)
+    {
+        var data = (NameDescData)NewData();
+        foreach (var node in nodes)
+        {
+            var name = getNodeName(node);
+            var item = ConvertNode(node, name);
+            if (item != null)
+                data.Add(name, item);
+        }
+
+        return data;
     }
 
     public override IData NewData() => new NameDescData();
