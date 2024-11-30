@@ -12,10 +12,13 @@ public class ItemOption
     [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
     public int ReqLevel { get; set; }
 
-    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
-    public string? String { get; set; }
+    public SortedDictionary<int, LevelInfo> Level { get; set; } = new();
 
-    public SortedDictionary<int, Dictionary<string, object>> Level { get; set; } = new();
-    
-    public bool ShouldSerializeLevel() => Level.Count > 0;
+    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
+    public class LevelInfo
+    {
+        public required string String { get; set; }
+
+        public GearOption Option { get; set; } = new();
+    }
 }

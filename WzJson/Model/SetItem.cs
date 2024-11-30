@@ -10,7 +10,7 @@ public class SetItem
 
     public List<int> ItemIds { get; set; } = new();
 
-    public SortedDictionary<int, Dictionary<string, int>> Effects { get; set; } = new();
+    public SortedDictionary<int, GearOption> Effects { get; set; } = new();
 
     [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
     public bool JokerPossible { get; set; }

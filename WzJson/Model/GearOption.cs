@@ -127,11 +127,64 @@ public class GearOption
         }
     }
 
-    public int Count()
+    public void Add(GearOption option)
     {
-        return Properties.Select(p => (int)p.GetValue(this)!).Count(value => value != default);
+        Str += option.Str;
+        Dex += option.Dex;
+        Int += option.Int;
+        Luk += option.Luk;
+        StrRate += option.StrRate;
+        DexRate += option.DexRate;
+        IntRate += option.IntRate;
+        LukRate += option.LukRate;
+        MaxHp += option.MaxHp;
+        MaxMp += option.MaxMp;
+        MaxHpRate += option.MaxHpRate;
+        MaxMpRate += option.MaxMpRate;
+        AttackPower += option.AttackPower;
+        MagicPower += option.MagicPower;
+        AttackPowerRate += option.AttackPowerRate;
+        MagicPowerRate += option.MagicPowerRate;
+        Armor += option.Armor;
+        ArmorRate += option.ArmorRate;
+        Speed += option.Speed;
+        Jump += option.Jump;
+        BossDamage += option.BossDamage;
+        IgnoreMonsterArmor += option.IgnoreMonsterArmor;
+        AllStat += option.AllStat;
+        Damage += option.Damage;
+        ReqLevelDecrease += option.ReqLevelDecrease;
+        CriticalRate += option.CriticalRate;
+        CriticalDamage += option.CriticalDamage;
+        CooltimeReduce += option.CooltimeReduce;
+        StrLv += option.StrLv;
+        DexLv += option.DexLv;
+        IntLv += option.IntLv;
+        LukLv += option.LukLv;
     }
 
-    private static readonly PropertyInfo[] Properties =
-        typeof(GearOption).GetProperties().Where(p => p.CanRead).ToArray();
+    public int this[string optionName]
+    {
+        get
+        {
+            if (!Properties.TryGetValue(optionName, out var property) || !property.CanRead)
+                throw new ArgumentException("Invalid gear option name: " + optionName);
+            return (int)property.GetValue(this)!;
+        }
+        set
+        {
+            if (!Properties.TryGetValue(optionName, out var property) || !property.CanWrite)
+                throw new ArgumentException("Invalid gear option name: " + optionName);
+            property.SetValue(this, value);
+        }
+    }
+
+    private static readonly IReadOnlyDictionary<string, PropertyInfo> Properties;
+
+    static GearOption()
+    {
+        Properties = typeof(GearOption).GetProperties()
+            .Where(p => p.GetIndexParameters().Length == 0)
+            .ToDictionary(p => p.Name, p => p);
+    }
 }

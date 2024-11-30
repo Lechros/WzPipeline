@@ -3,13 +3,13 @@ using Newtonsoft.Json.Serialization;
 
 namespace WzJson.Model;
 
-[JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
+[JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy), ItemNullValueHandling = NullValueHandling.Ignore)]
 public class Soul
 {
     public required string Name { get; set; }
-    
+
     public required string Skill { get; set; }
-    
+
     public int ChargeFactor { get; set; }
 
     [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
@@ -17,10 +17,7 @@ public class Soul
 
     public GearOption? Option { get; set; }
 
-    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
     public RandomOptions? Options { get; set; }
-
-    public bool ShouldSerializeOption() => Option?.Count() > 0;
 
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public class RandomOptions
