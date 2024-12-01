@@ -141,7 +141,6 @@ public enum GearPropType
     grade,
 
     only = 1100,
-
     //notSale,
     //dropBlock,
     tradeBlock,
@@ -189,6 +188,7 @@ public enum GearPropType
     tucIgnoreForPotential,
     Etuc,
     CuttableCount,
+    exUpgradeChangeBlock,
 
     gatherTool_incSkillLevel = 2000,
     gatherTool_incSpeed,
