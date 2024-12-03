@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
 using Newtonsoft.Json;
 using WzJson.Common;
-using WzJson.Common.Exporter;
-using WzJson.Parser;
+using WzJson.Common.Writer;
+using WzJson.Reader;
 using WzJson.Repository;
 
 string outputRoot = Path.Join(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\output\");
@@ -21,20 +21,20 @@ var soulNodeRepository = new SoulNodeRepository(wz);
 var stringConsumeNodeRepository = new StringConsumeNodeRepository(wz);
 var stringEqpNodeRepository = new StringEqpNodeRepository(wz);
 var stringSkillNodeRepository = new StringSkillNodeRepository(wz);
-var globalStringData = new GlobalStringParser(stringConsumeNodeRepository, stringEqpNodeRepository, stringSkillNodeRepository).Parse();
-var exporters = new List<IExporter>
+var globalStringData = new GlobalStringReader(stringConsumeNodeRepository, stringEqpNodeRepository, stringSkillNodeRepository).Read();
+var exporters = new List<IWriter>
 {
-    new JsonFileExporter(outputRoot, JsonSerializer.CreateDefault()),
-    new PngFilesExporter(outputRoot)
+    new JsonFileWriter(outputRoot, JsonSerializer.CreateDefault()),
+    new PngFilesWriter(outputRoot)
 };
 sw.Stop();
 Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
 
-void ExportDatas(IList<IData> datas)
+void WriteDatas(IList<IData> datas)
 {
     foreach (var data in datas)
     {
-        exporters.First(exporter => exporter.Supports(data)).Export(data);
+        exporters.First(exporter => exporter.Supports(data)).Write(data);
     }
 }
 
@@ -55,15 +55,15 @@ List<(string, Action)> options = new()
         {
             Console.WriteLine("Loading gear data...");
             sw.Restart();
-            var parser = new GearParser(wz.FindNode, gearNodeRepository, itemOptionNodeRepository, globalStringData);
-            parser.ParseGearData = true;
-            var datas = parser.Parse();
+            var reader = new GearReader(wz.FindNode, gearNodeRepository, itemOptionNodeRepository, globalStringData);
+            reader.ReadGearData = true;
+            var datas = reader.Read();
             sw.Stop();
             Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
 
             Console.WriteLine("Saving to file...");
             sw.Restart();
-            ExportDatas(datas);
+            WriteDatas(datas);
             DisposeDatas(datas);
             sw.Stop();
             Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
@@ -73,16 +73,16 @@ List<(string, Action)> options = new()
         {
             Console.WriteLine("Loading gear data...");
             sw.Restart();
-            var parser = new GearParser(wz.FindNode, gearNodeRepository, itemOptionNodeRepository, globalStringData);
-            parser.ParseGearIcon = true;
-            parser.ParseGearIconOrigin = true;
-            var datas = parser.Parse();
+            var reader = new GearReader(wz.FindNode, gearNodeRepository, itemOptionNodeRepository, globalStringData);
+            reader.ReadGearIcon = true;
+            reader.ReadGearIconOrigin = true;
+            var datas = reader.Read();
             sw.Stop();
             Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
 
             Console.WriteLine("Saving to file...");
             sw.Restart();
-            ExportDatas(datas);
+            WriteDatas(datas);
             DisposeDatas(datas);
             sw.Stop();
             Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
@@ -92,16 +92,16 @@ List<(string, Action)> options = new()
         {
             Console.WriteLine("Loading gear data...");
             sw.Restart();
-            var parser = new GearParser(wz.FindNode, gearNodeRepository, itemOptionNodeRepository, globalStringData);
-            parser.ParseGearIconRaw = true;
-            parser.ParseGearIconRawOrigin = true;
-            var datas = parser.Parse();
+            var reader = new GearReader(wz.FindNode, gearNodeRepository, itemOptionNodeRepository, globalStringData);
+            reader.ReadGearIconRaw = true;
+            reader.ReadGearIconRawOrigin = true;
+            var datas = reader.Read();
             sw.Stop();
             Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
 
             Console.WriteLine("Saving to file...");
             sw.Restart();
-            ExportDatas(datas);
+            WriteDatas(datas);
             DisposeDatas(datas);
             sw.Stop();
             Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
@@ -111,14 +111,14 @@ List<(string, Action)> options = new()
         {
             Console.WriteLine("Loading item option data...");
             sw.Restart();
-            var parser = new ItemOptionParser(itemOptionNodeRepository);
-            var datas = parser.Parse();
+            var reader = new ItemOptionReader(itemOptionNodeRepository);
+            var datas = reader.Read();
             sw.Stop();
             Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
 
             Console.WriteLine("Saving to file...");
             sw.Restart();
-            ExportDatas(datas);
+            WriteDatas(datas);
             DisposeDatas(datas);
             sw.Stop();
             Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
@@ -128,14 +128,14 @@ List<(string, Action)> options = new()
         {
             Console.WriteLine("Loading set item data...");
             sw.Restart();
-            var parser = new SetItemParser(new SetItemNodeRepository(wz), itemOptionNodeRepository);
-            var datas = parser.Parse();
+            var reader = new SetItemReader(new SetItemNodeRepository(wz), itemOptionNodeRepository);
+            var datas = reader.Read();
             sw.Stop();
             Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
 
             Console.WriteLine("Saving to file...");
             sw.Restart();
-            ExportDatas(datas);
+            WriteDatas(datas);
             DisposeDatas(datas);
             sw.Stop();
             Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
@@ -145,14 +145,14 @@ List<(string, Action)> options = new()
         {
             Console.WriteLine("Loading soul data...");
             sw.Restart();
-            SoulParser parser = new SoulParser(soulNodeRepository, globalStringData);
-            var datas = parser.Parse();
+            SoulReader reader = new SoulReader(soulNodeRepository, globalStringData);
+            var datas = reader.Read();
             sw.Stop();
             Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
 
             Console.WriteLine("Saving to file...");
             sw.Restart();
-            ExportDatas(datas);
+            WriteDatas(datas);
             DisposeDatas(datas);
             sw.Stop();
             Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
@@ -162,14 +162,14 @@ List<(string, Action)> options = new()
         {
             Console.WriteLine("Loading item data...");
             sw.Restart();
-            var parser = new ItemParser(itemNodeRepository, wz.FindNode);
-            var datas = parser.Parse();
+            var reader = new ItemReader(itemNodeRepository, wz.FindNode);
+            var datas = reader.Read();
             sw.Stop();
             Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
 
             Console.WriteLine("Saving to file...");
             sw.Restart();
-            ExportDatas(datas);
+            WriteDatas(datas);
             DisposeDatas(datas);
             sw.Stop();
             Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
@@ -179,15 +179,15 @@ List<(string, Action)> options = new()
         {
             Console.WriteLine("Loading skill data...");
             sw.Restart();
-            var parser = new SkillParser(skillNodeRepository, wz.FindNode);
-            var datas = parser.Parse();
+            var reader = new SkillReader(skillNodeRepository, wz.FindNode);
+            var datas = reader.Read();
             sw.Stop();
             Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
 
             Console.WriteLine("Saving to file...");
             Console.WriteLine(Path.GetFullPath(Path.Join(outputRoot, @"skillicon\")));
             sw.Restart();
-            ExportDatas(datas);
+            WriteDatas(datas);
             DisposeDatas(datas);
             sw.Stop();
             Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");

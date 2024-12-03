@@ -1,7 +1,7 @@
 namespace WzJson.Common;
 
-public interface IExporter
+public interface IWriter
 {
     public bool Supports(IData data);
-    public void Export(IData data);
+    public void Write(IData data);
 }

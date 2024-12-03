@@ -1,45 +1,45 @@
 using System.Drawing;
 using WzJson.Common.Data;
-using WzJson.Common.Exporter;
+using WzJson.Common.Writer;
 
 namespace WzJson.Common.Tests;
 
-public class PngFilesExporterTests : OutputPathTestSupport
+public class PngFilesWriterTests : OutputPathTestSupport
 {
     [Fact]
     public void Ctor_FileOutputPath_ThrowsArgumentException()
     {
         var path = Path.Join(OutputPath, "test.png");
 
-        Assert.Throws<ArgumentException>(() => new PngFilesExporter(path));
+        Assert.Throws<ArgumentException>(() => new PngFilesWriter(path));
     }
 
     [Fact]
     public void Ctor_DirectoryOutputPath_DoesNotThrow()
     {
-        var exporter = new PngFilesExporter(OutputPath);
+        var writer = new PngFilesWriter(OutputPath);
     }
 
     [Fact]
     public void Supports_BitmapData_ReturnsTrue()
     {
-        var exporter = new PngFilesExporter(OutputPath);
+        var writer = new PngFilesWriter(OutputPath);
         var data = new BitmapData("test-images", new Dictionary<string, Bitmap>());
 
-        Assert.True(exporter.Supports(data));
+        Assert.True(writer.Supports(data));
     }
 
     [Fact]
     public void Supports_NonBitmapData_ReturnsFalse()
     {
-        var exporter = new PngFilesExporter(OutputPath);
+        var writer = new PngFilesWriter(OutputPath);
         var data = new NonBitmapData("test-images");
 
-        Assert.False(exporter.Supports(data));
+        Assert.False(writer.Supports(data));
     }
 
     [Fact]
-    public void Export_BitmapData_SavesPngFilesInsideNameFolder()
+    public void Write_BitmapData_SavesPngFilesInsideNameFolder()
     {
         const string filename = "test-images";
         const string key1 = "test1.png";
@@ -50,14 +50,14 @@ public class PngFilesExporterTests : OutputPathTestSupport
         var expectedFile1 = Path.Join(expectedOutputDirectory, key1);
         var expectedFile2 = Path.Join(expectedOutputDirectory, key2);
 
-        var exporter = new PngFilesExporter(OutputPath);
+        var writer = new PngFilesWriter(OutputPath);
         var data = new BitmapData(filename, new Dictionary<string, Bitmap>
         {
             [key1] = value1,
             [key2] = value2
         });
 
-        exporter.Export(data);
+        writer.Write(data);
 
         Assert.True(Directory.Exists(expectedOutputDirectory));
         Assert.Equal(2, Directory.EnumerateFiles(expectedOutputDirectory).Count());
@@ -66,7 +66,7 @@ public class PngFilesExporterTests : OutputPathTestSupport
     }
 
     [Fact]
-    public void Export_NestedPathName_SaveSuccesses()
+    public void Write_NestedPathName_SaveSuccesses()
     {
         const string filename = "/nested/path/test-images";
         const string key1 = "test1.png";
@@ -77,14 +77,14 @@ public class PngFilesExporterTests : OutputPathTestSupport
         var expectedFile1 = Path.Join(expectedOutputDirectory, key1);
         var expectedFile2 = Path.Join(expectedOutputDirectory, key2);
 
-        var exporter = new PngFilesExporter(OutputPath);
+        var writer = new PngFilesWriter(OutputPath);
         var data = new BitmapData(filename, new Dictionary<string, Bitmap>
         {
             [key1] = value1,
             [key2] = value2
         });
 
-        exporter.Export(data);
+        writer.Write(data);
 
         Assert.True(Directory.Exists(expectedOutputDirectory));
         Assert.Equal(2, Directory.EnumerateFiles(expectedOutputDirectory).Count());
@@ -93,7 +93,7 @@ public class PngFilesExporterTests : OutputPathTestSupport
     }
 
     [Fact]
-    public void Export_NestedPathKey_SaveSuccesses()
+    public void Write_NestedPathKey_SaveSuccesses()
     {
         const string filename = "test-images";
         const string key1 = "/nested/path/test1.png";
@@ -104,14 +104,14 @@ public class PngFilesExporterTests : OutputPathTestSupport
         var expectedFile1 = Path.Join(expectedOutputDirectory, key1);
         var expectedFile2 = Path.Join(expectedOutputDirectory, key2);
 
-        var exporter = new PngFilesExporter(OutputPath);
+        var writer = new PngFilesWriter(OutputPath);
         var data = new BitmapData(filename, new Dictionary<string, Bitmap>
         {
             [key1] = value1,
             [key2] = value2
         });
 
-        exporter.Export(data);
+        writer.Write(data);
 
         Assert.True(Directory.Exists(expectedOutputDirectory));
         Assert.True(File.Exists(expectedFile1));

@@ -1,10 +1,10 @@
 using Newtonsoft.Json;
 using WzJson.Common.Data;
-using WzJson.Common.Exporter;
+using WzJson.Common.Writer;
 
 namespace WzJson.Common.Tests;
 
-public class JsonFileExporterTests : OutputPathTestSupport
+public class JsonFileWriterTests : OutputPathTestSupport
 {
     private readonly JsonSerializer jsonSerializer = new();
 
@@ -13,35 +13,35 @@ public class JsonFileExporterTests : OutputPathTestSupport
     {
         var path = Path.Join(OutputPath, "test.json");
 
-        Assert.Throws<ArgumentException>(() => new JsonFileExporter(path, jsonSerializer));
+        Assert.Throws<ArgumentException>(() => new JsonFileWriter(path, jsonSerializer));
     }
 
     [Fact]
     public void Ctor_DirectoryOutputPath_DoesNotThrow()
     {
-        var exporter = new JsonFileExporter(OutputPath, jsonSerializer);
+        var writer = new JsonFileWriter(OutputPath, jsonSerializer);
     }
 
     [Fact]
     public void Supports_JsonData_ReturnsTrue()
     {
-        var exporter = new JsonFileExporter(OutputPath, jsonSerializer);
+        var writer = new JsonFileWriter(OutputPath, jsonSerializer);
         var data = new JsonData("test.json", new Dictionary<string, object>());
 
-        Assert.True(exporter.Supports(data));
+        Assert.True(writer.Supports(data));
     }
 
     [Fact]
     public void Supports_NonJsonData_ReturnsFalse()
     {
-        var exporter = new JsonFileExporter(OutputPath, jsonSerializer);
+        var writer = new JsonFileWriter(OutputPath, jsonSerializer);
         var data = new NonJsonData("test.not.json");
 
-        Assert.False(exporter.Supports(data));
+        Assert.False(writer.Supports(data));
     }
 
     [Fact]
-    public void Export_JsonData_SavesSingleJsonFileWithName()
+    public void Write_JsonData_SavesSingleJsonFileWithName()
     {
         const string filename = "test.json";
         const string key = "key";
@@ -49,9 +49,9 @@ public class JsonFileExporterTests : OutputPathTestSupport
         var expectedFilename = Path.Join(OutputPath, filename);
         var expectedContent = @"{""key"":""value""}";
 
-        var exporter = new JsonFileExporter(OutputPath, jsonSerializer);
+        var writer = new JsonFileWriter(OutputPath, jsonSerializer);
         var data = new JsonData(filename, new Dictionary<string, object> { [key] = value });
-        exporter.Export(data);
+        writer.Write(data);
 
         Assert.True(File.Exists(expectedFilename));
         var content = File.ReadAllText(expectedFilename);
@@ -59,7 +59,7 @@ public class JsonFileExporterTests : OutputPathTestSupport
     }
 
     [Fact]
-    public void Export_NestedPathName_SaveSuccesses()
+    public void Write_NestedPathName_SaveSuccesses()
     {
         const string filename = "nested/path/test.json";
         const string key = "key";
@@ -67,10 +67,10 @@ public class JsonFileExporterTests : OutputPathTestSupport
         var expectedFilename = Path.Join(OutputPath, filename);
         var expectedContent = @"{""key"":""value""}";
 
-        var exporter = new JsonFileExporter(OutputPath, jsonSerializer);
+        var writer = new JsonFileWriter(OutputPath, jsonSerializer);
         var data = new JsonData(filename, new Dictionary<string, object> { [key] = value });
 
-        exporter.Export(data);
+        writer.Write(data);
 
         Assert.True(File.Exists(expectedFilename));
         var content = File.ReadAllText(expectedFilename);
@@ -78,7 +78,7 @@ public class JsonFileExporterTests : OutputPathTestSupport
     }
 
     [Fact]
-    public void Export_NumberKeys_SortedInNaturalOrder()
+    public void Write_NumberKeys_SortedInNaturalOrder()
     {
         const string filename = "test.json";
         var expectedFilename = Path.Join(OutputPath, filename);
@@ -94,10 +94,10 @@ public class JsonFileExporterTests : OutputPathTestSupport
         var expectedContent =
             @"{""-1"":""-1"",""1"":""1"",""2"":""2"",""10"":""10"",""11"":""11"",""21"":""21""}";
 
-        var exporter = new JsonFileExporter(OutputPath, jsonSerializer);
+        var writer = new JsonFileWriter(OutputPath, jsonSerializer);
         var data = new JsonData(filename, dict);
 
-        exporter.Export(data);
+        writer.Write(data);
 
         var content = File.ReadAllText(expectedFilename);
         Assert.Equal(expectedContent, content);

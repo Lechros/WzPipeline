@@ -3,9 +3,9 @@ using WzJson.Common;
 using WzJson.Converter;
 using WzJson.Repository;
 
-namespace WzJson.Parser;
+namespace WzJson.Reader;
 
-public class ItemOptionParser(ItemOptionNodeRepository itemOptionNodeRepository) : AbstractWzParser
+public class ItemOptionReader(ItemOptionNodeRepository itemOptionNodeRepository) : AbstractWzReader
 {
     public const string ItemOptionJsonName = "item-option.json";
 

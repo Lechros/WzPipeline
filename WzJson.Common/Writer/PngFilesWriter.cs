@@ -2,16 +2,16 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using BitmapData = WzJson.Common.Data.BitmapData;
 
-namespace WzJson.Common.Exporter;
+namespace WzJson.Common.Writer;
 
-public class PngFilesExporter(string outputPath) : AbstractFileExporter(outputPath)
+public class PngFilesWriter(string outputPath) : AbstractFileWriter(outputPath)
 {
     public override bool Supports(IData data)
     {
         return data is BitmapData;
     }
 
-    protected override void ExportItems(IData data)
+    protected override void WriteItems(IData data)
     {
         var bitmapData = (BitmapData)data;
         var items = bitmapData.Items;

@@ -3,11 +3,11 @@ using WzJson.Common;
 using WzJson.Converter;
 using WzJson.Repository;
 
-namespace WzJson.Parser;
+namespace WzJson.Reader;
 
-public class SetItemParser(
+public class SetItemReader(
     SetItemNodeRepository setItemNodeRepository,
-    ItemOptionNodeRepository itemOptionNodeRepository) : AbstractWzParser
+    ItemOptionNodeRepository itemOptionNodeRepository) : AbstractWzReader
 {
     public const string SetItemJsonName = "set-item.json";
 

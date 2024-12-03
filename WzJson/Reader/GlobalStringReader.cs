@@ -2,14 +2,14 @@ using WzComparerR2.WzLib;
 using WzJson.Common.Converter;
 using WzJson.Repository;
 
-namespace WzJson.Parser;
+namespace WzJson.Reader;
 
-public sealed class GlobalStringParser(
+public sealed class GlobalStringReader(
     StringConsumeNodeRepository stringConsumeNodeRepository,
     StringEqpNodeRepository stringEqpNodeRepository,
     StringSkillNodeRepository stringSkillNodeRepository)
 {
-    public GlobalStringData Parse()
+    public GlobalStringData Read()
     {
         var converter = new WzStringConverter();
         return new GlobalStringData
