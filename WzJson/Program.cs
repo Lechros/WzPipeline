@@ -14,13 +14,14 @@ Console.WriteLine("Loading wz...");
 sw.Restart();
 WzProvider wz = new(@"C:\Nexon\Maple");
 var gearNodeRepository = new GearNodeRepository(wz);
-var stringEqpNodeRepository = new StringEqpNodeRepository(wz);
 var itemOptionNodeRepository = new ItemOptionNodeRepository(wz);
 var itemNodeRepository = new ItemNodeRepository(wz);
 var skillNodeRepository = new SkillNodeRepository(wz);
 var soulNodeRepository = new SoulNodeRepository(wz);
-var soulStringNodeRepository = new SoulStringNodeRepository(wz);
+var stringConsumeNodeRepository = new StringConsumeNodeRepository(wz);
+var stringEqpNodeRepository = new StringEqpNodeRepository(wz);
 var stringSkillNodeRepository = new StringSkillNodeRepository(wz);
+var globalStringData = new GlobalStringParser(stringConsumeNodeRepository, stringEqpNodeRepository, stringSkillNodeRepository).Parse();
 var exporters = new List<IExporter>
 {
     new JsonFileExporter(outputRoot, JsonSerializer.CreateDefault()),
@@ -54,7 +55,7 @@ List<(string, Action)> options = new()
         {
             Console.WriteLine("Loading gear data...");
             sw.Restart();
-            var parser = new GearParser(wz.FindNode, gearNodeRepository, stringEqpNodeRepository, itemOptionNodeRepository);
+            var parser = new GearParser(wz.FindNode, gearNodeRepository, itemOptionNodeRepository, globalStringData);
             parser.ParseGearData = true;
             var datas = parser.Parse();
             sw.Stop();
@@ -72,7 +73,7 @@ List<(string, Action)> options = new()
         {
             Console.WriteLine("Loading gear data...");
             sw.Restart();
-            var parser = new GearParser(wz.FindNode, gearNodeRepository, stringEqpNodeRepository, itemOptionNodeRepository);
+            var parser = new GearParser(wz.FindNode, gearNodeRepository, itemOptionNodeRepository, globalStringData);
             parser.ParseGearIcon = true;
             parser.ParseGearIconOrigin = true;
             var datas = parser.Parse();
@@ -91,7 +92,7 @@ List<(string, Action)> options = new()
         {
             Console.WriteLine("Loading gear data...");
             sw.Restart();
-            var parser = new GearParser(wz.FindNode, gearNodeRepository, stringEqpNodeRepository, itemOptionNodeRepository);
+            var parser = new GearParser(wz.FindNode, gearNodeRepository, itemOptionNodeRepository, globalStringData);
             parser.ParseGearIconRaw = true;
             parser.ParseGearIconRawOrigin = true;
             var datas = parser.Parse();
@@ -144,7 +145,7 @@ List<(string, Action)> options = new()
         {
             Console.WriteLine("Loading soul data...");
             sw.Restart();
-            SoulParser parser = new SoulParser(soulNodeRepository, soulStringNodeRepository, stringSkillNodeRepository);
+            SoulParser parser = new SoulParser(soulNodeRepository, globalStringData);
             var datas = parser.Parse();
             sw.Stop();
             Console.WriteLine("Done!" + $" ({sw.ElapsedMilliseconds}ms)");
