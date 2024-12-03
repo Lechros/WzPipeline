@@ -9,7 +9,7 @@ namespace WzJson.Converter;
 
 public class GearConverter(
     string dataName,
-    JsonData<NameDesc> nameDescData,
+    WzStringData gearStringData,
     JsonData<ItemOption> itemOptionData,
     GlobalFindNodeFunction findNode)
     : AbstractNodeConverter<Gear>
@@ -20,8 +20,8 @@ public class GearConverter(
 
     public override Gear? ConvertNode(Wz_Node node, string key)
     {
-        nameDescData.Items.TryGetValue(key, out var nameDesc);
-        if (nameDesc?.Name == null) return null;
+        gearStringData.Items.TryGetValue(key, out var gearString);
+        if (gearString?.Name == null) return null;
         var infoNode = node.FindNodeByPath("info");
         if (infoNode == null) return null;
         var cashNode = infoNode.FindNodeByPath("cash");
@@ -31,8 +31,8 @@ public class GearConverter(
         var gear = new Gear
         {
             Meta = { Id = gearId },
-            Name = nameDesc.Name,
-            Desc = nameDesc.Desc,
+            Name = gearString.Name,
+            Desc = gearString.Desc,
             Type = GetGearType(gearId)
         };
         foreach (var propNode in infoNode.Nodes)

@@ -18,10 +18,10 @@ public class SoulParser(
 
     protected override IList<INodeConverter<object>> GetConverters()
     {
-        var nameDescData = NameDescConverter.Instance.Convert(soulStringNodeRepository.GetNodes());
+        var wzStringData = WzStringConverter.Instance.Convert(soulStringNodeRepository.GetNodes());
         var soulSkillNameData =
-            NameDescConverter.Instance.Convert(stringSkillNodeRepository.GetNodes(), GetSkillNodeName);
-        return [new SoulConverter(SoulDataJsonPath, nameDescData, soulSkillNameData)];
+            WzStringConverter.Instance.Convert(stringSkillNodeRepository.GetNodes(), GetSkillNodeName);
+        return [new SoulConverter(SoulDataJsonPath, wzStringData, soulSkillNameData)];
     }
 
     private string GetSkillNodeName(Wz_Node node)

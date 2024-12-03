@@ -7,7 +7,7 @@ using WzJson.Model;
 
 namespace WzJson.Converter;
 
-public partial class SoulConverter(string dataName, JsonData<NameDesc> nameDescData, JsonData<NameDesc> soulSkillNameData)
+public partial class SoulConverter(string dataName, WzStringData soulStringData, WzStringData skillStringData)
     : INodeConverter<Soul>
 {
     [GeneratedRegex(@"추가 잠재능력 : ([\w가-힣]+) \+(\d+)")]
@@ -19,18 +19,18 @@ public partial class SoulConverter(string dataName, JsonData<NameDesc> nameDescD
 
     public Soul? ConvertNode(Wz_Node node, string key)
     {
-        nameDescData.Items.TryGetValue(key, out var nameDesc);
-        if (nameDesc?.Name == null) return null;
-        if (!IsSoulName(nameDesc.Name)) return null;
+        soulStringData.Items.TryGetValue(key, out var soulString);
+        if (soulString?.Name == null) return null;
+        if (!IsSoulName(soulString.Name)) return null;
 
-        var magnificent = IsMagnificent(nameDesc.Name);
+        var magnificent = IsMagnificent(soulString.Name);
         var tradeBlock = IsTradeBlock(node);
         if (magnificent && tradeBlock || !magnificent && !tradeBlock) return null;
 
-        var mobName = GetSoulMobName(nameDesc.Name);
+        var mobName = GetSoulMobName(soulString.Name);
         var soul = new Soul
         {
-            Name = nameDesc.Name,
+            Name = soulString.Name,
             Skill = GetSoulSkillName(mobName, magnificent),
             ChargeFactor = GetSoulChargeFactor(mobName),
             Magnificent = magnificent
@@ -38,7 +38,7 @@ public partial class SoulConverter(string dataName, JsonData<NameDesc> nameDescD
         if (magnificent)
             soul.Options = GetSoulRandomOptions(mobName);
         else
-            soul.Option = GetSoulOption(nameDesc.Desc!);
+            soul.Option = GetSoulOption(soulString.Desc!);
 
         return soul;
     }
@@ -76,7 +76,7 @@ public partial class SoulConverter(string dataName, JsonData<NameDesc> nameDescD
     {
         var skillIds = magnificent ? SoulResource.KnownMagnificentSkillIds : SoulResource.KnownNormalSkillIds;
         var skillId = skillIds[mobName].ToString();
-        return soulSkillNameData.Items[skillId].Name ??
+        return skillStringData.Items[skillId].Name ??
                throw new ApplicationException("Skill name not found for: " + mobName);
     }
 
