@@ -15,6 +15,6 @@ public static partial class SoulResource
         Tier4,
         Tier5,
         Tier6,
-        Normal,
+        Normal
     }
 }

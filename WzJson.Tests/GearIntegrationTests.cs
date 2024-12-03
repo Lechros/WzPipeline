@@ -3,7 +3,7 @@ using FluentAssertions.Execution;
 using WzJson.Common.Data;
 using WzJson.Domain;
 using WzJson.Model;
-using WzJson.Parser;
+using WzJson.Reader;
 using WzJson.Repository;
 
 namespace WzJson.Tests;
@@ -386,18 +386,18 @@ public class GearFixture : IDisposable
     public GearFixture()
     {
         var wzProviderFixture = new WzProviderFixture();
-        var globalStringData = new GlobalStringParser(
+        var globalStringData = new GlobalStringReader(
             new StringConsumeNodeRepository(wzProviderFixture.WzProvider),
             new StringEqpNodeRepository(wzProviderFixture.WzProvider),
-            new StringSkillNodeRepository(wzProviderFixture.WzProvider)).Parse();
-        var parser = new GearParser(
+            new StringSkillNodeRepository(wzProviderFixture.WzProvider)).Read();
+        var reader = new GearReader(
             wzProviderFixture.WzProvider.FindNode,
             new GearNodeRepository(wzProviderFixture.WzProvider),
             new ItemOptionNodeRepository(wzProviderFixture.WzProvider),
             globalStringData
         );
-        parser.ParseGearData = true;
-        Gears = (parser.Parse().First() as JsonData<Gear>)?.Items!;
+        reader.ReadGearData = true;
+        Gears = (reader.Read().First() as JsonData<Gear>)?.Items!;
 
         WzGears = new Dictionary<string, WzComparerR2Gear>();
         foreach (var node in new GearNodeRepository(wzProviderFixture.WzProvider).GetNodes())

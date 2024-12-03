@@ -195,7 +195,7 @@ public static partial class SoulResource
                 MaxHp = new GearOption { MaxHp = 2000 },
                 CriticalRate = new GearOption { CriticalRate = 12 },
                 BossDamage = new GearOption { BossDamage = 7 },
-                IgnoreMonsterArmor = new GearOption { BossDamage = 7 },
+                IgnoreMonsterArmor = new GearOption { BossDamage = 7 }
             },
             [SoulTier.Tier2] = new()
             {
@@ -205,7 +205,7 @@ public static partial class SoulResource
                 MaxHp = new GearOption { MaxHp = 1500 },
                 CriticalRate = new GearOption { CriticalRate = 10 },
                 BossDamage = new GearOption { BossDamage = 5 },
-                IgnoreMonsterArmor = new GearOption { BossDamage = 5 },
+                IgnoreMonsterArmor = new GearOption { BossDamage = 5 }
             },
             [SoulTier.Tier3] = new()
             {
@@ -215,7 +215,7 @@ public static partial class SoulResource
                 MaxHp = new GearOption { MaxHp = 1300 },
                 CriticalRate = new GearOption { CriticalRate = 8 },
                 BossDamage = new GearOption { BossDamage = 4 },
-                IgnoreMonsterArmor = new GearOption { BossDamage = 4 },
+                IgnoreMonsterArmor = new GearOption { BossDamage = 4 }
             },
             [SoulTier.Tier3_AttackPowerTier2] = new()
             {
@@ -225,7 +225,7 @@ public static partial class SoulResource
                 MaxHp = new GearOption { MaxHp = 1300 },
                 CriticalRate = new GearOption { CriticalRate = 8 },
                 BossDamage = new GearOption { BossDamage = 4 },
-                IgnoreMonsterArmor = new GearOption { BossDamage = 4 },
+                IgnoreMonsterArmor = new GearOption { BossDamage = 4 }
             },
             [SoulTier.Tier3_MagicPowerTier2] = new()
             {
@@ -235,7 +235,7 @@ public static partial class SoulResource
                 MaxHp = new GearOption { MaxHp = 1300 },
                 CriticalRate = new GearOption { CriticalRate = 8 },
                 BossDamage = new GearOption { BossDamage = 4 },
-                IgnoreMonsterArmor = new GearOption { BossDamage = 4 },
+                IgnoreMonsterArmor = new GearOption { BossDamage = 4 }
             },
             [SoulTier.Tier3_AllStatTier2] = new()
             {
@@ -245,7 +245,7 @@ public static partial class SoulResource
                 MaxHp = new GearOption { MaxHp = 1300 },
                 CriticalRate = new GearOption { CriticalRate = 8 },
                 BossDamage = new GearOption { BossDamage = 4 },
-                IgnoreMonsterArmor = new GearOption { BossDamage = 4 },
+                IgnoreMonsterArmor = new GearOption { BossDamage = 4 }
             },
             [SoulTier.Tier3_MaxHpTier2] = new()
             {
@@ -255,7 +255,7 @@ public static partial class SoulResource
                 MaxHp = new GearOption { MaxHp = 1500 },
                 CriticalRate = new GearOption { CriticalRate = 8 },
                 BossDamage = new GearOption { BossDamage = 4 },
-                IgnoreMonsterArmor = new GearOption { BossDamage = 4 },
+                IgnoreMonsterArmor = new GearOption { BossDamage = 4 }
             },
             [SoulTier.Tier3_CriticalRateTier2] = new()
             {
@@ -265,7 +265,7 @@ public static partial class SoulResource
                 MaxHp = new GearOption { MaxHp = 1300 },
                 CriticalRate = new GearOption { CriticalRate = 10 },
                 BossDamage = new GearOption { BossDamage = 4 },
-                IgnoreMonsterArmor = new GearOption { BossDamage = 4 },
+                IgnoreMonsterArmor = new GearOption { BossDamage = 4 }
             },
             [SoulTier.Tier4] = new()
             {
@@ -275,7 +275,7 @@ public static partial class SoulResource
                 MaxHp = new GearOption { MaxHp = 1200 },
                 CriticalRate = new GearOption { CriticalRate = 7 },
                 BossDamage = new GearOption { BossDamage = 4 },
-                IgnoreMonsterArmor = new GearOption { BossDamage = 4 },
+                IgnoreMonsterArmor = new GearOption { BossDamage = 4 }
             },
             [SoulTier.Tier5] = new()
             {
@@ -285,7 +285,7 @@ public static partial class SoulResource
                 MaxHp = new GearOption { MaxHp = 1100 },
                 CriticalRate = new GearOption { CriticalRate = 6 },
                 BossDamage = new GearOption { BossDamage = 3 },
-                IgnoreMonsterArmor = new GearOption { BossDamage = 3 },
+                IgnoreMonsterArmor = new GearOption { BossDamage = 3 }
             },
             [SoulTier.Tier6] = new()
             {
@@ -295,7 +295,7 @@ public static partial class SoulResource
                 MaxHp = new GearOption { MaxHp = 1000 },
                 CriticalRate = new GearOption { CriticalRate = 5 },
                 BossDamage = new GearOption { BossDamage = 3 },
-                IgnoreMonsterArmor = new GearOption { BossDamage = 3 },
+                IgnoreMonsterArmor = new GearOption { BossDamage = 3 }
             }
         };
 }

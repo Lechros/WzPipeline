@@ -3,12 +3,12 @@ using WzJson.Common;
 using WzJson.Converter;
 using WzJson.Repository;
 
-namespace WzJson.Parser;
+namespace WzJson.Reader;
 
-public class SoulParser(
+public class SoulReader(
     SoulNodeRepository soulNodeRepository,
     GlobalStringData globalStringData)
-    : AbstractWzParser
+    : AbstractWzReader
 {
     public const string SoulDataJsonPath = "soul-data.json";
 

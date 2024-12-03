@@ -2,9 +2,9 @@ using WzComparerR2.WzLib;
 
 namespace WzJson.Common;
 
-public abstract class AbstractWzParser : IWzParser
+public abstract class AbstractWzReader : IWzReader
 {
-    public IList<IData> Parse()
+    public IList<IData> Read()
     {
         var converters = GetConverters();
         var pairs = converters.Select(converter => new ConverterDataPair(converter)).ToArray();

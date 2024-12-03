@@ -5,14 +5,14 @@ using WzJson.Common.Converter;
 using WzJson.Converter;
 using WzJson.Repository;
 
-namespace WzJson.Parser;
+namespace WzJson.Reader;
 
-public class GearParser(
+public class GearReader(
     GlobalFindNodeFunction findNode,
     GearNodeRepository gearNodeRepository,
     ItemOptionNodeRepository itemOptionNodeRepository,
     GlobalStringData globalStringData)
-    : AbstractWzParser
+    : AbstractWzReader
 {
     public const string GearDataJsonPath = "gear-data.json";
     public const string GearIconOriginJsonPath = "gear-origin.json";
@@ -20,11 +20,11 @@ public class GearParser(
     public const string GearIconPath = "gear-icon";
     public const string GearIconRawPath = "gear-icon-raw";
 
-    public bool ParseGearData { get; set; }
-    public bool ParseGearIconOrigin { get; set; }
-    public bool ParseGearIconRawOrigin { get; set; }
-    public bool ParseGearIcon { get; set; }
-    public bool ParseGearIconRaw { get; set; }
+    public bool ReadGearData { get; set; }
+    public bool ReadGearIconOrigin { get; set; }
+    public bool ReadGearIconRawOrigin { get; set; }
+    public bool ReadGearIcon { get; set; }
+    public bool ReadGearIconRaw { get; set; }
 
     protected override IEnumerable<Wz_Node> GetNodes() => gearNodeRepository.GetNodes();
 
@@ -32,15 +32,15 @@ public class GearParser(
     {
         var itemOptionData = new ItemOptionConverter(string.Empty).Convert(itemOptionNodeRepository.GetNodes());
         var converters = new List<INodeConverter<object>>();
-        if (ParseGearData)
+        if (ReadGearData)
             converters.Add(new GearConverter(GearDataJsonPath, globalStringData, itemOptionData, findNode));
-        if (ParseGearIconOrigin)
+        if (ReadGearIconOrigin)
             converters.Add(new IconOriginConverter(GearIconOriginJsonPath, @"info\icon\origin"));
-        if (ParseGearIconRawOrigin)
+        if (ReadGearIconRawOrigin)
             converters.Add(new IconOriginConverter(GearIconRawOriginJsonPath, @"info\iconRaw\origin"));
-        if (ParseGearIcon)
+        if (ReadGearIcon)
             converters.Add(new IconBitmapConverter(GearIconPath, @"info\icon", findNode));
-        if (ParseGearIconRaw)
+        if (ReadGearIconRaw)
             converters.Add(new IconBitmapConverter(GearIconRawPath, @"info\iconRaw", findNode));
 
         return converters;

@@ -2,16 +2,16 @@ using System.Collections;
 using Newtonsoft.Json;
 using WzJson.Common.Data;
 
-namespace WzJson.Common.Exporter;
+namespace WzJson.Common.Writer;
 
-public class JsonFileExporter(string outputPath, JsonSerializer serializer) : AbstractFileExporter(outputPath)
+public class JsonFileWriter(string outputPath, JsonSerializer serializer) : AbstractFileWriter(outputPath)
 {
     public override bool Supports(IData data)
     {
         return data is JsonData;
     }
 
-    protected override void ExportItems(IData data)
+    protected override void WriteItems(IData data)
     {
         var jsonData = (JsonData)data;
         var sortedItems = ToSortedItems(jsonData);

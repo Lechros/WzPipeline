@@ -4,10 +4,10 @@ using WzJson.Common;
 using WzJson.Common.Converter;
 using WzJson.Repository;
 
-namespace WzJson.Parser;
+namespace WzJson.Reader;
 
-public class SkillParser(SkillNodeRepository skillNodeRepository, GlobalFindNodeFunction findNode)
-    : AbstractWzParser
+public class SkillReader(SkillNodeRepository skillNodeRepository, GlobalFindNodeFunction findNode)
+    : AbstractWzReader
 {
     public const string SkillIconPath = "skill-icon";
 

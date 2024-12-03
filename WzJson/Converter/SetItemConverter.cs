@@ -6,7 +6,7 @@ using WzJson.Model;
 
 namespace WzJson.Converter;
 
-public class SetItemConverter(string dataName, JsonData itemOptionData) : AbstractNodeConverter<SetItem>
+public class SetItemConverter(string dataName, JsonData<ItemOption> itemOptionData) : AbstractNodeConverter<SetItem>
 {
     public override IData NewData() => new JsonData(dataName);
 
@@ -102,7 +102,7 @@ public class SetItemConverter(string dataName, JsonData itemOptionData) : Abstra
     {
         var optionCode = optionNode.FindNodeByPath("option")!.GetValue<string>();
         var level = optionNode.FindNodeByPath("level")!.GetValue<int>();
-        var itemOption = (ItemOption)itemOptionData.Items[optionCode];
+        var itemOption = itemOptionData.Items[optionCode];
         return itemOption.Level[level].Option;
     }
 }

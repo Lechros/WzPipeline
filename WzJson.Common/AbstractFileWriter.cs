@@ -1,8 +1,8 @@
 namespace WzJson.Common;
 
-public abstract class AbstractFileExporter : IExporter
+public abstract class AbstractFileWriter : IWriter
 {
-    protected AbstractFileExporter(string outputPath)
+    protected AbstractFileWriter(string outputPath)
     {
         OutputPath = outputPath;
         if (!Path.EndsInDirectorySeparator(OutputPath))
@@ -13,16 +13,16 @@ public abstract class AbstractFileExporter : IExporter
 
     public abstract bool Supports(IData data);
 
-    public void Export(IData data)
+    public void Write(IData data)
     {
         if (!Supports(data))
             throw new NotSupportedException("Cannot export data of type " + data.GetType().Name);
 
         EnsureDirectory(OutputPath);
-        ExportItems(data);
+        WriteItems(data);
     }
 
-    protected abstract void ExportItems(IData data);
+    protected abstract void WriteItems(IData data);
 
     protected void EnsureDirectory(string path)
     {

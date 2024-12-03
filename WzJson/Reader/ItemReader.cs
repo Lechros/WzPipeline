@@ -4,10 +4,10 @@ using WzJson.Common;
 using WzJson.Common.Converter;
 using WzJson.Repository;
 
-namespace WzJson.Parser;
+namespace WzJson.Reader;
 
-public class ItemParser(ItemNodeRepository itemNodeRepository, GlobalFindNodeFunction findNode)
-    : AbstractWzParser
+public class ItemReader(ItemNodeRepository itemNodeRepository, GlobalFindNodeFunction findNode)
+    : AbstractWzReader
 {
     public const string ItemIconOriginJsonPath = "item-origin.json";
     public const string ItemIconPath = "item-icon";

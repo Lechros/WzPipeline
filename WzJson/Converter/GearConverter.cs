@@ -141,27 +141,6 @@ public class GearConverter(
         return gear.Attributes.Superior ? data[2] : data[1];
     }
 
-    private bool GetCanPotentialByType(GearType type)
-    {
-        switch (type)
-        {
-            case GearType.soulShield:
-            case GearType.demonShield:
-            case GearType.katara:
-            case GearType.magicArrow:
-            case GearType.card:
-            case GearType.orb:
-            case GearType.dragonEssence:
-            case GearType.soulRing:
-            case GearType.magnum:
-            case GearType.emblem:
-                return true;
-            default:
-                if (type.IsSubWeapon()) return true;
-                return false;
-        }
-    }
-
     private GearPotential?[] ConvertToGearPotentials(Wz_Node propNode)
     {
         GearPotential?[] potentials = [null, null, null];
@@ -170,7 +149,7 @@ public class GearConverter(
             var optionNode = propNode.Nodes[i];
             var optionCode = optionNode.FindNodeByPath("option")!.GetValue<string>();
             var level = optionNode.FindNodeByPath("level")!.GetValue<int>();
-            var itemOption = (ItemOption)itemOptionData.Items[optionCode];
+            var itemOption = itemOptionData.Items[optionCode];
             potentials[i] = new GearPotential
             {
                 Title = itemOption.Level[level].String,
