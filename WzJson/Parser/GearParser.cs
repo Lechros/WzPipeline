@@ -10,8 +10,8 @@ namespace WzJson.Parser;
 public class GearParser(
     GlobalFindNodeFunction findNode,
     GearNodeRepository gearNodeRepository,
-    StringEqpNodeRepository stringEqpNodeRepository,
-    ItemOptionNodeRepository itemOptionNodeRepository)
+    ItemOptionNodeRepository itemOptionNodeRepository,
+    GlobalStringData globalStringData)
     : AbstractWzParser
 {
     public const string GearDataJsonPath = "gear-data.json";
@@ -30,11 +30,10 @@ public class GearParser(
 
     protected override IList<INodeConverter<object>> GetConverters()
     {
-        var gearStringData = new WzStringConverter().Convert(stringEqpNodeRepository.GetNodes());
         var itemOptionData = new ItemOptionConverter(string.Empty).Convert(itemOptionNodeRepository.GetNodes());
         var converters = new List<INodeConverter<object>>();
         if (ParseGearData)
-            converters.Add(new GearConverter(GearDataJsonPath, gearStringData, itemOptionData, findNode));
+            converters.Add(new GearConverter(GearDataJsonPath, globalStringData, itemOptionData, findNode));
         if (ParseGearIconOrigin)
             converters.Add(new IconOriginConverter(GearIconOriginJsonPath, @"info\icon\origin"));
         if (ParseGearIconRawOrigin)

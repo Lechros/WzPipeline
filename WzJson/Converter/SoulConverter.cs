@@ -7,7 +7,7 @@ using WzJson.Model;
 
 namespace WzJson.Converter;
 
-public partial class SoulConverter(string dataName, WzStringData soulStringData, WzStringData skillStringData)
+public partial class SoulConverter(string dataName, GlobalStringData globalStringData)
     : INodeConverter<Soul>
 {
     [GeneratedRegex(@"추가 잠재능력 : ([\w가-힣]+) \+(\d+)")]
@@ -19,7 +19,7 @@ public partial class SoulConverter(string dataName, WzStringData soulStringData,
 
     public Soul? ConvertNode(Wz_Node node, string key)
     {
-        soulStringData.Items.TryGetValue(key, out var soulString);
+        globalStringData.Consume.TryGetValue(key, out var soulString);
         if (soulString?.Name == null) return null;
         if (!IsSoulName(soulString.Name)) return null;
 
@@ -76,7 +76,7 @@ public partial class SoulConverter(string dataName, WzStringData soulStringData,
     {
         var skillIds = magnificent ? SoulResource.KnownMagnificentSkillIds : SoulResource.KnownNormalSkillIds;
         var skillId = skillIds[mobName].ToString();
-        return skillStringData.Items[skillId].Name ??
+        return globalStringData.Skill[skillId].Name ??
                throw new ApplicationException("Skill name not found for: " + mobName);
     }
 

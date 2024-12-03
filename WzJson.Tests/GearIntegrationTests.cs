@@ -386,11 +386,16 @@ public class GearFixture : IDisposable
     public GearFixture()
     {
         var wzProviderFixture = new WzProviderFixture();
+        var globalStringData = new GlobalStringParser(
+            new StringConsumeNodeRepository(wzProviderFixture.WzProvider),
+            new StringEqpNodeRepository(wzProviderFixture.WzProvider),
+            new StringSkillNodeRepository(wzProviderFixture.WzProvider)).Parse();
         var parser = new GearParser(
             wzProviderFixture.WzProvider.FindNode,
             new GearNodeRepository(wzProviderFixture.WzProvider),
-            new StringEqpNodeRepository(wzProviderFixture.WzProvider),
-            new ItemOptionNodeRepository(wzProviderFixture.WzProvider));
+            new ItemOptionNodeRepository(wzProviderFixture.WzProvider),
+            globalStringData
+        );
         parser.ParseGearData = true;
         Gears = (parser.Parse().First() as JsonData<Gear>)?.Items!;
 

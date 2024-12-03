@@ -3,7 +3,7 @@ using WzJson.Common;
 
 namespace WzJson.Repository;
 
-public class SoulStringNodeRepository(IWzProvider wzProvider) : AbstractNodeRepository(wzProvider)
+public class StringConsumeNodeRepository(IWzProvider wzProvider) : AbstractNodeRepository(wzProvider)
 {
     protected override string RootNodePath => @"String\Consume.img";
 

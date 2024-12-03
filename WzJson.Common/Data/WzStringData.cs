@@ -15,12 +15,10 @@ public class WzString : Dictionary<string, string>
     }
 }
 
-public class WzStringData : IData
+public class WzStringData : Dictionary<string, WzString>, IData
 {
-    public IDictionary<string, WzString> Items { get; } = new Dictionary<string, WzString>();
-
     public void Add<T>(string key, T item) where T : notnull
     {
-        Items.Add(key, item as WzString);
+        base.Add(key, item as WzString);
     }
 }
