@@ -55,8 +55,8 @@ public class SetItemConverter(string dataName, JsonData itemOptionData) : Abstra
                     foreach (var effectNode in subNode.Nodes)
                     {
                         var partCount = int.Parse(effectNode.Text);
-                        var props = new Dictionary<string, int>();
-                        setItem.Effects[partCount] = props;
+                        var gearOption = new GearOption();
+                        setItem.Effects[partCount] = gearOption;
                         foreach (var propNode in effectNode.Nodes)
                         {
                             switch (propNode.Text)
@@ -64,18 +64,18 @@ public class SetItemConverter(string dataName, JsonData itemOptionData) : Abstra
                                 case "Option":
                                     foreach (var optionNode in propNode.Nodes)
                                     {
-                                        var option = optionNode.FindNodeByPath("option")!.GetValue<int>();
-                                        var level = optionNode.FindNodeByPath("level")!.GetValue<int>();
-                                        var (prop, value) = ConvertToProp(option, level);
-                                        if (value != 0)
-                                            props.Add(prop, value);
+                                        var nodeOption = ConvertToGearOption(optionNode);
+                                        gearOption.Add(nodeOption);
                                     }
 
                                     break;
                                 default:
-                                    if (Enum.TryParse(propNode.Text, out GearPropType _))
+                                    var propType = Enum.Parse<GearPropType>(propNode.Text);
+                                    var optionName = propType.GetGearOptionName();
+                                    if (optionName != null)
                                     {
-                                        props.Add(propNode.Text, propNode.GetValue<int>());
+                                        var value = propNode.GetValue<int>();
+                                        gearOption[optionName] = value;
                                     }
 
                                     break;
@@ -98,19 +98,11 @@ public class SetItemConverter(string dataName, JsonData itemOptionData) : Abstra
         return setItem;
     }
 
-    private (string, int) ConvertToProp(int option, int level)
+    private GearOption ConvertToGearOption(Wz_Node optionNode)
     {
-        var itemOption = (ItemOption)itemOptionData.Items[option.ToString()];
-        var props = itemOption.Level[level];
-        switch (props.Count)
-        {
-            case 1:
-                var (prop, value) = props.First();
-                return (prop, (int)value);
-            case 2 when props.TryGetValue("boss", out var boss) && (int)boss != 0:
-                return ("incBDR", (int)props["incDAMr"]);
-            default:
-                return ("", 0);
-        }
+        var optionCode = optionNode.FindNodeByPath("option")!.GetValue<string>();
+        var level = optionNode.FindNodeByPath("level")!.GetValue<int>();
+        var itemOption = (ItemOption)itemOptionData.Items[optionCode];
+        return itemOption.Level[level].Option;
     }
 }

@@ -12,6 +12,8 @@ public class StringSkillNodeRepository(IWzProvider wzProvider) : AbstractNodeRep
         var rootNode = GetRootNode();
         foreach (var skillNode in rootNode.Nodes)
         {
+            if (skillNode.Text.Length < 7) continue;
+
             yield return skillNode;
         }
 

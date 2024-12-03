@@ -1,117 +1,230 @@
-﻿using System.Text.Json.Serialization;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using WzJson.Domain;
 
-namespace WzJson.Model
+namespace WzJson.Model;
+
+[JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
+public class Gear
 {
-    public class GearReq
+    public GearMetadata Meta { get; set; } = new();
+
+    public required string Name { get; set; }
+
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+    public string? Icon { get; set; }
+
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+    public string? Desc { get; set; }
+
+    public GearType Type { get; set; }
+
+    public GearReq Req { get; set; } = new();
+
+    public GearAttribute Attributes { get; set; } = new();
+
+    public GearOption BaseOption { get; set; } = new();
+
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+    public int ScrollUpgradeableCount { get; set; }
+
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+    public int MaxStar { get; set; }
+
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+    public int Star { get; set; }
+
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+    public PotentialGrade PotentialGrade { get; set; }
+
+    public GearPotential?[]? Potentials { get; set; }
+
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+    public int ExceptionalUpgradeableCount { get; set; }
+
+    public bool ShouldSerializePotentials() => Potentials != null && Potentials.Any(p => p != null);
+}
+
+[JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
+public class GearMetadata
+{
+    public int Id { get; set; }
+    public int Version { get; set; } = 1;
+    public object[] Add { get; set; } = [];
+}
+
+[JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
+public class GearAttribute
+{
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+    public bool Only { get; set; }
+
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+    public GearTrade Trade { get; set; }
+
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+    public bool OnlyEquip { get; set; }
+
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+    public GearShare Share { get; set; }
+
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+    public bool BlockGoldenHammer { get; set; }
+
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+    public bool Superior { get; set; }
+
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+    public bool CannotUpgrade { get; set; }
+
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+    public AddOptionCan CanAddOption { get; set; }
+
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+    public PotentialCan CanPotential { get; set; }
+
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+    public PotentialCan CanAdditionalPotential { get; set; }
+
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+    public bool SpecialGrade { get; set; }
+
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+    public int ReqLevelIncrease { get; set; }
+
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+    public GearCuttable Cuttable { get; set; }
+
+    public int? CuttableCount { get; set; }
+
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+    public bool AccountShareTag { get; set; }
+
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+    public bool Lucky { get; set; }
+
+    public GearIncline Incline { get; set; } = new();
+
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+    public bool BossReward { get; set; }
+
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+    public int GrowthExp { get; set; }
+
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+    public int GrowthLevel { get; set; }
+
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+    public string? DateExpire { get; set; }
+
+    [JsonIgnore] public bool _OnlyUpgrade { get; set; }
+    [JsonIgnore] public bool _SharableOnce { get; set; }
+
+    public bool ShouldSerializeCuttableCount() => CuttableCount != null;
+    public bool ShouldSerializeIncline() => !Incline.IsEmpty();
+
+    public enum GearTrade
     {
-        [JsonProperty(Order = 1)]
-        public int level;
-        [JsonProperty(Order = 2, PropertyName = "str")]
-        public int STR;
-        [JsonProperty(Order = 3, PropertyName = "luk")]
-        public int LUK;
-        [JsonProperty(Order = 4, PropertyName = "dex")]
-        public int DEX;
-        [JsonProperty(Order = 5, PropertyName = "int")]
-        public int INT;
-        //[JsonPropertyOrder(1)]
-        // public int POP;
-        [JsonProperty(Order = 6)]
-        public int job;
-        [JsonProperty(Order = 7)]
-        public int specJob;
-
-        public GearReq(int level = 0, int STR = 0, int LUK = 0, int DEX = 0, int INT = 0, int job = 0, int specJob = 0)
-        {
-            this.level = level;
-            this.STR = STR;
-            this.LUK = LUK;
-            this.DEX = DEX;
-            this.INT = INT;
-            this.job = job;
-            this.specJob = specJob;
-        }
-
-        public bool AnyReq()
-        {
-            return level > 0 || STR > 0 || LUK > 0 || DEX > 0 || INT > 0;
-        }
-
-        public enum JobType
-        {
-            beginner = 0,
-            warrior = 1,
-            magician = 2,
-            archer = 4,
-            theif = 8,
-            pirates = 16
-        }
-
-        public bool ShouldSerializelevel() => level > 0;
-        public bool ShouldSerializeSTR() => STR > 0;
-        public bool ShouldSerializeLUK() => LUK > 0;
-        public bool ShouldSerializeDEX() => DEX > 0;
-        public bool ShouldSerializeINT() => INT > 0;
-        public bool ShouldSerializejob() => job > 0;
-        public bool ShouldSerializespecJob() => specJob > 0;
+        Tradeable = 0,
+        TradeBlock = 1,
+        EquipTradeBlock = 2
     }
 
-    public class SpecialOption
+    public enum GearShare
     {
-        [JsonPropertyOrder(1)]
-        public int option;
-        [JsonPropertyOrder(2)]
-        public int level;
+        None = 0,
+        AccountSharable = 1,
+        AccountSharableOnce = 2
+    }
 
-        public SpecialOption(int option, int level)
+    public enum AddOptionCan
+    {
+        None = 0,
+        Can = 1,
+        Cannot = 2
+    }
+
+    public enum PotentialCan
+    {
+        None = 0,
+        Can = 1,
+        Cannot = 2,
+        Fixed = 3
+    }
+
+    public enum GearCuttable
+    {
+        None = 0,
+        Silver = 1,
+        Platinum = 2
+    }
+
+    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
+    public class GearIncline
+    {
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public int Charisma { get; set; }
+
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public int Insight { get; set; }
+
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public int Will { get; set; }
+
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public int Craft { get; set; }
+
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public int Sense { get; set; }
+
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public int Charm { get; set; }
+
+        public bool IsEmpty()
         {
-            this.option = option;
-            this.level = level;
+            return Charisma == 0 && Insight == 0 && Will == 0 && Craft == 0 && Sense == 0 && Charm == 0;
         }
     }
+}
 
-    public class Gear
-    {
-        [JsonPropertyOrder(1)]
-        public string name = "";
-        [JsonPropertyOrder(2)]
-        public string? desc;
-        [JsonPropertyOrder(3)]
-        public int icon;
-        [JsonPropertyOrder(5)]
-        public GearReq? req;
+[JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
+public class GearReq
+{
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+    public int Level { get; set; }
 
-        // public bool cash;
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+    public int Str { get; set; }
 
-        [JsonPropertyOrder(6)]
-        public Dictionary<string, int> props = new();
-        [JsonPropertyOrder(7)]
-        public Dictionary<string, int> options = new();
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+    public int Luk { get; set; }
 
-        [JsonPropertyOrder(8)]
-        public int tuc;
-        [JsonPropertyOrder(9)]
-        public int etuc;
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+    public int Dex { get; set; }
 
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+    public int Int { get; set; }
 
-        [JsonPropertyOrder(10)]
-        public SpecialOption[]? pots;
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+    public int Job { get; set; }
 
-        public bool ShouldSerializedesc() => !string.IsNullOrEmpty(desc);
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+    public int Class { get; set; }
+}
 
-        public bool ShouldSerializereq() => req != null && req.AnyReq();
+public enum PotentialGrade
+{
+    Normal = 0,
+    Rare = 1,
+    Epic = 2,
+    Unique = 3,
+    Legendary = 4,
+}
 
-        // public bool ShouldSerializecash() => cash;
+[JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
+public class GearPotential
+{
+    public required string Title { get; set; }
 
-        public bool ShouldSerializeprops() => props.Count > 0;
-
-        public bool ShouldSerializeoptions() => options.Count > 0;
-
-        public bool ShouldSerializetuc() => tuc > 0;
-
-        public bool ShouldSerializeetuc() => etuc > 0;
-
-        public bool ShouldSerializepots() => pots != null && pots.Length > 0 && pots[0].option != 0 && pots[0].level != 0;
-    }
+    public GearOption Option { get; set; } = new();
 }
