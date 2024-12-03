@@ -7,7 +7,7 @@ using WzJson.Model;
 
 namespace WzJson.Converter;
 
-public partial class SoulConverter(string dataName, NameDescData nameDescData, NameDescData soulSkillNameData)
+public partial class SoulConverter(string dataName, JsonData<NameDesc> nameDescData, JsonData<NameDesc> soulSkillNameData)
     : INodeConverter<Soul>
 {
     [GeneratedRegex(@"추가 잠재능력 : ([\w가-힣]+) \+(\d+)")]

@@ -392,7 +392,7 @@ public class GearFixture : IDisposable
             new StringEqpNodeRepository(wzProviderFixture.WzProvider),
             new ItemOptionNodeRepository(wzProviderFixture.WzProvider));
         parser.ParseGearData = true;
-        Gears = (parser.Parse().First() as JsonData).Items.ToDictionary(e => e.Key, e => (Gear)e.Value);
+        Gears = (parser.Parse().First() as JsonData<Gear>)?.Items!;
 
         WzGears = new Dictionary<string, WzComparerR2Gear>();
         foreach (var node in new GearNodeRepository(wzProviderFixture.WzProvider).GetNodes())
