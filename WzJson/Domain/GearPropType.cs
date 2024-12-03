@@ -188,12 +188,16 @@ public enum GearPropType
     tucIgnoreForPotential,
     Etuc,
     CuttableCount,
+    exUpgradeBlock,
     exUpgradeChangeBlock,
 
     gatherTool_incSkillLevel = 2000,
     gatherTool_incSpeed,
     gatherTool_incNum,
     gatherTool_reqSkillLevel,
+    
+    
+    bossReward = 9999, // Custom
 }
 
 public static class GearPropTypeExtensions
@@ -302,7 +306,7 @@ public static class GearPropTypeExtensions
             GearPropType.cash => null,
             GearPropType.royalSpecial => null,
             GearPropType.masterSpecial => null,
-            GearPropType.reduceReq => null,
+            GearPropType.reduceReq => nameof(GearOption.ReqLevelDecrease),
             GearPropType.mastery => null,
             GearPropType.criticaldamage => nameof(GearOption.CriticalDamage),
             GearPropType.epad => null,
@@ -341,6 +345,7 @@ public static class GearPropTypeExtensions
             GearPropType.willEXP => null,
             GearPropType.craftEXP => null,
             GearPropType.charmEXP => null,
+            GearPropType.bossReward => null,
             GearPropType.cashForceCharmExp => null,
             GearPropType.accountShareTag => null,
             GearPropType.noPotential => null,
@@ -372,6 +377,8 @@ public static class GearPropTypeExtensions
             GearPropType.tucIgnoreForPotential => null,
             GearPropType.Etuc => null,
             GearPropType.CuttableCount => null,
+            GearPropType.exUpgradeBlock => null,
+            GearPropType.exUpgradeChangeBlock => null,
             GearPropType.gatherTool_incSkillLevel => null,
             GearPropType.gatherTool_incSpeed => null,
             GearPropType.gatherTool_incNum => null,
