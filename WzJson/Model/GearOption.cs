@@ -179,7 +179,7 @@ public class GearOption
         }
     }
 
-    private static readonly IReadOnlyDictionary<string, PropertyInfo> Properties;
+    private static readonly Dictionary<string, PropertyInfo> Properties;
 
     static GearOption()
     {

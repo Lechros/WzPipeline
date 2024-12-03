@@ -170,7 +170,7 @@ public class GearConverter(
             var optionNode = propNode.Nodes[i];
             var optionCode = optionNode.FindNodeByPath("option")!.GetValue<string>();
             var level = optionNode.FindNodeByPath("level")!.GetValue<int>();
-            var itemOption = (ItemOption)itemOptionData.Items[optionCode];
+            var itemOption = itemOptionData.Items[optionCode];
             potentials[i] = new GearPotential
             {
                 Title = itemOption.Level[level].String,

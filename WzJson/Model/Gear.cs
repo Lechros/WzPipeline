@@ -218,7 +218,7 @@ public enum PotentialGrade
     Rare = 1,
     Epic = 2,
     Unique = 3,
-    Legendary = 4,
+    Legendary = 4
 }
 
 [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
