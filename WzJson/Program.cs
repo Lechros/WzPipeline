@@ -118,7 +118,8 @@ public static class Program
         var writers = kernel.GetAll<IWriter>().ToList();
         AnsiConsole.Progress()
             .Columns(
-                new TaskDescriptionColumn(),
+                new TaskDescriptionColumn { Alignment = Justify.Left },
+                new RatioColumn(),
                 new ProgressBarColumn(),
                 new PercentageColumn(),
                 new ElapsedSecondsColumn(),
@@ -131,7 +132,7 @@ public static class Program
                     if (!job.ShouldRun(choices)) continue;
 
                     var readDesc = $"Reading {job.Name}";
-                    var readTask = ctx.AddTask(GetProgressDesc(readDesc, 0, "?"));
+                    var readTask = ctx.AddTask(readDesc);
 
                     var reader = (IWzReader)kernel.Get(job.ReaderType);
                     var options = job.GetReadOptions(choices);
@@ -139,7 +140,6 @@ public static class Program
                     {
                         readTask.Value = rData.Value;
                         readTask.MaxValue = rData.MaxValue;
-                        readTask.Description = GetProgressDesc(readDesc, rData.Value, rData.MaxValue);
                     });
                     datas.AddRange(reader.Read(options, readProgress));
                     readTask.StopTask();
@@ -150,25 +150,18 @@ public static class Program
                     var writeDesc = data is ILabeledData labeledData
                         ? $"Writing {labeledData.Label}"
                         : $"Writing ...";
-                    var writeTask = ctx.AddTask(GetProgressDesc(writeDesc, 0, "?"));
+                    var writeTask = ctx.AddTask(writeDesc);
 
                     var writer = writers.First(writer => writer.Supports(data));
                     var writeProgress = new Progress<WriteProgressData>(wData =>
                     {
                         writeTask.Value = wData.Value;
                         writeTask.MaxValue = wData.MaxValue;
-                        writeTask.Description = GetProgressDesc(writeDesc, wData.Value, wData.MaxValue);
                     });
                     writer.Write(data, writeProgress);
                     writeTask.StopTask();
                 });
             });
-    }
-
-    private static string GetProgressDesc(string message, dynamic current, dynamic total)
-    {
-        var currentColor = current.ToString() == total.ToString() ? "green" : "yellow";
-        return $"{message} []([/][{currentColor}]{current}[/][]/{total})[/]";
     }
 
     public class Job(string name, Type readerType)
@@ -181,6 +174,24 @@ public static class Program
         public bool ShouldRun(List<string> choices)
         {
             return choices.Intersect(Choices).Any();
+        }
+    }
+
+    public sealed class RatioColumn : ProgressColumn
+    {
+        protected override bool NoWrap => true;
+
+        public Style CompletedStyle { get; set; } = Color.Yellow;
+
+        public Style FinishedStyle { get; set; } = Color.Green;
+
+        public override IRenderable Render(RenderOptions options, ProgressTask task, TimeSpan deltaTime)
+        {
+            return new Columns(
+                new Text($"{task.Value}", task.IsFinished ? FinishedStyle : CompletedStyle).Justify(Justify.Right),
+                new Text("/"),
+                new Text($"{task.MaxValue}").Justify(Justify.Right)
+            );
         }
     }
 
