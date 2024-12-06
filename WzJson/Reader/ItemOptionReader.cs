@@ -5,14 +5,20 @@ using WzJson.Repository;
 
 namespace WzJson.Reader;
 
-public class ItemOptionReader(ItemOptionNodeRepository itemOptionNodeRepository) : AbstractWzReader
+public class ItemOptionReadOptions : IReadOptions
 {
-    public const string ItemOptionJsonName = "item-option.json";
+    public string? ItemOptionJsonPath { get; set; }
+}
 
-    protected override IEnumerable<Wz_Node> GetNodes() => itemOptionNodeRepository.GetNodes();
+public class ItemOptionReader(ItemOptionNodeRepository itemOptionNodeRepository) : AbstractWzReader<ItemOptionReadOptions>
+{
+    protected override INodeRepository GetNodeRepository(ItemOptionReadOptions _) => itemOptionNodeRepository;
 
-    protected override IList<INodeConverter<object>> GetConverters() =>
-    [
-        new ItemOptionConverter(ItemOptionJsonName)
-    ];
+    protected override IList<INodeConverter<object>> GetConverters(ItemOptionReadOptions options)
+    {
+        var converters = new List<INodeConverter<object>>();
+        if (options.ItemOptionJsonPath != null)
+            converters.Add(new ItemOptionConverter(options.ItemOptionJsonPath));
+        return converters;
+    }
 }

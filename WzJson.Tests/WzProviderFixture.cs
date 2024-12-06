@@ -4,7 +4,7 @@ namespace WzJson.Tests;
 
 public class WzProviderFixture : IDisposable
 {
-    private const string MaplePath = @"C:\Nexon\Maple";
+    private const string MaplePath = @"C:\Nexon\Maple\Data\Base\Base.wz";
 
     public WzProviderFixture()
     {

@@ -6,10 +6,7 @@ namespace WzJson.Common;
 
 public class WzProvider : IWzProvider
 {
-    private static readonly string RelativeBaseWzPath = Path.Join("Data", "Base", "Base.wz");
-
-    private readonly string baseWzPath;
-    private Wz_Structure? openedWz;
+    private Wz_Structure openedWz;
 
     static WzProvider()
     {
@@ -19,41 +16,16 @@ public class WzProvider : IWzProvider
         Wz_Structure.DefaultWzVersionVerifyMode = WzVersionVerifyMode.Fast;
     }
 
-    public WzProvider(string maplePath)
+    public WzProvider(string baseWzPath)
     {
-        baseWzPath = Path.Join(maplePath, RelativeBaseWzPath);
-        if (!File.Exists(baseWzPath))
-            throw new FileNotFoundException($"Base.wz not found in {RelativeBaseWzPath}");
+        OpenWz(baseWzPath);
     }
 
-    public Wz_Node BaseNode
-    {
-        get
-        {
-            EnsureLoaded();
-            return openedWz.WzNode;
-        }
-    }
-
-    [MemberNotNull(nameof(openedWz))]
-    private void EnsureLoaded()
-    {
-        if (openedWz == null)
-            OpenWz(baseWzPath);
-    }
+    public Wz_Node BaseNode => openedWz.WzNode;
 
     [MemberNotNull(nameof(openedWz))]
     private void OpenWz(string wzFilePath)
     {
-        if (openedWz != null)
-        {
-            foreach (var wzf in openedWz.wz_files)
-            {
-                if (string.Equals(wzf.Header.FileName, wzFilePath, StringComparison.OrdinalIgnoreCase))
-                    return;
-            }
-        }
-
         var wz = new Wz_Structure();
         if (wz.IsKMST1125WzFormat(wzFilePath))
             wz.LoadKMST1125DataWz(wzFilePath);
@@ -65,8 +37,6 @@ public class WzProvider : IWzProvider
 
     public Wz_Node? FindNode(string fullPath)
     {
-        EnsureLoaded();
-
         var wzType = Wz_Type.Unknown;
         Wz_Node? wzNode = null;
 

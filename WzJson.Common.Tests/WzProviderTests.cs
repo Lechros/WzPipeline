@@ -4,7 +4,7 @@ namespace WzJson.Common.Tests;
 
 public class WzProviderTests
 {
-    private const string MaplePath = @"C:\Nexon\Maple";
+    private const string MaplePath = @"C:\Nexon\Maple\Data\Base\Base.wz";
     private const string StringNodePath = "String";
     private const string StringEqpNodePath = @"String\Eqp.img";
 

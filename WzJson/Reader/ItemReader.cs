@@ -6,17 +6,24 @@ using WzJson.Repository;
 
 namespace WzJson.Reader;
 
-public class ItemReader(ItemNodeRepository itemNodeRepository, GlobalFindNodeFunction findNode)
-    : AbstractWzReader
+public class ItemReadOptions : IReadOptions
 {
-    public const string ItemIconOriginJsonPath = "item-origin.json";
-    public const string ItemIconPath = "item-icon";
+    public string? ItemIconOriginJsonPath { get; set; }
+    public string? ItemIconPath { get; set; }
+}
 
-    protected override IEnumerable<Wz_Node> GetNodes() => itemNodeRepository.GetNodes();
+public class ItemReader(ItemNodeRepository itemNodeRepository, GlobalFindNodeFunction findNode)
+    : AbstractWzReader<ItemReadOptions>
+{
+    protected override INodeRepository GetNodeRepository(ItemReadOptions _) => itemNodeRepository;
 
-    protected override IList<INodeConverter<object>> GetConverters() =>
-    [
-        new IconOriginConverter(ItemIconOriginJsonPath, @"info\icon\origin"),
-        new IconBitmapConverter(ItemIconPath, @"info\icon", findNode)
-    ];
+    protected override IList<INodeConverter<object>> GetConverters(ItemReadOptions options)
+    {
+        var converters = new List<INodeConverter<object>>();
+        if (options.ItemIconOriginJsonPath != null)
+            converters.Add(new IconOriginConverter(options.ItemIconOriginJsonPath, @"info\icon\origin"));
+        if (options.ItemIconPath != null)
+            converters.Add(new IconBitmapConverter(options.ItemIconPath, @"info\icon", findNode));
+        return converters;
+    }
 }

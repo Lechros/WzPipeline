@@ -57,7 +57,7 @@ public class PngFilesWriterTests : OutputPathTestSupport
             [key2] = value2
         });
 
-        writer.Write(data);
+        writer.Write(data, new Progress<WriteProgressData>());
 
         Assert.True(Directory.Exists(expectedOutputDirectory));
         Assert.Equal(2, Directory.EnumerateFiles(expectedOutputDirectory).Count());
@@ -84,7 +84,7 @@ public class PngFilesWriterTests : OutputPathTestSupport
             [key2] = value2
         });
 
-        writer.Write(data);
+        writer.Write(data, new Progress<WriteProgressData>());
 
         Assert.True(Directory.Exists(expectedOutputDirectory));
         Assert.Equal(2, Directory.EnumerateFiles(expectedOutputDirectory).Count());
@@ -111,7 +111,7 @@ public class PngFilesWriterTests : OutputPathTestSupport
             [key2] = value2
         });
 
-        writer.Write(data);
+        writer.Write(data, new Progress<WriteProgressData>());
 
         Assert.True(Directory.Exists(expectedOutputDirectory));
         Assert.True(File.Exists(expectedFile1));

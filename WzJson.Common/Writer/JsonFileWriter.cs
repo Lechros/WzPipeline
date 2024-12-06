@@ -11,17 +11,21 @@ public class JsonFileWriter(string outputPath, JsonSerializer serializer) : Abst
         return data is JsonData;
     }
 
-    protected override void WriteItems(IData data)
+    protected override void WriteItems(IData data, IProgress<WriteProgressData> progress)
     {
         var jsonData = (JsonData)data;
         var sortedItems = ToSortedItems(jsonData);
 
         var filename = Path.Join(OutputPath, jsonData.Path);
         EnsureDirectory(filename);
+        
+        progress.Report(new WriteProgressData(0, sortedItems.Count));
 
         using StreamWriter sw = new(filename);
         using JsonWriter writer = new JsonTextWriter(sw);
         serializer.Serialize(writer, sortedItems);
+
+        progress.Report(new WriteProgressData(sortedItems.Count, sortedItems.Count));
     }
 
     private SortedDictionary<string, object> ToSortedItems(JsonData jsonData)
@@ -46,6 +50,7 @@ public class JsonFileWriter(string outputPath, JsonSerializer serializer) : Abst
         {
             if (!int.TryParse(key, out _)) return false;
         }
+
         return true;
     }
 }

@@ -51,7 +51,7 @@ public class JsonFileWriterTests : OutputPathTestSupport
 
         var writer = new JsonFileWriter(OutputPath, jsonSerializer);
         var data = new JsonData(filename, new Dictionary<string, object> { [key] = value });
-        writer.Write(data);
+        writer.Write(data, new Progress<WriteProgressData>());
 
         Assert.True(File.Exists(expectedFilename));
         var content = File.ReadAllText(expectedFilename);
@@ -70,7 +70,7 @@ public class JsonFileWriterTests : OutputPathTestSupport
         var writer = new JsonFileWriter(OutputPath, jsonSerializer);
         var data = new JsonData(filename, new Dictionary<string, object> { [key] = value });
 
-        writer.Write(data);
+        writer.Write(data, new Progress<WriteProgressData>());
 
         Assert.True(File.Exists(expectedFilename));
         var content = File.ReadAllText(expectedFilename);
@@ -97,7 +97,7 @@ public class JsonFileWriterTests : OutputPathTestSupport
         var writer = new JsonFileWriter(OutputPath, jsonSerializer);
         var data = new JsonData(filename, dict);
 
-        writer.Write(data);
+        writer.Write(data, new Progress<WriteProgressData>());
 
         var content = File.ReadAllText(expectedFilename);
         Assert.Equal(expectedContent, content);
