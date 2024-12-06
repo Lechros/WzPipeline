@@ -18,7 +18,7 @@ public class ItemOptionReader(ItemOptionNodeRepository itemOptionNodeRepository)
     {
         var converters = new List<INodeConverter<object>>();
         if (options.ItemOptionJsonPath != null)
-            converters.Add(new ItemOptionConverter(options.ItemOptionJsonPath));
+            converters.Add(new ItemOptionConverter("item option data", options.ItemOptionJsonPath));
         return converters;
     }
 }

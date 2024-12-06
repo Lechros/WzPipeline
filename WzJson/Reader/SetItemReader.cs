@@ -18,10 +18,10 @@ public class SetItemReader(
 
     protected override IList<INodeConverter<object>> GetConverters(SetItemReadOptions options)
     {
-        var itemOptionData = new ItemOptionConverter(string.Empty).Convert(itemOptionNodeRepository.GetNodes());
+        var itemOptionData = new ItemOptionConverter(string.Empty, string.Empty).Convert(itemOptionNodeRepository.GetNodes());
         var converters = new List<INodeConverter<object>>();
         if (options.SetItemJsonName != null)
-            converters.Add(new SetItemConverter(options.SetItemJsonName, itemOptionData));
+            converters.Add(new SetItemConverter("set item data", options.SetItemJsonName, itemOptionData));
         return converters;
     }
 }

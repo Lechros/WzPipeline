@@ -20,7 +20,7 @@ public class SkillReader(SkillNodeRepository skillNodeRepository, GlobalFindNode
     {
         var converters = new List<INodeConverter<object>>();
         if (options.SkillIconPath != null)
-            converters.Add(new IconBitmapConverter(options.SkillIconPath, "icon", findNode));
+            converters.Add(new IconBitmapConverter("skill icons", options.SkillIconPath, "icon", findNode));
         return converters;
     }
 }

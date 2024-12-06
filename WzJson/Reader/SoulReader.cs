@@ -20,7 +20,7 @@ public class SoulReader(
     {
         var converters = new List<INodeConverter<object>>();
         if (options.SoulDataJsonPath != null)
-            converters.Add(new SoulConverter(options.SoulDataJsonPath, globalStringDataProvider.GlobalStringData));
+            converters.Add(new SoulConverter("soul data", options.SoulDataJsonPath, globalStringDataProvider.GlobalStringData));
         return converters;
     }
 }

@@ -21,9 +21,9 @@ public class ItemReader(ItemNodeRepository itemNodeRepository, GlobalFindNodeFun
     {
         var converters = new List<INodeConverter<object>>();
         if (options.ItemIconOriginJsonPath != null)
-            converters.Add(new IconOriginConverter(options.ItemIconOriginJsonPath, @"info\icon\origin"));
+            converters.Add(new IconOriginConverter("item icon origins", options.ItemIconOriginJsonPath, @"info\icon\origin"));
         if (options.ItemIconPath != null)
-            converters.Add(new IconBitmapConverter(options.ItemIconPath, @"info\icon", findNode));
+            converters.Add(new IconBitmapConverter("item icons", options.ItemIconPath, @"info\icon", findNode));
         return converters;
     }
 }

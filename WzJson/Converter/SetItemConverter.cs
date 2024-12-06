@@ -6,9 +6,9 @@ using WzJson.Model;
 
 namespace WzJson.Converter;
 
-public class SetItemConverter(string dataName, JsonData<ItemOption> itemOptionData) : AbstractNodeConverter<SetItem>
+public class SetItemConverter(string dataLabel, string dataPath, JsonData<ItemOption> itemOptionData) : AbstractNodeConverter<SetItem>
 {
-    public override IData NewData() => new JsonData(dataName);
+    public override IData NewData() => new JsonData(dataLabel, dataPath);
 
     public override string GetNodeKey(Wz_Node node) => WzUtility.GetNodeCode(node);
 

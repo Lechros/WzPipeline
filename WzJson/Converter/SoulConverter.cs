@@ -7,13 +7,13 @@ using WzJson.Model;
 
 namespace WzJson.Converter;
 
-public partial class SoulConverter(string dataName, GlobalStringData globalStringData)
+public partial class SoulConverter(string dataLabel, string dataPath, GlobalStringData globalStringData)
     : INodeConverter<Soul>
 {
     [GeneratedRegex(@"추가 잠재능력 : ([\w가-힣]+) \+(\d+)")]
     private static partial Regex SoulDescOptionRegex();
 
-    public IData NewData() => new JsonData(dataName);
+    public IData NewData() => new JsonData(dataLabel, dataPath);
 
     public string GetNodeKey(Wz_Node node) => WzUtility.GetNodeCode(node);
 

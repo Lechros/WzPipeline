@@ -26,7 +26,7 @@ public class JsonFileWriterTests : OutputPathTestSupport
     public void Supports_JsonData_ReturnsTrue()
     {
         var writer = new JsonFileWriter(OutputPath, jsonSerializer);
-        var data = new JsonData("test.json", new Dictionary<string, object>());
+        var data = new JsonData("", "test.json", new Dictionary<string, object>());
 
         Assert.True(writer.Supports(data));
     }
@@ -50,7 +50,7 @@ public class JsonFileWriterTests : OutputPathTestSupport
         var expectedContent = @"{""key"":""value""}";
 
         var writer = new JsonFileWriter(OutputPath, jsonSerializer);
-        var data = new JsonData(filename, new Dictionary<string, object> { [key] = value });
+        var data = new JsonData(filename, filename, new Dictionary<string, object> { [key] = value });
         writer.Write(data, new Progress<WriteProgressData>());
 
         Assert.True(File.Exists(expectedFilename));
@@ -68,7 +68,7 @@ public class JsonFileWriterTests : OutputPathTestSupport
         var expectedContent = @"{""key"":""value""}";
 
         var writer = new JsonFileWriter(OutputPath, jsonSerializer);
-        var data = new JsonData(filename, new Dictionary<string, object> { [key] = value });
+        var data = new JsonData(filename, filename, new Dictionary<string, object> { [key] = value });
 
         writer.Write(data, new Progress<WriteProgressData>());
 
@@ -95,7 +95,7 @@ public class JsonFileWriterTests : OutputPathTestSupport
             @"{""-1"":""-1"",""1"":""1"",""2"":""2"",""10"":""10"",""11"":""11"",""21"":""21""}";
 
         var writer = new JsonFileWriter(OutputPath, jsonSerializer);
-        var data = new JsonData(filename, dict);
+        var data = new JsonData(filename, filename, dict);
 
         writer.Write(data, new Progress<WriteProgressData>());
 

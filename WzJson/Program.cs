@@ -33,7 +33,6 @@ public static class Program
         kernel.Get<IWzProvider>();
         sw.Stop();
         AnsiConsole.MarkupLineInterpolated($"Done in [yellow]{sw.ElapsedMilliseconds}ms[/].");
-        AnsiConsole.MarkupLineInterpolated($"Output directory set to [purple]{Path.GetFullPath(OutputPath)}[/]");
 
 
         AnsiConsole.MarkupLineInterpolated($"Reading wz string data");
@@ -42,11 +41,13 @@ public static class Program
         sw.Stop();
         AnsiConsole.MarkupLineInterpolated($"Done in [yellow]{sw.ElapsedMilliseconds}ms[/].");
 
+        AnsiConsole.MarkupLineInterpolated($"Output directory set to [purple]{Path.GetFullPath(OutputPath)}[/]");
+
         List<Job> jobs =
         [
             new("gear", typeof(GearReader))
             {
-                Choices = ["gear data", "gear icons", "gear icon origins", "gear raw icons", "gear raw icon originss"],
+                Choices = ["gear data", "gear icons", "gear icon origins", "gear raw icons", "gear raw icon origins"],
                 GetReadOptions = choices => new GearReadOptions
                 {
                     GearDataJsonPath = choices.Contains("gear data") ? "gear-data.json" : null,
@@ -124,6 +125,7 @@ public static class Program
                 new SpinnerColumn())
             .Start(ctx =>
             {
+                List<IData> datas = [];
                 foreach (var job in jobs)
                 {
                     if (!job.ShouldRun(choices)) continue;
@@ -139,25 +141,27 @@ public static class Program
                         readTask.MaxValue = rData.MaxValue;
                         readTask.Description = GetProgressDesc(readDesc, rData.Value, rData.MaxValue);
                     });
-                    var datas = reader.Read(options, readProgress);
+                    datas.AddRange(reader.Read(options, readProgress));
                     readTask.StopTask();
-
-                    Parallel.ForEach(datas, data =>
-                    {
-                        var writeDesc = $"Writing something";
-                        var writeTask = ctx.AddTask(GetProgressDesc(writeDesc, 0, "?"));
-
-                        var writer = writers.First(writer => writer.Supports(data));
-                        var writeProgress = new Progress<WriteProgressData>(wData =>
-                        {
-                            writeTask.Value = wData.Value;
-                            writeTask.MaxValue = wData.MaxValue;
-                            writeTask.Description = GetProgressDesc(writeDesc, wData.Value, wData.MaxValue);
-                        });
-                        writer.Write(data, writeProgress);
-                        writeTask.StopTask();
-                    });
                 }
+
+                Parallel.ForEach(datas, data =>
+                {
+                    var writeDesc = data is ILabeledData labeledData
+                        ? $"Writing {labeledData.Label}"
+                        : $"Writing ...";
+                    var writeTask = ctx.AddTask(GetProgressDesc(writeDesc, 0, "?"));
+
+                    var writer = writers.First(writer => writer.Supports(data));
+                    var writeProgress = new Progress<WriteProgressData>(wData =>
+                    {
+                        writeTask.Value = wData.Value;
+                        writeTask.MaxValue = wData.MaxValue;
+                        writeTask.Description = GetProgressDesc(writeDesc, wData.Value, wData.MaxValue);
+                    });
+                    writer.Write(data, writeProgress);
+                    writeTask.StopTask();
+                });
             });
     }
 

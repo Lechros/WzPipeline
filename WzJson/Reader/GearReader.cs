@@ -27,19 +27,24 @@ public class GearReader(
 
     protected override IList<INodeConverter<object>> GetConverters(GearReadOptions options)
     {
-        var itemOptionData = new ItemOptionConverter(string.Empty).Convert(itemOptionNodeRepository.GetNodes());
+        var itemOptionData =
+            new ItemOptionConverter(string.Empty, string.Empty).Convert(itemOptionNodeRepository.GetNodes());
         var converters = new List<INodeConverter<object>>();
         if (options.GearDataJsonPath != null)
-            converters.Add(new GearConverter(options.GearDataJsonPath, globalStringDataProvider.GlobalStringData,
+            converters.Add(new GearConverter("gear data", options.GearDataJsonPath,
+                globalStringDataProvider.GlobalStringData,
                 itemOptionData, findNode));
         if (options.GearIconOriginJsonPath != null)
-            converters.Add(new IconOriginConverter(options.GearIconOriginJsonPath, @"info\icon\origin"));
+            converters.Add(new IconOriginConverter("gear icon origins", options.GearIconOriginJsonPath,
+                @"info\icon\origin"));
         if (options.GearIconRawOriginJsonPath != null)
-            converters.Add(new IconOriginConverter(options.GearIconRawOriginJsonPath, @"info\iconRaw\origin"));
+            converters.Add(new IconOriginConverter("gear raw icon origins", options.GearIconRawOriginJsonPath,
+                @"info\iconRaw\origin"));
         if (options.GearIconPath != null)
-            converters.Add(new IconBitmapConverter(options.GearIconPath, @"info\icon", findNode));
+            converters.Add(new IconBitmapConverter("gear icons", options.GearIconPath, @"info\icon", findNode));
         if (options.GearIconRawPath != null)
-            converters.Add(new IconBitmapConverter(options.GearIconRawPath, @"info\iconRaw", findNode));
+            converters.Add(
+                new IconBitmapConverter("gear raw icons", options.GearIconRawPath, @"info\iconRaw", findNode));
 
         return converters;
     }

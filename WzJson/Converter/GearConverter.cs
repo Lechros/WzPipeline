@@ -8,13 +8,14 @@ using WzJson.Model;
 namespace WzJson.Converter;
 
 public class GearConverter(
-    string dataName,
+    string dataLabel,
+    string dataPath,
     GlobalStringData globalStringData,
     JsonData<ItemOption> itemOptionData,
     GlobalFindNodeFunction findNode)
     : AbstractNodeConverter<Gear>
 {
-    public override IData NewData() => new JsonData<Gear>(dataName);
+    public override IData NewData() => new JsonData<Gear>(dataLabel, dataPath);
 
     public override string GetNodeKey(Wz_Node node) => WzUtility.GetNodeCode(node);
 
