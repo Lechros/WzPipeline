@@ -161,6 +161,12 @@ public static class Program
                     writer.Write(data, writeProgress);
                     writeTask.StopTask();
                 });
+
+                foreach (var data in datas)
+                {
+                    if (data is IDisposable disposable)
+                        disposable.Dispose();
+                }
             });
     }
 
