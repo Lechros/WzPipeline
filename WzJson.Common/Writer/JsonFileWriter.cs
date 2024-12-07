@@ -16,16 +16,18 @@ public class JsonFileWriter(string outputPath, JsonSerializer serializer) : Abst
         var jsonData = (JsonData)data;
         var sortedItems = ToSortedItems(jsonData);
 
+        var reporter = new ProgressReporter<WriteProgressData>(progress,
+            (current, total) => new WriteProgressData(current, total),
+            sortedItems.Count);
+
         var filename = Path.Join(OutputPath, jsonData.Path);
         EnsureDirectory(filename);
-        
-        progress.Report(new WriteProgressData(0, sortedItems.Count));
 
         using StreamWriter sw = new(filename);
         using JsonWriter writer = new JsonTextWriter(sw);
         serializer.Serialize(writer, sortedItems);
-
-        progress.Report(new WriteProgressData(sortedItems.Count, sortedItems.Count));
+        
+        reporter.Complete();
     }
 
     private SortedDictionary<string, object> ToSortedItems(JsonData jsonData)

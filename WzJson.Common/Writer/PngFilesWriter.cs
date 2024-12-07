@@ -16,9 +16,9 @@ public class PngFilesWriter(string outputPath) : AbstractFileWriter(outputPath)
         var bitmapData = (BitmapData)data;
         var items = bitmapData.Items;
 
-        var total = bitmapData.Items.Count;
-        var current = 0;
-        progress.Report(new WriteProgressData(current, total));
+        var reporter = new ProgressReporter<WriteProgressData>(progress,
+            (current, total) => new WriteProgressData(current, total),
+            bitmapData.Items.Count);
 
         var rootPath = Path.Join(OutputPath, bitmapData.Path);
 
@@ -28,12 +28,10 @@ public class PngFilesWriter(string outputPath) : AbstractFileWriter(outputPath)
             var filename = Path.Join(rootPath, key);
             SavePng(bitmap, filename);
 
-            Interlocked.Increment(ref current);
-            if (total < 100 || current % (total / 100) == 0)
-                progress.Report(new WriteProgressData(current, total));
+            reporter.Increment();
         });
-
-        progress.Report(new WriteProgressData(total, total));
+        
+        reporter.Complete();
     }
 
     private void SavePng(Bitmap bitmap, string filename)

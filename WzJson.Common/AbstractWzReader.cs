@@ -13,10 +13,9 @@ public abstract class AbstractWzReader<TReadOptions> : IWzReader where TReadOpti
         var converters = GetConverters(options);
         var pairs = converters.Select(converter => new ConverterDataPair(converter)).ToArray();
 
-        var total = repository.GetNodeCount();
-        var current = 0;
-        progress.Report(new ReadProgressData(current, total));
-        
+        var reporter = new ProgressReporter<ReadProgressData>(progress,
+            (current, total) => new ReadProgressData(current, total), repository.GetNodeCount());
+
         foreach (var node in repository.GetNodes())
         {
             foreach (var pair in pairs)
@@ -27,12 +26,10 @@ public abstract class AbstractWzReader<TReadOptions> : IWzReader where TReadOpti
                     pair.Data.Add(name, item);
             }
 
-            current++;
-            if (total < 100 || current % (total / 100) == 0)
-                progress.Report(new ReadProgressData(current, total));
+            reporter.Increment();
         }
-
-        progress.Report(new ReadProgressData(total, total));
+        
+        reporter.Complete();
 
         return pairs.Select(pair => pair.Data).ToList();
     }
