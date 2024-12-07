@@ -13,14 +13,24 @@ namespace WzJson;
 
 public static class Program
 {
-    public static readonly string BaseWzPath = @"C:\Nexon\Maple\Data\Base\Base.wz";
+    public static readonly string DefaultBaseWzPath = @"C:\Nexon\Maple\Data\Base\Base.wz";
     public static readonly string OutputPath = Path.Join(AppContext.BaseDirectory, @"output\");
 
     public static void Main(string[] args)
     {
+        var baseWzPath = DefaultBaseWzPath;
+
+        AnsiConsole.MarkupLineInterpolated($"Base.wz path is set to [purple]{baseWzPath}[/]");
+        var shouldChangeBaseWzPath = AnsiConsole.Prompt(
+            new ConfirmationPrompt("Would you like to change the path?") { DefaultValue = false });
+        if (shouldChangeBaseWzPath)
+        {
+            baseWzPath = AnsiConsole.Ask<string>("Input Base.wz path:");
+        }
+
         var kernel = new StandardKernel();
         var jsonSerializer = new JsonSerializer();
-        kernel.Bind<IWzProvider>().ToMethod(_ => new WzProvider(BaseWzPath)).InSingletonScope();
+        kernel.Bind<IWzProvider>().ToMethod(_ => new WzProvider(baseWzPath)).InSingletonScope();
         kernel.Bind<GlobalFindNodeFunction>().ToMethod(ctx => ctx.Kernel.Get<IWzProvider>().FindNode);
         kernel.Bind<IWriter>().ToMethod(_ => new JsonFileWriter(OutputPath, jsonSerializer))
             .InSingletonScope();
@@ -28,7 +38,7 @@ public static class Program
 
         var sw = new Stopwatch();
 
-        AnsiConsole.MarkupLineInterpolated($"Validating wz from [purple]{BaseWzPath}[/]");
+        AnsiConsole.MarkupLineInterpolated($"Validating wz from [purple]{baseWzPath}[/]");
         sw.Restart();
         kernel.Get<IWzProvider>();
         sw.Stop();

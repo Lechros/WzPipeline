@@ -18,6 +18,8 @@ public class WzProvider : IWzProvider
 
     public WzProvider(string baseWzPath)
     {
+        if (!File.Exists(baseWzPath))
+            throw new FileNotFoundException($"Wz path {baseWzPath} does not exist.");
         OpenWz(baseWzPath);
     }
 
