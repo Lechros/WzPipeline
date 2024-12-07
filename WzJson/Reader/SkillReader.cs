@@ -6,15 +6,21 @@ using WzJson.Repository;
 
 namespace WzJson.Reader;
 
-public class SkillReader(SkillNodeRepository skillNodeRepository, GlobalFindNodeFunction findNode)
-    : AbstractWzReader
+public class SkillReadOptions : IReadOptions
 {
-    public const string SkillIconPath = "skill-icon";
+    public string? SkillIconPath { get; set; }
+}
 
-    protected override IEnumerable<Wz_Node> GetNodes() => skillNodeRepository.GetNodes();
+public class SkillReader(SkillNodeRepository skillNodeRepository, GlobalFindNodeFunction findNode)
+    : AbstractWzReader<SkillReadOptions>
+{
+    protected override INodeRepository GetNodeRepository(SkillReadOptions _) => skillNodeRepository;
 
-    protected override IList<INodeConverter<object>> GetConverters() =>
-    [
-        new IconBitmapConverter(SkillIconPath, "icon", findNode)
-    ];
+    protected override IList<INodeConverter<object>> GetConverters(SkillReadOptions options)
+    {
+        var converters = new List<INodeConverter<object>>();
+        if (options.SkillIconPath != null)
+            converters.Add(new IconBitmapConverter("skill icons", options.SkillIconPath, "icon", findNode));
+        return converters;
+    }
 }

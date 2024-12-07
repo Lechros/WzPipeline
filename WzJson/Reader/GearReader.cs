@@ -1,5 +1,4 @@
 using WzComparerR2.Common;
-using WzComparerR2.WzLib;
 using WzJson.Common;
 using WzJson.Common.Converter;
 using WzJson.Converter;
@@ -7,41 +6,45 @@ using WzJson.Repository;
 
 namespace WzJson.Reader;
 
+public class GearReadOptions : IReadOptions
+{
+    public GlobalStringData? GlobalStringData { get; set; }
+    public string? GearDataJsonPath { get; set; }
+    public string? GearIconOriginJsonPath { get; set; }
+    public string? GearIconRawOriginJsonPath { get; set; }
+    public string? GearIconPath { get; set; }
+    public string? GearIconRawPath { get; set; }
+}
+
 public class GearReader(
     GlobalFindNodeFunction findNode,
     GearNodeRepository gearNodeRepository,
     ItemOptionNodeRepository itemOptionNodeRepository,
-    GlobalStringData globalStringData)
-    : AbstractWzReader
+    GlobalStringDataProvider globalStringDataProvider)
+    : AbstractWzReader<GearReadOptions>
 {
-    public const string GearDataJsonPath = "gear-data.json";
-    public const string GearIconOriginJsonPath = "gear-origin.json";
-    public const string GearIconRawOriginJsonPath = "gear-origin-raw.json";
-    public const string GearIconPath = "gear-icon";
-    public const string GearIconRawPath = "gear-icon-raw";
+    protected override INodeRepository GetNodeRepository(GearReadOptions _) => gearNodeRepository;
 
-    public bool ReadGearData { get; set; }
-    public bool ReadGearIconOrigin { get; set; }
-    public bool ReadGearIconRawOrigin { get; set; }
-    public bool ReadGearIcon { get; set; }
-    public bool ReadGearIconRaw { get; set; }
-
-    protected override IEnumerable<Wz_Node> GetNodes() => gearNodeRepository.GetNodes();
-
-    protected override IList<INodeConverter<object>> GetConverters()
+    protected override IList<INodeConverter<object>> GetConverters(GearReadOptions options)
     {
-        var itemOptionData = new ItemOptionConverter(string.Empty).Convert(itemOptionNodeRepository.GetNodes());
+        var itemOptionData =
+            new ItemOptionConverter(string.Empty, string.Empty).Convert(itemOptionNodeRepository.GetNodes());
         var converters = new List<INodeConverter<object>>();
-        if (ReadGearData)
-            converters.Add(new GearConverter(GearDataJsonPath, globalStringData, itemOptionData, findNode));
-        if (ReadGearIconOrigin)
-            converters.Add(new IconOriginConverter(GearIconOriginJsonPath, @"info\icon\origin"));
-        if (ReadGearIconRawOrigin)
-            converters.Add(new IconOriginConverter(GearIconRawOriginJsonPath, @"info\iconRaw\origin"));
-        if (ReadGearIcon)
-            converters.Add(new IconBitmapConverter(GearIconPath, @"info\icon", findNode));
-        if (ReadGearIconRaw)
-            converters.Add(new IconBitmapConverter(GearIconRawPath, @"info\iconRaw", findNode));
+        if (options.GearDataJsonPath != null)
+            converters.Add(new GearConverter("gear data", options.GearDataJsonPath,
+                globalStringDataProvider.GlobalStringData,
+                itemOptionData, findNode));
+        if (options.GearIconOriginJsonPath != null)
+            converters.Add(new IconOriginConverter("gear icon origins", options.GearIconOriginJsonPath,
+                @"info\icon\origin"));
+        if (options.GearIconRawOriginJsonPath != null)
+            converters.Add(new IconOriginConverter("gear raw icon origins", options.GearIconRawOriginJsonPath,
+                @"info\iconRaw\origin"));
+        if (options.GearIconPath != null)
+            converters.Add(new IconBitmapConverter("gear icons", options.GearIconPath, @"info\icon", findNode));
+        if (options.GearIconRawPath != null)
+            converters.Add(
+                new IconBitmapConverter("gear raw icons", options.GearIconRawPath, @"info\iconRaw", findNode));
 
         return converters;
     }

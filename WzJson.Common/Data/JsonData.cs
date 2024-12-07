@@ -4,25 +4,27 @@ namespace WzJson.Common.Data;
 
 public class JsonData<TValue> : JsonData
 {
-    public JsonData(string path) : this(path, new Dictionary<string, TValue>())
+    public JsonData(string label, string path) : this(label, path, new Dictionary<string, TValue>())
     {
     }
 
-    public JsonData(string path, Dictionary<string, TValue> items) : base(path, items)
+    public JsonData(string label, string path, Dictionary<string, TValue> items) : base(label, path, items)
     {
     }
 
     public new IDictionary<string, TValue> Items => (Dictionary<string, TValue>)base.Items;
 }
 
-public class JsonData : IData
+public class JsonData : ILabeledData
 {
-    public JsonData(string path, IDictionary? items = null)
+    public JsonData(string label, string path, IDictionary? items = null)
     {
+        Label = label;
         Path = path;
         Items = items ?? new Dictionary<string, object>();
     }
 
+    public string Label { get; set; }
     public string Path { get; }
     public IDictionary Items { get; }
 

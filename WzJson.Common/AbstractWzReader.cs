@@ -1,15 +1,22 @@
-using WzComparerR2.WzLib;
-
 namespace WzJson.Common;
 
-public abstract class AbstractWzReader : IWzReader
+public abstract class AbstractWzReader<TReadOptions> : IWzReader where TReadOptions : IReadOptions
 {
-    public IList<IData> Read()
+    public IList<IData> Read(IReadOptions options, IProgress<ReadProgressData> progress)
     {
-        var converters = GetConverters();
+        return Read((TReadOptions)options, progress);
+    }
+
+    public IList<IData> Read(TReadOptions options, IProgress<ReadProgressData> progress)
+    {
+        var repository = GetNodeRepository(options);
+        var converters = GetConverters(options);
         var pairs = converters.Select(converter => new ConverterDataPair(converter)).ToArray();
 
-        foreach (var node in GetNodes())
+        var reporter = new ProgressReporter<ReadProgressData>(progress,
+            (current, total) => new ReadProgressData(current, total), repository.GetNodeCount());
+
+        foreach (var node in repository.GetNodes())
         {
             foreach (var pair in pairs)
             {
@@ -18,14 +25,18 @@ public abstract class AbstractWzReader : IWzReader
                 if (item != null)
                     pair.Data.Add(name, item);
             }
+
+            reporter.Increment();
         }
+        
+        reporter.Complete();
 
         return pairs.Select(pair => pair.Data).ToList();
     }
 
-    protected abstract IEnumerable<Wz_Node> GetNodes();
+    protected abstract INodeRepository GetNodeRepository(TReadOptions options);
 
-    protected abstract IList<INodeConverter<object>> GetConverters();
+    protected abstract IList<INodeConverter<object>> GetConverters(TReadOptions options);
 
     private record struct ConverterDataPair(INodeConverter<object> Converter)
     {

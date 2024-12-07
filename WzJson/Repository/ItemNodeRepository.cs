@@ -14,7 +14,7 @@ public class ItemNodeRepository(IWzProvider wzProvider) : AbstractNodeRepository
         foreach (var partNode in GetRootNode().Nodes)
         {
             if (!PartNames.Contains(partNode.Text)) continue;
-            
+
             foreach (var itemListNode in partNode.Nodes)
             {
                 var wzImage = itemListNode.GetNodeWzImage();

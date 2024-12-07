@@ -2,14 +2,16 @@ using System.Drawing;
 
 namespace WzJson.Common.Data;
 
-public class BitmapData : IData, IDisposable
+public class BitmapData : ILabeledData, IDisposable
 {
-    public BitmapData(string path, IDictionary<string, Bitmap>? items = null)
+    public BitmapData(string label, string path, IDictionary<string, Bitmap>? items = null)
     {
+        Label = label;
         Path = path;
         Items = items ?? new Dictionary<string, Bitmap>();
     }
-
+    
+    public string Label { get; set; }
     public string Path { get; }
     public IDictionary<string, Bitmap> Items { get; }
 

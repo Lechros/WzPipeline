@@ -8,6 +8,11 @@ public abstract class AbstractNodeRepository(IWzProvider wzProvider) : INodeRepo
 
     public abstract IEnumerable<Wz_Node> GetNodes();
 
+    public virtual int GetNodeCount()
+    {
+        return GetNodes().Count();
+    }
+
     protected Wz_Node GetRootNode()
     {
         return wzProvider.BaseNode.FindNodeByPath(RootNodePath, true) ??

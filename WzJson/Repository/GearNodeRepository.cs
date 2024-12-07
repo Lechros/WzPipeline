@@ -20,7 +20,7 @@ public class GearNodeRepository(IWzProvider wzProvider) : AbstractNodeRepository
         foreach (var partNode in GetRootNode().Nodes)
         {
             if (!PartNames.Contains(partNode.Text)) continue;
-            
+
             foreach (var gearNode in partNode.Nodes)
             {
                 if (gearNode.Text == CanvasNodeText) continue;
@@ -33,5 +33,19 @@ public class GearNodeRepository(IWzProvider wzProvider) : AbstractNodeRepository
                 wzImage.Unextract();
             }
         }
+    }
+
+    public override int GetNodeCount()
+    {
+        var count = 0;
+        foreach (var partNode in GetRootNode().Nodes)
+        {
+            if (!PartNames.Contains(partNode.Text)) continue;
+
+            count += partNode.Nodes.Count;
+            if (partNode.FindNodeByPath(CanvasNodeText) != null) count--;
+        }
+
+        return count;
     }
 }

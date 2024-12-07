@@ -5,17 +5,23 @@ using WzJson.Repository;
 
 namespace WzJson.Reader;
 
+public class SetItemReadOptions : IReadOptions
+{
+    public string? SetItemJsonName { get; set; }
+}
+
 public class SetItemReader(
     SetItemNodeRepository setItemNodeRepository,
-    ItemOptionNodeRepository itemOptionNodeRepository) : AbstractWzReader
+    ItemOptionNodeRepository itemOptionNodeRepository) : AbstractWzReader<SetItemReadOptions>
 {
-    public const string SetItemJsonName = "set-item.json";
+    protected override INodeRepository GetNodeRepository(SetItemReadOptions _) => setItemNodeRepository;
 
-    protected override IEnumerable<Wz_Node> GetNodes() => setItemNodeRepository.GetNodes();
-
-    protected override IList<INodeConverter<object>> GetConverters()
+    protected override IList<INodeConverter<object>> GetConverters(SetItemReadOptions options)
     {
-        var itemOptionData = new ItemOptionConverter(string.Empty).Convert(itemOptionNodeRepository.GetNodes());
-        return [new SetItemConverter(SetItemJsonName, itemOptionData)];
+        var itemOptionData = new ItemOptionConverter(string.Empty, string.Empty).Convert(itemOptionNodeRepository.GetNodes());
+        var converters = new List<INodeConverter<object>>();
+        if (options.SetItemJsonName != null)
+            converters.Add(new SetItemConverter("set item data", options.SetItemJsonName, itemOptionData));
+        return converters;
     }
 }

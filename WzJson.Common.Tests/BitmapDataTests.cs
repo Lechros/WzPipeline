@@ -10,7 +10,7 @@ public class BitmapDataTests
     {
         const string path = "test-data.json";
 
-        var data = new BitmapData(path);
+        var data = new BitmapData(path, path);
 
         Assert.Equal(path, data.Path);
     }
@@ -22,7 +22,7 @@ public class BitmapDataTests
         const string key = "1234567";
         using var value = new Bitmap(1, 1);
 
-        var data = new BitmapData(path, new Dictionary<string, Bitmap> { [key] = value });
+        var data = new BitmapData(path, path, new Dictionary<string, Bitmap> { [key] = value });
 
         Assert.Equal(path, data.Path);
         Assert.Equal(1, data.Items.Count);
@@ -35,7 +35,7 @@ public class BitmapDataTests
         const string path = "test-data.json";
         const string key = "1234567";
         using var value = new Bitmap(1, 1);
-        var data = new BitmapData(path);
+        var data = new BitmapData(path, path);
 
         data.Add(key, value);
 

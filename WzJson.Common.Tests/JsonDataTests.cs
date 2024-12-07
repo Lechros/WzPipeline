@@ -9,7 +9,7 @@ public class JsonDataTests
     {
         const string path = "test-data.json";
 
-        var data = new JsonData(path);
+        var data = new JsonData(path, path);
 
         Assert.Equal(path, data.Path);
     }
@@ -21,7 +21,7 @@ public class JsonDataTests
         const string key = "1234567";
         const int value = 123;
 
-        var data = new JsonData(path, new Dictionary<string, object>
+        var data = new JsonData(path, path, new Dictionary<string, object>
         {
             [key] = 123
         });
@@ -37,7 +37,7 @@ public class JsonDataTests
         const string path = "test-data.json";
         const string key = "1234567";
         const int value = 123;
-        var data = new JsonData(path);
+        var data = new JsonData(path, path);
 
         data.Add(key, value);
 

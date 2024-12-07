@@ -13,16 +13,16 @@ public abstract class AbstractFileWriter : IWriter
 
     public abstract bool Supports(IData data);
 
-    public void Write(IData data)
+    public void Write(IData data, IProgress<WriteProgressData> progress)
     {
         if (!Supports(data))
             throw new NotSupportedException("Cannot export data of type " + data.GetType().Name);
 
         EnsureDirectory(OutputPath);
-        WriteItems(data);
+        WriteItems(data, progress);
     }
 
-    protected abstract void WriteItems(IData data);
+    protected abstract void WriteItems(IData data, IProgress<WriteProgressData> progress);
 
     protected void EnsureDirectory(string path)
     {

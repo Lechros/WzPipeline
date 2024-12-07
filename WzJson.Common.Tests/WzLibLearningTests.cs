@@ -4,7 +4,7 @@ namespace WzJson.Common.Tests;
 
 public class WzLibLearningTests
 {
-    private const string MaplePath = @"C:\Nexon\Maple";
+    private const string MaplePath = @"C:\Nexon\Maple\Data\Base\Base.wz";
     private readonly IWzProvider wzProvider;
 
     public WzLibLearningTests()

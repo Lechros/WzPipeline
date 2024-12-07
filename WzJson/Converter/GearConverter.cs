@@ -8,13 +8,14 @@ using WzJson.Model;
 namespace WzJson.Converter;
 
 public class GearConverter(
-    string dataName,
+    string dataLabel,
+    string dataPath,
     GlobalStringData globalStringData,
     JsonData<ItemOption> itemOptionData,
     GlobalFindNodeFunction findNode)
     : AbstractNodeConverter<Gear>
 {
-    public override IData NewData() => new JsonData<Gear>(dataName);
+    public override IData NewData() => new JsonData<Gear>(dataLabel, dataPath);
 
     public override string GetNodeKey(Wz_Node node) => WzUtility.GetNodeCode(node);
 
@@ -147,8 +148,8 @@ public class GearConverter(
         for (var i = 0; i < propNode.Nodes.Count; i++)
         {
             var optionNode = propNode.Nodes[i];
-            var optionCode = optionNode.FindNodeByPath("option")!.GetValue<string>();
-            var level = optionNode.FindNodeByPath("level")!.GetValue<int>();
+            var optionCode = optionNode.Nodes["option"].GetValue<string>();
+            var level = optionNode.Nodes["level"].GetValue<int>();
             var itemOption = itemOptionData.Items[optionCode];
             potentials[i] = new GearPotential
             {

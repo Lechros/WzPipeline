@@ -1,21 +1,26 @@
-using WzComparerR2.WzLib;
 using WzJson.Common;
 using WzJson.Converter;
 using WzJson.Repository;
 
 namespace WzJson.Reader;
 
+public class SoulReadOptions : IReadOptions
+{
+    public string? SoulDataJsonPath { get; set; }
+}
+
 public class SoulReader(
     SoulNodeRepository soulNodeRepository,
-    GlobalStringData globalStringData)
-    : AbstractWzReader
+    GlobalStringDataProvider globalStringDataProvider)
+    : AbstractWzReader<SoulReadOptions>
 {
-    public const string SoulDataJsonPath = "soul-data.json";
+    protected override INodeRepository GetNodeRepository(SoulReadOptions _) => soulNodeRepository;
 
-    protected override IEnumerable<Wz_Node> GetNodes() => soulNodeRepository.GetNodes();
-
-    protected override IList<INodeConverter<object>> GetConverters() =>
-    [
-        new SoulConverter(SoulDataJsonPath, globalStringData)
-    ];
+    protected override IList<INodeConverter<object>> GetConverters(SoulReadOptions options)
+    {
+        var converters = new List<INodeConverter<object>>();
+        if (options.SoulDataJsonPath != null)
+            converters.Add(new SoulConverter("soul data", options.SoulDataJsonPath, globalStringDataProvider.GlobalStringData));
+        return converters;
+    }
 }

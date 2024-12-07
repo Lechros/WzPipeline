@@ -24,7 +24,7 @@ public class PngFilesWriterTests : OutputPathTestSupport
     public void Supports_BitmapData_ReturnsTrue()
     {
         var writer = new PngFilesWriter(OutputPath);
-        var data = new BitmapData("test-images", new Dictionary<string, Bitmap>());
+        var data = new BitmapData("test-images", "test-images", new Dictionary<string, Bitmap>());
 
         Assert.True(writer.Supports(data));
     }
@@ -51,13 +51,13 @@ public class PngFilesWriterTests : OutputPathTestSupport
         var expectedFile2 = Path.Join(expectedOutputDirectory, key2);
 
         var writer = new PngFilesWriter(OutputPath);
-        var data = new BitmapData(filename, new Dictionary<string, Bitmap>
+        var data = new BitmapData(filename, filename, new Dictionary<string, Bitmap>
         {
             [key1] = value1,
             [key2] = value2
         });
 
-        writer.Write(data);
+        writer.Write(data, new Progress<WriteProgressData>());
 
         Assert.True(Directory.Exists(expectedOutputDirectory));
         Assert.Equal(2, Directory.EnumerateFiles(expectedOutputDirectory).Count());
@@ -78,13 +78,13 @@ public class PngFilesWriterTests : OutputPathTestSupport
         var expectedFile2 = Path.Join(expectedOutputDirectory, key2);
 
         var writer = new PngFilesWriter(OutputPath);
-        var data = new BitmapData(filename, new Dictionary<string, Bitmap>
+        var data = new BitmapData(filename, filename, new Dictionary<string, Bitmap>
         {
             [key1] = value1,
             [key2] = value2
         });
 
-        writer.Write(data);
+        writer.Write(data, new Progress<WriteProgressData>());
 
         Assert.True(Directory.Exists(expectedOutputDirectory));
         Assert.Equal(2, Directory.EnumerateFiles(expectedOutputDirectory).Count());
@@ -105,13 +105,13 @@ public class PngFilesWriterTests : OutputPathTestSupport
         var expectedFile2 = Path.Join(expectedOutputDirectory, key2);
 
         var writer = new PngFilesWriter(OutputPath);
-        var data = new BitmapData(filename, new Dictionary<string, Bitmap>
+        var data = new BitmapData(filename, filename, new Dictionary<string, Bitmap>
         {
             [key1] = value1,
             [key2] = value2
         });
 
-        writer.Write(data);
+        writer.Write(data, new Progress<WriteProgressData>());
 
         Assert.True(Directory.Exists(expectedOutputDirectory));
         Assert.True(File.Exists(expectedFile1));

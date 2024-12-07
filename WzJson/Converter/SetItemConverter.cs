@@ -6,9 +6,9 @@ using WzJson.Model;
 
 namespace WzJson.Converter;
 
-public class SetItemConverter(string dataName, JsonData<ItemOption> itemOptionData) : AbstractNodeConverter<SetItem>
+public class SetItemConverter(string dataLabel, string dataPath, JsonData<ItemOption> itemOptionData) : AbstractNodeConverter<SetItem>
 {
-    public override IData NewData() => new JsonData(dataName);
+    public override IData NewData() => new JsonData(dataLabel, dataPath);
 
     public override string GetNodeKey(Wz_Node node) => WzUtility.GetNodeCode(node);
 
@@ -100,8 +100,8 @@ public class SetItemConverter(string dataName, JsonData<ItemOption> itemOptionDa
 
     private GearOption ConvertToGearOption(Wz_Node optionNode)
     {
-        var optionCode = optionNode.FindNodeByPath("option")!.GetValue<string>();
-        var level = optionNode.FindNodeByPath("level")!.GetValue<int>();
+        var optionCode = optionNode.Nodes["option"].GetValue<string>();
+        var level = optionNode.Nodes["level"].GetValue<int>();
         var itemOption = itemOptionData.Items[optionCode];
         return itemOption.Level[level].Option;
     }
