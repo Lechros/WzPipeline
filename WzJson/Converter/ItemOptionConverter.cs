@@ -8,7 +8,7 @@ namespace WzJson.Converter;
 
 public class ItemOptionConverter(string dataLabel, string dataPath) : AbstractNodeConverter<ItemOption>
 {
-    public new JsonData<ItemOption> Convert(IEnumerable<Wz_Node> nodes) => (JsonData<ItemOption>)base.Convert(nodes);
+    public JsonData<ItemOption> Convert(IEnumerable<Wz_Node> nodes) => (JsonData<ItemOption>)base.Convert(nodes);
 
     public override IData NewData() => new JsonData<ItemOption>(dataLabel, dataPath);
 

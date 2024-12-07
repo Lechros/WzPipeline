@@ -8,16 +8,16 @@ using WzJson.Model;
 namespace WzJson.Converter;
 
 public partial class SoulConverter(string dataLabel, string dataPath, GlobalStringData globalStringData)
-    : INodeConverter<Soul>
+    : AbstractNodeConverter<Soul>
 {
     [GeneratedRegex(@"추가 잠재능력 : ([\w가-힣]+) \+(\d+)")]
     private static partial Regex SoulDescOptionRegex();
 
-    public IData NewData() => new JsonData<Soul>(dataLabel, dataPath);
+    public override IData NewData() => new JsonData<Soul>(dataLabel, dataPath);
 
-    public string GetNodeKey(Wz_Node node) => WzUtility.GetNodeCode(node);
+    public override string GetNodeKey(Wz_Node node) => WzUtility.GetNodeCode(node);
 
-    public Soul? ConvertNode(Wz_Node node, string key)
+    public override Soul? ConvertNode(Wz_Node node, string key)
     {
         globalStringData.Consume.TryGetValue(key, out var soulString);
         if (soulString?.Name == null) return null;
