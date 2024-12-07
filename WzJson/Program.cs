@@ -155,13 +155,17 @@ public static class Program
                     readTask.StopTask();
                 }
 
-                Parallel.ForEach(datas, data =>
+                var writeTasks = datas.Select(data =>
                 {
                     var writeDesc = data is ILabeledData labeledData
                         ? $"Writing {labeledData.Label}"
                         : $"Writing ...";
-                    var writeTask = ctx.AddTask(writeDesc);
-
+                    return ctx.AddTask(writeDesc);
+                }).ToList();
+                Parallel.ForEach(Enumerable.Range(0, datas.Count), i =>
+                {
+                    var data = datas[i];
+                    var writeTask = writeTasks[i];
                     var writer = writers.First(writer => writer.Supports(data));
                     var writeProgress = new Progress<WriteProgressData>(wData =>
                     {
