@@ -19,18 +19,20 @@ public class PngFilesWriter(string outputPath) : AbstractFileWriter(outputPath)
         var total = bitmapData.Items.Count;
         var current = 0;
         progress.Report(new WriteProgressData(current, total));
-        
+
+        var rootPath = Path.Join(OutputPath, bitmapData.Path);
+
         Parallel.ForEach(items, e =>
         {
             var (key, bitmap) = e;
-            var filename = Path.Join(OutputPath, bitmapData.Path, key);
+            var filename = Path.Join(rootPath, key);
             SavePng(bitmap, filename);
-            
+
             Interlocked.Increment(ref current);
             if (total < 100 || current % (total / 100) == 0)
                 progress.Report(new WriteProgressData(current, total));
         });
-        
+
         progress.Report(new WriteProgressData(total, total));
     }
 
