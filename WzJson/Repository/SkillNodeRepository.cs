@@ -16,7 +16,7 @@ public class SkillNodeRepository(IWzProvider wzProvider) : AbstractNodeRepositor
             var wzImage = jobNode.GetNodeWzImage();
             if (wzImage == null || !wzImage.TryExtract()) continue;
 
-            var skillListNode = wzImage.Node.FindNodeByPath("skill")!;
+            var skillListNode = wzImage.Node.Nodes["skill"];
             foreach (var skillNode in skillListNode.Nodes)
             {
                 yield return skillNode;

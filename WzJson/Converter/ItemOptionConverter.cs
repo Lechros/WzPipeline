@@ -16,8 +16,8 @@ public class ItemOptionConverter(string dataLabel, string dataPath) : AbstractNo
 
     public override ItemOption? ConvertNode(Wz_Node node, string _)
     {
-        var infoNode = node.FindNodeByPath("info") ?? throw new InvalidDataException("info node not found");
-        var levelListNode = node.FindNodeByPath("level") ?? throw new InvalidDataException("level node not found");
+        var infoNode = node.Nodes["info"] ?? throw new InvalidDataException("info node not found");;
+        var levelListNode = node.Nodes["level"] ?? throw new InvalidDataException("level node not found");
 
         var itemOption = new ItemOption();
         string? stringTemplate = null;
@@ -67,9 +67,9 @@ public class ItemOptionConverter(string dataLabel, string dataPath) : AbstractNo
     private GearOption ConvertToGearOption(Wz_Node levelNode)
     {
         // bossDamage is stored in wz as { boss=1, incDAMr=(value) }
-        if (levelNode.FindNodeByPath("boss") != null)
+        if (levelNode.Nodes["boss"] != null)
         {
-            var damNode = levelNode.FindNodeByPath("incDAMr");
+            var damNode = levelNode.Nodes["incDAMr"];
             if (damNode == null) throw new NotImplementedException();
             var value = damNode.GetValue<int>();
             return new GearOption { BossDamage = value };

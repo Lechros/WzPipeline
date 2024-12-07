@@ -100,8 +100,8 @@ public class SetItemConverter(string dataLabel, string dataPath, JsonData<ItemOp
 
     private GearOption ConvertToGearOption(Wz_Node optionNode)
     {
-        var optionCode = optionNode.FindNodeByPath("option")!.GetValue<string>();
-        var level = optionNode.FindNodeByPath("level")!.GetValue<int>();
+        var optionCode = optionNode.Nodes["option"].GetValue<string>();
+        var level = optionNode.Nodes["level"].GetValue<int>();
         var itemOption = itemOptionData.Items[optionCode];
         return itemOption.Level[level].Option;
     }
