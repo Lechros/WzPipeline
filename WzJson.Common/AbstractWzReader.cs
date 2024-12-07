@@ -2,11 +2,6 @@ namespace WzJson.Common;
 
 public abstract class AbstractWzReader<TReadOptions> : IWzReader where TReadOptions : IReadOptions
 {
-    public IList<IData> Read(IReadOptions options, IProgress<ReadProgressData> progress)
-    {
-        return Read((TReadOptions)options, progress);
-    }
-
     public IList<IData> Read(TReadOptions options, IProgress<ReadProgressData> progress)
     {
         var repository = GetNodeRepository(options);
@@ -28,12 +23,17 @@ public abstract class AbstractWzReader<TReadOptions> : IWzReader where TReadOpti
 
             reporter.Increment();
         }
-        
+
         reporter.Complete();
 
         return pairs.Select(pair => pair.Data).ToList();
     }
 
+    IList<IData> IWzReader.Read(IReadOptions options, IProgress<ReadProgressData> progress)
+    {
+        return Read((TReadOptions)options, progress);
+    }
+    
     protected abstract INodeRepository GetNodeRepository(TReadOptions options);
 
     protected abstract IList<INodeConverter<object>> GetConverters(TReadOptions options);
