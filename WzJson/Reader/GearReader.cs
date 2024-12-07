@@ -8,7 +8,6 @@ namespace WzJson.Reader;
 
 public class GearReadOptions : IReadOptions
 {
-    public GlobalStringData? GlobalStringData { get; set; }
     public string? GearDataJsonPath { get; set; }
     public string? GearIconOriginJsonPath { get; set; }
     public string? GearIconRawOriginJsonPath { get; set; }
