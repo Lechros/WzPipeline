@@ -42,14 +42,14 @@ public static class Program
         sw.Restart();
         kernel.Get<IWzProvider>();
         sw.Stop();
-        AnsiConsole.MarkupLineInterpolated($"Done in [yellow]{sw.ElapsedMilliseconds}ms[/].");
+        AnsiConsole.MarkupLine($"Done in {ToSecondsString(sw)}.");
 
 
         AnsiConsole.MarkupLineInterpolated($"Reading wz string data");
         sw.Restart();
         _ = kernel.Get<GlobalStringDataProvider>().GlobalStringData;
         sw.Stop();
-        AnsiConsole.MarkupLineInterpolated($"Done in [yellow]{sw.ElapsedMilliseconds}ms[/].");
+        AnsiConsole.MarkupLine($"Done in {ToSecondsString(sw)}.");
 
         AnsiConsole.MarkupLineInterpolated($"Output directory set to [purple]{Path.GetFullPath(OutputPath)}[/]");
 
@@ -124,7 +124,7 @@ public static class Program
 
         var choices = AnsiConsole.Prompt(multiSelectionPrompt);
 
-
+        sw.Restart();
         var writers = kernel.GetAll<IWriter>().ToList();
         AnsiConsole.Progress()
             .Columns(
@@ -182,6 +182,14 @@ public static class Program
                         disposable.Dispose();
                 }
             });
+        
+        sw.Stop();
+        AnsiConsole.MarkupLine($"Done in {ToSecondsString(sw)}.");
+    }
+
+    private static string ToSecondsString(Stopwatch stopwatch)
+    {
+        return $@"[yellow]{stopwatch.Elapsed:s\.f}s[/]";
     }
 
     public class Job(string name, Type readerType)
