@@ -17,8 +17,8 @@ public class WzString : Dictionary<string, string>
 
 public class WzStringData : Dictionary<string, WzString>, IData
 {
-    public void Add<T>(string key, T item) where T : notnull
+    void IData.Add(string key, dynamic item)
     {
-        base.Add(key, item as WzString);
+        Add(key, (WzString)item);
     }
 }

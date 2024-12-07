@@ -23,8 +23,8 @@ public class PngFilesWriterTests : OutputPathTestSupport
     [Fact]
     public void Supports_BitmapData_ReturnsTrue()
     {
+        var data = new BitmapData("", "test-images");
         var writer = new PngFilesWriter(OutputPath);
-        var data = new BitmapData("test-images", "test-images", new Dictionary<string, Bitmap>());
 
         Assert.True(writer.Supports(data));
     }
@@ -32,8 +32,8 @@ public class PngFilesWriterTests : OutputPathTestSupport
     [Fact]
     public void Supports_NonBitmapData_ReturnsFalse()
     {
+        var data = new NonBitmapData();
         var writer = new PngFilesWriter(OutputPath);
-        var data = new NonBitmapData("test-images");
 
         Assert.False(writer.Supports(data));
     }
@@ -49,14 +49,11 @@ public class PngFilesWriterTests : OutputPathTestSupport
         var expectedOutputDirectory = Path.Join(OutputPath, filename);
         var expectedFile1 = Path.Join(expectedOutputDirectory, key1);
         var expectedFile2 = Path.Join(expectedOutputDirectory, key2);
+        var data = new BitmapData(filename, filename);
+        data.Add(key1, value1);
+        data.Add(key2, value2);
 
         var writer = new PngFilesWriter(OutputPath);
-        var data = new BitmapData(filename, filename, new Dictionary<string, Bitmap>
-        {
-            [key1] = value1,
-            [key2] = value2
-        });
-
         writer.Write(data, new Progress<WriteProgressData>());
 
         Assert.True(Directory.Exists(expectedOutputDirectory));
@@ -76,14 +73,11 @@ public class PngFilesWriterTests : OutputPathTestSupport
         var expectedOutputDirectory = Path.Join(OutputPath, filename);
         var expectedFile1 = Path.Join(expectedOutputDirectory, key1);
         var expectedFile2 = Path.Join(expectedOutputDirectory, key2);
+        var data = new BitmapData(filename, filename);
+        data.Add(key1, value1);
+        data.Add(key2, value2);
 
         var writer = new PngFilesWriter(OutputPath);
-        var data = new BitmapData(filename, filename, new Dictionary<string, Bitmap>
-        {
-            [key1] = value1,
-            [key2] = value2
-        });
-
         writer.Write(data, new Progress<WriteProgressData>());
 
         Assert.True(Directory.Exists(expectedOutputDirectory));
@@ -103,14 +97,11 @@ public class PngFilesWriterTests : OutputPathTestSupport
         var expectedOutputDirectory = Path.Join(OutputPath, filename);
         var expectedFile1 = Path.Join(expectedOutputDirectory, key1);
         var expectedFile2 = Path.Join(expectedOutputDirectory, key2);
+        var data = new BitmapData(filename, filename);
+        data.Add(key1, value1);
+        data.Add(key2, value2);
 
         var writer = new PngFilesWriter(OutputPath);
-        var data = new BitmapData(filename, filename, new Dictionary<string, Bitmap>
-        {
-            [key1] = value1,
-            [key2] = value2
-        });
-
         writer.Write(data, new Progress<WriteProgressData>());
 
         Assert.True(Directory.Exists(expectedOutputDirectory));
@@ -120,16 +111,7 @@ public class PngFilesWriterTests : OutputPathTestSupport
 
     private class NonBitmapData : IData
     {
-        public NonBitmapData(string path)
-        {
-            Path = path;
-            Items = new Dictionary<string, Bitmap>();
-        }
-
-        public string Path { get; }
-        public IDictionary<string, Bitmap> Items { get; }
-
-        public void Add<T>(string key, T item) where T : notnull
+        public void Add(string key, dynamic item)
         {
             throw new NotImplementedException();
         }

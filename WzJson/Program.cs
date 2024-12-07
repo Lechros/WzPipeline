@@ -157,8 +157,8 @@ public static class Program
 
                 var writeTasks = datas.Select(data =>
                 {
-                    var writeDesc = data is ILabeledData labeledData
-                        ? $"Writing {labeledData.Label}"
+                    var writeDesc = data is ILabeled labeled
+                        ? $"Writing {labeled.Label}"
                         : $"Writing ...";
                     return ctx.AddTask(writeDesc);
                 }).ToList();

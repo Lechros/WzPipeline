@@ -13,7 +13,7 @@ public partial class SoulConverter(string dataLabel, string dataPath, GlobalStri
     [GeneratedRegex(@"추가 잠재능력 : ([\w가-힣]+) \+(\d+)")]
     private static partial Regex SoulDescOptionRegex();
 
-    public IData NewData() => new JsonData(dataLabel, dataPath);
+    public IData NewData() => new JsonData<Soul>(dataLabel, dataPath);
 
     public string GetNodeKey(Wz_Node node) => WzUtility.GetNodeCode(node);
 
