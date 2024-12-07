@@ -5,25 +5,9 @@ namespace WzJson.Common.Converter;
 
 public class WzStringConverter : AbstractNodeConverter<WzString>
 {
-    public static WzStringConverter Instance { get; } = new();
-
-    public new WzStringData Convert(IEnumerable<Wz_Node> nodes)
+    public new WzStringData Convert(IEnumerable<Wz_Node> nodes, Func<Wz_Node, string>? getNodeKey = null)
     {
-        return (WzStringData)base.Convert(nodes);
-    }
-
-    public WzStringData Convert(IEnumerable<Wz_Node> nodes, Func<Wz_Node, string> getNodeKey)
-    {
-        var data = (WzStringData)NewData();
-        foreach (var node in nodes)
-        {
-            var key = getNodeKey(node);
-            var item = ConvertNode(node, key);
-            if (item != null)
-                data.Add(key, item);
-        }
-
-        return data;
+        return (WzStringData)base.Convert(nodes, getNodeKey);
     }
 
     public override IData NewData() => new WzStringData();
