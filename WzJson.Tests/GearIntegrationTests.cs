@@ -2,6 +2,7 @@ using FluentAssertions;
 using FluentAssertions.Execution;
 using WzJson.Common;
 using WzJson.Common.Data;
+using WzJson.DataProvider;
 using WzJson.Domain;
 using WzJson.Model;
 using WzJson.Reader;

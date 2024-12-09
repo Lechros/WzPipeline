@@ -1,7 +1,7 @@
 using WzJson.Common;
 using WzJson.Domain;
 
-namespace WzJson;
+namespace WzJson.Data;
 
 public class SoulCollectionData : AbstractKeyValueData<SoulSkillNode>
 {

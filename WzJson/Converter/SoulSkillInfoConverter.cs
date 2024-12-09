@@ -1,5 +1,6 @@
 using WzComparerR2.WzLib;
 using WzJson.Common;
+using WzJson.Data;
 using WzJson.Domain;
 
 namespace WzJson.Converter;

@@ -2,6 +2,7 @@ using WzComparerR2.Common;
 using WzJson.Common;
 using WzJson.Common.Converter;
 using WzJson.Converter;
+using WzJson.DataProvider;
 using WzJson.Repository;
 
 namespace WzJson.Reader;
@@ -31,7 +32,7 @@ public class GearReader(
         var converters = new List<INodeConverter<object>>();
         if (options.GearDataJsonPath != null)
             converters.Add(new GearConverter("gear data", options.GearDataJsonPath,
-                globalStringDataProvider.GlobalStringData,
+                globalStringDataProvider.Data,
                 itemOptionData, findNode));
         if (options.GearIconOriginJsonPath != null)
             converters.Add(new IconOriginConverter("gear icon origins", options.GearIconOriginJsonPath,

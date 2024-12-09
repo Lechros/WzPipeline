@@ -7,6 +7,7 @@ using Spectre.Console.Rendering;
 using WzComparerR2.Common;
 using WzJson.Common;
 using WzJson.Common.Writer;
+using WzJson.DataProvider;
 using WzJson.Reader;
 
 namespace WzJson;
@@ -47,7 +48,7 @@ public static class Program
 
         AnsiConsole.MarkupLineInterpolated($"Reading wz string data");
         sw.Restart();
-        _ = kernel.Get<GlobalStringDataProvider>().GlobalStringData;
+        _ = kernel.Get<GlobalStringDataProvider>().Data;
         sw.Stop();
         AnsiConsole.MarkupLine($"Done in {ToSecondsString(sw)}.");
 

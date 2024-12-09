@@ -2,6 +2,7 @@ using System.Text.RegularExpressions;
 using WzComparerR2.WzLib;
 using WzJson.Common;
 using WzJson.Common.Data;
+using WzJson.Data;
 using WzJson.Domain;
 using WzJson.Model;
 

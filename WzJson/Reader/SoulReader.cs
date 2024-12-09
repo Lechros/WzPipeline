@@ -1,5 +1,6 @@
 using WzJson.Common;
 using WzJson.Converter;
+using WzJson.DataProvider;
 using WzJson.Repository;
 
 namespace WzJson.Reader;
@@ -20,7 +21,7 @@ public class SoulReader(
     {
         var converters = new List<INodeConverter<object>>();
         if (options.SoulDataJsonPath != null)
-            converters.Add(new SoulConverter("soul data", options.SoulDataJsonPath, globalStringDataProvider.GlobalStringData, null));
+            converters.Add(new SoulConverter("soul data", options.SoulDataJsonPath, globalStringDataProvider.Data, null));
         return converters;
     }
 }

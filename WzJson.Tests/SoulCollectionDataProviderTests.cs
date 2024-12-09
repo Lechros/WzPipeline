@@ -1,16 +1,17 @@
 using FluentAssertions;
+using WzJson.DataProvider;
 using WzJson.Repository;
 
 namespace WzJson.Tests;
 
-public class SoulCollectionProviderTests(SoulCollectionProviderFixture soulCollectionProviderFixture)
+public class SoulCollectionDataProviderTests(SoulCollectionProviderFixture soulCollectionProviderFixture)
     : IClassFixture<SoulCollectionProviderFixture>
 {
 
     [Fact]
     public void SoulCollection_ContainsExpectedValues()
     {
-        var soulCollection = soulCollectionProviderFixture.SoulCollectionProvider.SoulCollectionData;
+        var soulCollection = soulCollectionProviderFixture.SoulCollectionDataProvider.Data;
         
         soulCollection.GetSoulSkillId(2591075).Should().Be(80001266);
         soulCollection.GetSoulSkillId(2591088).Should().Be(80001270);
@@ -24,10 +25,10 @@ public class SoulCollectionProviderFixture : IDisposable
     {
         var wzProviderFixture = new WzProviderFixture();
         var soulCollectionNodeRepository = new SoulCollectionNodeRepository(wzProviderFixture.WzProvider);
-        SoulCollectionProvider = new SoulCollectionProvider(soulCollectionNodeRepository);
+        SoulCollectionDataProvider = new SoulCollectionDataProvider(soulCollectionNodeRepository);
     }
 
-    public SoulCollectionProvider SoulCollectionProvider { get; }
+    public SoulCollectionDataProvider SoulCollectionDataProvider { get; }
 
     public void Dispose()
     {

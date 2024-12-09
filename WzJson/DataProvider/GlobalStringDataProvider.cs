@@ -3,14 +3,15 @@ using WzJson.Common.Converter;
 using WzJson.Data;
 using WzJson.Repository;
 
-namespace WzJson.Reader;
+namespace WzJson.DataProvider;
 
-public sealed class GlobalStringReader(
+public sealed class GlobalStringDataProvider(
     StringConsumeNodeRepository stringConsumeNodeRepository,
     StringEqpNodeRepository stringEqpNodeRepository,
     StringSkillNodeRepository stringSkillNodeRepository)
+    : AbstractDataProvider<GlobalStringData>
 {
-    public GlobalStringData Read()
+    protected override GlobalStringData GetData()
     {
         var converter = new WzStringConverter();
         return new GlobalStringData
