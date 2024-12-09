@@ -1,3 +1,4 @@
+using FluentAssertions;
 using Newtonsoft.Json;
 using WzJson.Model;
 
@@ -5,7 +6,7 @@ namespace WzJson.Tests;
 
 public class ItemOptionTests
 {
-    [Fact]
+    [Test]
     public void JsonSerialize_WithAllProperties_EqualsExpectedJson()
     {
         const string expectedJson =
@@ -25,10 +26,10 @@ public class ItemOptionTests
 
         var json = JsonConvert.SerializeObject(itemOption);
 
-        Assert.Equal(expectedJson, json);
+        json.Should().Be(expectedJson);
     }
 
-    [Fact]
+    [Test]
     public void JsonSerialize_WithNoProperties_EqualsExpectedJson()
     {
         const string expectedJson = """{"level":{}}""";
@@ -37,6 +38,6 @@ public class ItemOptionTests
 
         var json = JsonConvert.SerializeObject(itemOption);
 
-        Assert.Equal(expectedJson, json);
+        json.Should().Be(expectedJson);
     }
 }

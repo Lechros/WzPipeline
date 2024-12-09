@@ -10,9 +10,43 @@ using WzJson.Repository;
 
 namespace WzJson.Tests;
 
-public class GearIntegrationTests(GearFixture gearFixture) : IClassFixture<GearFixture>
+public class GearIntegrationTests
 {
-    [Fact]
+    private Dictionary<string, Gear> gears;
+    private Dictionary<string, WzComparerR2Gear> wzGears;
+
+    [OneTimeSetUp]
+    public void SetUp()
+    {
+        var wzProviderFixture = new WzProviderFixture();
+        var globalStringDataProvider = new GlobalStringDataProvider(
+            new StringConsumeNodeRepository(wzProviderFixture.WzProvider),
+            new StringEqpNodeRepository(wzProviderFixture.WzProvider),
+            new StringSkillNodeRepository(wzProviderFixture.WzProvider));
+        var reader = new GearReader(
+            wzProviderFixture.WzProvider.FindNode,
+            new GearNodeRepository(wzProviderFixture.WzProvider),
+            new ItemOptionNodeRepository(wzProviderFixture.WzProvider),
+            globalStringDataProvider
+        );
+        var options = new GearReadOptions
+        {
+            GearDataJsonPath = " "
+        };
+        gears = ((JsonData<Gear>)reader.Read(options, new Progress<ReadProgressData>())[0]).AsEnumerable()
+            .ToDictionary();
+
+        wzGears = new Dictionary<string, WzComparerR2Gear>();
+        foreach (var node in new GearNodeRepository(wzProviderFixture.WzProvider).GetNodes())
+        {
+            var wzGear = WzComparerR2Gear.CreateFromNode(node, wzProviderFixture.WzProvider.FindNode);
+            if (wzGear != null)
+                wzGears.Add(wzGear.ItemID.ToString(), wzGear);
+        }
+    }
+
+
+    [Test]
     public void SpecialGrade_Equals()
     {
         using var scope = new AssertionScope();
@@ -24,7 +58,7 @@ public class GearIntegrationTests(GearFixture gearFixture) : IClassFixture<GearF
         }
     }
 
-    [Fact]
+    [Test]
     public void PotentialGrade_Equals()
     {
         using var scope = new AssertionScope();
@@ -36,7 +70,7 @@ public class GearIntegrationTests(GearFixture gearFixture) : IClassFixture<GearF
         }
     }
 
-    [Fact]
+    [Test]
     public void Only_Equals()
     {
         using var scope = new AssertionScope();
@@ -48,7 +82,7 @@ public class GearIntegrationTests(GearFixture gearFixture) : IClassFixture<GearF
         }
     }
 
-    [Fact]
+    [Test]
     public void Trade_Equals()
     {
         using var scope = new AssertionScope();
@@ -72,7 +106,7 @@ public class GearIntegrationTests(GearFixture gearFixture) : IClassFixture<GearF
         }
     }
 
-    [Fact]
+    [Test]
     public void OnlyEquip_Equals()
     {
         using var scope = new AssertionScope();
@@ -84,7 +118,7 @@ public class GearIntegrationTests(GearFixture gearFixture) : IClassFixture<GearF
         }
     }
 
-    [Fact]
+    [Test]
     public void AccountSharable_Equals()
     {
         using var scope = new AssertionScope();
@@ -109,7 +143,7 @@ public class GearIntegrationTests(GearFixture gearFixture) : IClassFixture<GearF
         }
     }
 
-    [Fact]
+    [Test]
     public void BlockGoldHammer_Equals()
     {
         using var scope = new AssertionScope();
@@ -121,7 +155,7 @@ public class GearIntegrationTests(GearFixture gearFixture) : IClassFixture<GearF
         }
     }
 
-    [Fact]
+    [Test]
     public void NoPotential_Equals()
     {
         using var scope = new AssertionScope();
@@ -152,7 +186,7 @@ public class GearIntegrationTests(GearFixture gearFixture) : IClassFixture<GearF
         }
     }
 
-    [Fact]
+    [Test]
     public void Req_Equals()
     {
         using var scope = new AssertionScope();
@@ -175,7 +209,7 @@ public class GearIntegrationTests(GearFixture gearFixture) : IClassFixture<GearF
         }
     }
 
-    [Fact]
+    [Test]
     public void Superior_Equals()
     {
         using var scope = new AssertionScope();
@@ -187,7 +221,7 @@ public class GearIntegrationTests(GearFixture gearFixture) : IClassFixture<GearF
         }
     }
 
-    [Fact]
+    [Test]
     public void ReduceReq_Equals()
     {
         using var scope = new AssertionScope();
@@ -199,7 +233,7 @@ public class GearIntegrationTests(GearFixture gearFixture) : IClassFixture<GearF
         }
     }
 
-    [Fact]
+    [Test]
     public void CannotUpgrade_Equals()
     {
         using var scope = new AssertionScope();
@@ -211,7 +245,7 @@ public class GearIntegrationTests(GearFixture gearFixture) : IClassFixture<GearF
         }
     }
 
-    [Fact]
+    [Test]
     public void ScrollUpgradeableCount_Equals()
     {
         using var scope = new AssertionScope();
@@ -223,7 +257,7 @@ public class GearIntegrationTests(GearFixture gearFixture) : IClassFixture<GearF
         }
     }
 
-    [Fact]
+    [Test]
     public void CanAdditionalPotential_Equals()
     {
         using var scope = new AssertionScope();
@@ -243,7 +277,7 @@ public class GearIntegrationTests(GearFixture gearFixture) : IClassFixture<GearF
         }
     }
 
-    [Fact]
+    [Test]
     public void CuttableCount_Equals()
     {
         using var scope = new AssertionScope();
@@ -255,7 +289,7 @@ public class GearIntegrationTests(GearFixture gearFixture) : IClassFixture<GearF
         }
     }
 
-    [Fact]
+    [Test]
     public void Potentials_Equals()
     {
         using var scope = new AssertionScope();
@@ -287,7 +321,7 @@ public class GearIntegrationTests(GearFixture gearFixture) : IClassFixture<GearF
         }
     }
 
-    [Fact]
+    [Test]
     public void AdditionalPotentials_Equals()
     {
         using var scope = new AssertionScope();
@@ -298,7 +332,7 @@ public class GearIntegrationTests(GearFixture gearFixture) : IClassFixture<GearF
         }
     }
 
-    [Fact]
+    [Test]
     public void ExceptionalUpgradeableCount_Equals()
     {
         using var scope = new AssertionScope();
@@ -310,7 +344,7 @@ public class GearIntegrationTests(GearFixture gearFixture) : IClassFixture<GearF
         }
     }
 
-    [Fact]
+    [Test]
     public void Cuttable_Equals()
     {
         using var scope = new AssertionScope();
@@ -322,7 +356,7 @@ public class GearIntegrationTests(GearFixture gearFixture) : IClassFixture<GearF
         }
     }
 
-    [Fact]
+    [Test]
     public void AccountShareTag_Equals()
     {
         using var scope = new AssertionScope();
@@ -334,7 +368,7 @@ public class GearIntegrationTests(GearFixture gearFixture) : IClassFixture<GearF
         }
     }
 
-    [Fact]
+    [Test]
     public void Lucky_Equals()
     {
         using var scope = new AssertionScope();
@@ -346,7 +380,7 @@ public class GearIntegrationTests(GearFixture gearFixture) : IClassFixture<GearF
         }
     }
 
-    [Fact]
+    [Test]
     public void Incline_Equals()
     {
         using var scope = new AssertionScope();
@@ -369,9 +403,9 @@ public class GearIntegrationTests(GearFixture gearFixture) : IClassFixture<GearF
 
     private IEnumerable<(Gear, WzComparerR2Gear)> GearPairs()
     {
-        foreach (var (key, gear) in gearFixture.Gears)
+        foreach (var (key, gear) in gears)
         {
-            yield return (gear, gearFixture.WzGears[key]);
+            yield return (gear, wzGears[key]);
         }
     }
 
@@ -380,43 +414,5 @@ public class GearIntegrationTests(GearFixture gearFixture) : IClassFixture<GearF
         if (message == null)
             return $"gear(id={gear.Meta.Id})";
         return $"gear(id={gear.Meta.Id}) {message}";
-    }
-}
-
-public class GearFixture : IDisposable
-{
-    public GearFixture()
-    {
-        var wzProviderFixture = new WzProviderFixture();
-        var globalStringDataProvider = new GlobalStringDataProvider(
-            new StringConsumeNodeRepository(wzProviderFixture.WzProvider),
-            new StringEqpNodeRepository(wzProviderFixture.WzProvider),
-            new StringSkillNodeRepository(wzProviderFixture.WzProvider));
-        var reader = new GearReader(
-            wzProviderFixture.WzProvider.FindNode,
-            new GearNodeRepository(wzProviderFixture.WzProvider),
-            new ItemOptionNodeRepository(wzProviderFixture.WzProvider),
-            globalStringDataProvider
-        );
-        var options = new GearReadOptions
-        {
-            GearDataJsonPath = " "
-        };
-        Gears = ((JsonData<Gear>)reader.Read(options, new Progress<ReadProgressData>())[0]).AsEnumerable().ToDictionary();
-
-        WzGears = new Dictionary<string, WzComparerR2Gear>();
-        foreach (var node in new GearNodeRepository(wzProviderFixture.WzProvider).GetNodes())
-        {
-            var wzGear = WzComparerR2Gear.CreateFromNode(node, wzProviderFixture.WzProvider.FindNode);
-            if (wzGear != null)
-                WzGears.Add(wzGear.ItemID.ToString(), wzGear);
-        }
-    }
-
-    public IDictionary<string, Gear> Gears { get; }
-    public IDictionary<string, WzComparerR2Gear> WzGears { get; }
-
-    public void Dispose()
-    {
     }
 }
