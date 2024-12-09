@@ -7,7 +7,8 @@ public class SoulCollectionData : AbstractKeyValueData<SoulSkillNode>
     private const int MagnificentIndex = 8;
 
     private readonly Dictionary<int, int> soulSkill = new();
-    private readonly Dictionary<int, bool> magnificent = new();
+    private readonly Dictionary<int, bool> magnificentSoul = new();
+    private readonly Dictionary<int, bool> magnificentSkill = new();
 
     public override SoulSkillNode this[string key]
     {
@@ -36,18 +37,31 @@ public class SoulCollectionData : AbstractKeyValueData<SoulSkillNode>
 
     public bool IsMagnificentSoul(int soulId)
     {
-        return magnificent[soulId];
+        return magnificentSoul[soulId];
+    }
+
+    public bool ContainsSkill(int skillId)
+    {
+        return magnificentSkill.ContainsKey(skillId);
+    }
+
+    public bool IsMagnificentSoulSkill(int skillId)
+    {
+        return magnificentSkill[skillId];
     }
 
     private void HandleAdd(string key, SoulSkillNode soulSkillNode)
     {
+        magnificentSkill.Add(soulSkillNode.SoulSkill, false);
+        if (soulSkillNode.SoulSkillH != null)
+            magnificentSkill.Add(soulSkillNode.SoulSkillH.Value, true);
         for (var i = 0; i < soulSkillNode.SoulList.Count; i++)
         {
             var isMagnificent = i == MagnificentIndex;
             var soulId = soulSkillNode.SoulList[i];
             var skillId = isMagnificent ? soulSkillNode.SoulSkillH!.Value : soulSkillNode.SoulSkill;
             soulSkill.Add(soulId, skillId);
-            magnificent.Add(soulId, isMagnificent);
+            magnificentSoul.Add(soulId, isMagnificent);
         }
     }
 }
