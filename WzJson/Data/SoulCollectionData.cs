@@ -1,5 +1,4 @@
 using WzJson.Common;
-using WzJson.Domain;
 
 namespace WzJson.Data;
 
@@ -51,4 +50,11 @@ public class SoulCollectionData : AbstractKeyValueData<SoulSkillNode>
             magnificent.Add(soulId, isMagnificent);
         }
     }
+}
+
+public class SoulSkillNode
+{
+    public int SoulSkill { get; set; }
+    public int? SoulSkillH { get; set; }
+    public List<int> SoulList { get; } = new();
 }
