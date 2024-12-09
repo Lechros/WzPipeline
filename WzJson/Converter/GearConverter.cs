@@ -15,7 +15,7 @@ public class GearConverter(
     GlobalFindNodeFunction findNode)
     : AbstractNodeConverter<Gear>
 {
-    public override IData NewData() => new JsonData<Gear>(dataLabel, dataPath);
+    public override IKeyValueData NewData() => new JsonData<Gear>(dataLabel, dataPath);
 
     public override string GetNodeKey(Wz_Node node) => WzUtility.GetNodeCode(node);
 
@@ -150,7 +150,7 @@ public class GearConverter(
             var optionNode = propNode.Nodes[i];
             var optionCode = optionNode.Nodes["option"].GetValue<string>();
             var level = optionNode.Nodes["level"].GetValue<int>();
-            var itemOption = itemOptionData.Items[optionCode];
+            var itemOption = itemOptionData[optionCode];
             potentials[i] = new GearPotential
             {
                 Title = itemOption.Level[level].String,

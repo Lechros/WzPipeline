@@ -1,8 +1,8 @@
 namespace WzJson.Domain;
 
-public class SoulSkillInfo
+public class SoulSkillNode
 {
     public int SoulSkill { get; set; }
     public int? SoulSkillH { get; set; }
-    public Dictionary<string, int> SoulList { get; } = new();
+    public List<int> SoulList { get; } = new();
 }

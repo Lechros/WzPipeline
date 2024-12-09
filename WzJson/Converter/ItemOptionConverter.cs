@@ -10,7 +10,7 @@ public class ItemOptionConverter(string dataLabel, string dataPath) : AbstractNo
 {
     public JsonData<ItemOption> Convert(IEnumerable<Wz_Node> nodes) => (JsonData<ItemOption>)base.Convert(nodes);
 
-    public override IData NewData() => new JsonData<ItemOption>(dataLabel, dataPath);
+    public override IKeyValueData NewData() => new JsonData<ItemOption>(dataLabel, dataPath);
 
     public override string GetNodeKey(Wz_Node node) => WzUtility.GetNodeCode(node);
 

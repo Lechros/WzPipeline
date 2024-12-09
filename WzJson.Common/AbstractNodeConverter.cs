@@ -18,7 +18,7 @@ public abstract class AbstractNodeConverter<TItem> : INodeConverter<TItem>
         return data;
     }
 
-    public abstract IData NewData();
+    public abstract IKeyValueData NewData();
 
     public abstract string GetNodeKey(Wz_Node node);
 

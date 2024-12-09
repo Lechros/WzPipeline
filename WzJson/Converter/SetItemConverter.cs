@@ -8,7 +8,7 @@ namespace WzJson.Converter;
 
 public class SetItemConverter(string dataLabel, string dataPath, JsonData<ItemOption> itemOptionData) : AbstractNodeConverter<SetItem>
 {
-    public override IData NewData() => new JsonData<SetItem>(dataLabel, dataPath);
+    public override IKeyValueData NewData() => new JsonData<SetItem>(dataLabel, dataPath);
 
     public override string GetNodeKey(Wz_Node node) => WzUtility.GetNodeCode(node);
 
@@ -102,7 +102,7 @@ public class SetItemConverter(string dataLabel, string dataPath, JsonData<ItemOp
     {
         var optionCode = optionNode.Nodes["option"].GetValue<string>();
         var level = optionNode.Nodes["level"].GetValue<int>();
-        var itemOption = itemOptionData.Items[optionCode];
+        var itemOption = itemOptionData[optionCode];
         return itemOption.Level[level].Option;
     }
 }

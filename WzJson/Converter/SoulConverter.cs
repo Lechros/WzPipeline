@@ -7,31 +7,33 @@ using WzJson.Model;
 
 namespace WzJson.Converter;
 
-public partial class SoulConverter(string dataLabel, string dataPath, GlobalStringData globalStringData)
+public partial class SoulConverter(
+    string dataLabel,
+    string dataPath,
+    GlobalStringData globalStringData,
+    SoulCollectionData soulCollectionData)
     : AbstractNodeConverter<Soul>
 {
     [GeneratedRegex(@"추가 잠재능력 : ([\w가-힣]+) \+(\d+)")]
     private static partial Regex SoulDescOptionRegex();
 
-    public override IData NewData() => new JsonData<Soul>(dataLabel, dataPath);
+    public override IKeyValueData NewData() => new JsonData<Soul>(dataLabel, dataPath);
 
     public override string GetNodeKey(Wz_Node node) => WzUtility.GetNodeCode(node);
 
     public override Soul? ConvertNode(Wz_Node node, string key)
     {
+        if (!int.TryParse(key, out var soulId) || !soulCollectionData.ContainsSoul(soulId)) return null;
+        var skillId = soulCollectionData.GetSoulSkillId(soulId);
+        var magnificent = soulCollectionData.IsMagnificentSoul(soulId);
         globalStringData.Consume.TryGetValue(key, out var soulString);
         if (soulString?.Name == null) return null;
-        if (!IsSoulName(soulString.Name)) return null;
-
-        var magnificent = IsMagnificent(soulString.Name);
-        var tradeBlock = IsTradeBlock(node);
-        if (magnificent && tradeBlock || !magnificent && !tradeBlock) return null;
 
         var mobName = GetSoulMobName(soulString.Name);
         var soul = new Soul
         {
             Name = soulString.Name,
-            Skill = GetSoulSkillName(mobName, magnificent),
+            Skill = GetSoulSkillName(skillId),
             ChargeFactor = GetSoulChargeFactor(mobName),
             Magnificent = magnificent
         };
@@ -41,25 +43,6 @@ public partial class SoulConverter(string dataLabel, string dataPath, GlobalStri
             soul.Option = GetSoulOption(soulString.Desc!);
 
         return soul;
-    }
-
-    private bool IsSoulName(string name)
-    {
-        var prefix = SoulResource.KnownSoulNamePrefixes.FirstOrDefault(name.StartsWith);
-        var suffix = SoulResource.KnownSoulNameSuffixes.FirstOrDefault(name.EndsWith);
-        return prefix != null && suffix != null;
-    }
-
-    private bool IsMagnificent(string soulName)
-    {
-        return soulName.StartsWith("위대한");
-    }
-
-    private bool IsTradeBlock(Wz_Node soulNode)
-    {
-        var tradeBlockNode = soulNode.FindNodeByPath(@"info\tradeBlock");
-        if (tradeBlockNode == null) return false;
-        return tradeBlockNode.GetValue(0) != 0;
     }
 
     private string GetSoulMobName(string soulName)
@@ -72,12 +55,10 @@ public partial class SoulConverter(string dataLabel, string dataPath, GlobalStri
         return soulName[start..end];
     }
 
-    private string GetSoulSkillName(string mobName, bool magnificent)
+    private string GetSoulSkillName(int skillId)
     {
-        var skillIds = magnificent ? SoulResource.KnownMagnificentSkillIds : SoulResource.KnownNormalSkillIds;
-        var skillId = skillIds[mobName].ToString();
-        return globalStringData.Skill[skillId].Name ??
-               throw new ApplicationException("Skill name not found for: " + mobName);
+        return globalStringData.Skill[skillId.ToString()].Name ??
+               throw new ApplicationException("Skill name not found for: " + skillId);
     }
 
     private int GetSoulChargeFactor(string mobName)

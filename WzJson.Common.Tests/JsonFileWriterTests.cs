@@ -100,11 +100,5 @@ public class JsonFileWriterTests : OutputPathTestSupport
         Assert.Equal(expectedContent, content);
     }
 
-    private class NonJsonData : IData
-    {
-        public void Add(string key, dynamic item)
-        {
-            throw new NotImplementedException();
-        }
-    }
+    private class NonJsonData : AbstractKeyValueData<object>;
 }

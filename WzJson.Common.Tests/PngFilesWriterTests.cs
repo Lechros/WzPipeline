@@ -109,11 +109,5 @@ public class PngFilesWriterTests : OutputPathTestSupport
         Assert.True(File.Exists(expectedFile2));
     }
 
-    private class NonBitmapData : IData
-    {
-        public void Add(string key, dynamic item)
-        {
-            throw new NotImplementedException();
-        }
-    }
+    private class NonBitmapData : AbstractKeyValueData<Bitmap>;
 }

@@ -12,14 +12,9 @@ public class SoulCollectionProviderTests(SoulCollectionProviderFixture soulColle
     {
         var soulCollection = soulCollectionProviderFixture.SoulCollectionProvider.SoulCollectionData;
         
-        soulCollection.Items.Count.Should().BePositive();
-        soulCollection.Items["0"].SoulSkill.Should().Be(80001266);
-        soulCollection.Items["0"].SoulSkillH.Should().Be(80001270);
-        soulCollection.Items["0"].SoulList["0"].Should().Be(2591075);
-        soulCollection.Items["0"].SoulList["8"].Should().Be(2591088);
-        
-        soulCollection.Items["24"].SoulSkill.Should().Be(80001339);
-        soulCollection.Items["24"].SoulSkillH.Should().BeNull();
+        soulCollection.GetSoulSkillId(2591075).Should().Be(80001266);
+        soulCollection.GetSoulSkillId(2591088).Should().Be(80001270);
+        soulCollection.GetSoulSkillId(2591255).Should().Be(80001339);
     }
 }
 

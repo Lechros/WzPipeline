@@ -15,10 +15,6 @@ public class WzString : Dictionary<string, string>
     }
 }
 
-public class WzStringData : Dictionary<string, WzString>, IData
+public class WzStringData : AbstractKeyValueData<WzString>
 {
-    void IData.Add(string key, dynamic item)
-    {
-        Add(key, (WzString)item);
-    }
 }

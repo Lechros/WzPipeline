@@ -4,7 +4,7 @@ namespace WzJson.Common;
 
 public interface INodeConverter<out T>
 {
-    public IData NewData();
+    public IKeyValueData NewData();
 
     public string GetNodeKey(Wz_Node node);
 

@@ -10,7 +10,7 @@ public class WzStringConverter : AbstractNodeConverter<WzString>
         return (WzStringData)base.Convert(nodes, getNodeKey);
     }
 
-    public override IData NewData() => new WzStringData();
+    public override IKeyValueData NewData() => new WzStringData();
 
     public override string GetNodeKey(Wz_Node node) => node.Text;
 

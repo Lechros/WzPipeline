@@ -401,7 +401,7 @@ public class GearFixture : IDisposable
         {
             GearDataJsonPath = " "
         };
-        Gears = ((JsonData<Gear>)reader.Read(options, new Progress<ReadProgressData>()).First()).Items;
+        Gears = ((JsonData<Gear>)reader.Read(options, new Progress<ReadProgressData>())[0]).AsEnumerable().ToDictionary();
 
         WzGears = new Dictionary<string, WzComparerR2Gear>();
         foreach (var node in new GearNodeRepository(wzProviderFixture.WzProvider).GetNodes())

@@ -27,6 +27,6 @@ public class BitmapDataTests
 
         data.Add(key, value);
 
-        Assert.Equal(value, data.Items[key]);
+        Assert.Equal(value, data[key]);
     }
 }

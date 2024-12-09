@@ -1,3 +1,4 @@
+using System.Collections;
 using Newtonsoft.Json;
 using WzJson.Common.Data;
 
@@ -13,14 +14,15 @@ public class JsonFileWriter(string outputPath, JsonSerializer serializer) : Abst
 
     protected override void WriteItems(IData data, IProgress<WriteProgressData> progress)
     {
-        dynamic jsonData = data;
-        SortedDictionary<string, object?> sortedItems = ToSortedItems(jsonData);
+        var dictData = (IKeyValueData)data;
+        var sortedItems = ToSortedItems(dictData);
 
         var reporter = new ProgressReporter<WriteProgressData>(progress,
             (current, total) => new WriteProgressData(current, total),
             sortedItems.Count);
 
-        var filename = Path.Join(OutputPath, (string)jsonData.Path);
+        dynamic jsonData = dictData;
+        var filename = Path.Join(OutputPath, jsonData.Path);
         EnsureDirectory(filename);
 
         using StreamWriter sw = new(filename);
@@ -30,14 +32,14 @@ public class JsonFileWriter(string outputPath, JsonSerializer serializer) : Abst
         reporter.Complete();
     }
 
-    private SortedDictionary<string, object?> ToSortedItems<TItem>(JsonData<TItem> jsonData)
+    private SortedDictionary<string, object?> ToSortedItems(IKeyValueData dictData)
     {
-        var areAllKeysParsableAsInt = jsonData.Items.Keys.All(key => int.TryParse(key, out _));
+        var areAllKeysParsableAsInt = dictData.Keys.Cast<string>().All(key => int.TryParse(key, out _));
         var comparer = GetKeyComparer(areAllKeysParsableAsInt);
         var sortedItems = new SortedDictionary<string, object?>(comparer);
-        foreach (var (key, item) in jsonData.Items)
+        foreach (dynamic kvp in dictData)
         {
-            sortedItems.Add(key, item);
+            sortedItems.Add(kvp.Key, kvp.Value);
         }
 
         return sortedItems;
