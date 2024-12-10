@@ -1,44 +1,47 @@
 using System.Drawing;
+using FluentAssertions;
 using WzJson.Common.Data;
 using WzJson.Common.Writer;
 
 namespace WzJson.Common.Tests;
 
+[TestFixture]
 public class PngFilesWriterTests : OutputPathTestSupport
 {
-    [Fact]
+    [Test]
     public void Ctor_FileOutputPath_ThrowsArgumentException()
     {
         var path = Path.Join(OutputPath, "test.png");
 
-        Assert.Throws<ArgumentException>(() => new PngFilesWriter(path));
+        Action act = () => new PngFilesWriter(path);
+        act.Should().Throw<ArgumentException>();
     }
 
-    [Fact]
+    [Test]
     public void Ctor_DirectoryOutputPath_DoesNotThrow()
     {
         var writer = new PngFilesWriter(OutputPath);
     }
 
-    [Fact]
+    [Test]
     public void Supports_BitmapData_ReturnsTrue()
     {
         var data = new BitmapData("", "test-images");
         var writer = new PngFilesWriter(OutputPath);
 
-        Assert.True(writer.Supports(data));
+        writer.Supports(data).Should().BeTrue();
     }
 
-    [Fact]
+    [Test]
     public void Supports_NonBitmapData_ReturnsFalse()
     {
         var data = new NonBitmapData();
         var writer = new PngFilesWriter(OutputPath);
 
-        Assert.False(writer.Supports(data));
+        writer.Supports(data).Should().BeFalse();
     }
 
-    [Fact]
+    [Test]
     public void Write_BitmapData_SavesPngFilesInsideNameFolder()
     {
         const string filename = "test-images";
@@ -56,13 +59,13 @@ public class PngFilesWriterTests : OutputPathTestSupport
         var writer = new PngFilesWriter(OutputPath);
         writer.Write(data, new Progress<WriteProgressData>());
 
-        Assert.True(Directory.Exists(expectedOutputDirectory));
-        Assert.Equal(2, Directory.EnumerateFiles(expectedOutputDirectory).Count());
-        Assert.True(File.Exists(expectedFile1));
-        Assert.True(File.Exists(expectedFile2));
+        Directory.Exists(expectedOutputDirectory).Should().BeTrue();
+        Directory.EnumerateFiles(expectedOutputDirectory).Should().HaveCount(2);
+        File.Exists(expectedFile1).Should().BeTrue();
+        File.Exists(expectedFile2).Should().BeTrue();
     }
 
-    [Fact]
+    [Test]
     public void Write_NestedPathName_SaveSuccesses()
     {
         const string filename = "/nested/path/test-images";
@@ -80,13 +83,13 @@ public class PngFilesWriterTests : OutputPathTestSupport
         var writer = new PngFilesWriter(OutputPath);
         writer.Write(data, new Progress<WriteProgressData>());
 
-        Assert.True(Directory.Exists(expectedOutputDirectory));
-        Assert.Equal(2, Directory.EnumerateFiles(expectedOutputDirectory).Count());
-        Assert.True(File.Exists(expectedFile1));
-        Assert.True(File.Exists(expectedFile2));
+        Directory.Exists(expectedOutputDirectory).Should().BeTrue();
+        Directory.EnumerateFiles(expectedOutputDirectory).Should().HaveCount(2);
+        File.Exists(expectedFile1).Should().BeTrue();
+        File.Exists(expectedFile2).Should().BeTrue();
     }
 
-    [Fact]
+    [Test]
     public void Write_NestedPathKey_SaveSuccesses()
     {
         const string filename = "test-images";
@@ -104,9 +107,9 @@ public class PngFilesWriterTests : OutputPathTestSupport
         var writer = new PngFilesWriter(OutputPath);
         writer.Write(data, new Progress<WriteProgressData>());
 
-        Assert.True(Directory.Exists(expectedOutputDirectory));
-        Assert.True(File.Exists(expectedFile1));
-        Assert.True(File.Exists(expectedFile2));
+        Directory.Exists(expectedOutputDirectory).Should().BeTrue();
+        File.Exists(expectedFile1).Should().BeTrue();
+        File.Exists(expectedFile2).Should().BeTrue();
     }
 
     private class NonBitmapData : DefaultKeyValueData<Bitmap>;

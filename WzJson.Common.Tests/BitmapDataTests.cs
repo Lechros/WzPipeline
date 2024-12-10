@@ -1,11 +1,13 @@
 using System.Drawing;
+using FluentAssertions;
 using WzJson.Common.Data;
 
 namespace WzJson.Common.Tests;
 
+[TestFixture]
 public class BitmapDataTests
 {
-    [Fact]
+    [Test]
     public void Ctor_LabelAndPath_PropertiesReturn()
     {
         const string label = "label";
@@ -13,11 +15,11 @@ public class BitmapDataTests
 
         var data = new BitmapData(label, path);
 
-        Assert.Equal(label, data.Label);
-        Assert.Equal(path, data.Path);
+        data.Label.Should().Be(label);
+        data.Path.Should().Be(path);
     }
 
-    [Fact]
+    [Test]
     public void Add_NewKeyValuePair_ItemsContainsPair()
     {
         const string path = "test-data.json";
@@ -27,6 +29,6 @@ public class BitmapDataTests
 
         data.Add(key, value);
 
-        Assert.Equal(value, data[key]);
+        data[key].Should().Be(value);
     }
 }

@@ -1,10 +1,13 @@
+using FluentAssertions;
+
 namespace WzJson.Common.Tests;
 
-public abstract class OutputPathTestSupport : IDisposable
+public abstract class OutputPathTestSupport
 {
-    protected readonly string OutputPath;
+    protected string OutputPath;
 
-    protected OutputPathTestSupport()
+    [OneTimeSetUp]
+    public void SetUp()
     {
         string path;
         do
@@ -15,11 +18,12 @@ public abstract class OutputPathTestSupport : IDisposable
         OutputPath = path + Path.DirectorySeparatorChar;
     }
 
-    public void Dispose()
+    [OneTimeTearDown]
+    public void TearDown()
     {
         // Safety checks to not delete the wrong directory.
-        Assert.Equal(37, OutputPath.Length);
-        Assert.DoesNotContain(Path.DirectorySeparatorChar.ToString(), OutputPath[..36]);
+        OutputPath.Should().HaveLength(37);
+        OutputPath[..36].Should().NotContain(Path.DirectorySeparatorChar.ToString());
 
         if (Directory.Exists(OutputPath)) Directory.Delete(OutputPath, true);
     }

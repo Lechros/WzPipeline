@@ -1,30 +1,32 @@
+using FluentAssertions;
 using WzComparerR2.WzLib;
 
 namespace WzJson.Common.Tests;
 
+[TestFixture]
 public class WzProviderTests
 {
     private const string MaplePath = @"C:\Nexon\Maple\Data\Base\Base.wz";
     private const string StringNodePath = "String";
     private const string StringEqpNodePath = @"String\Eqp.img";
 
-    [Fact]
+    [Test]
     public void Ctor_MaplePath_DoesNotThrow()
     {
         var provider = new WzProvider(MaplePath);
     }
 
-    [Fact]
+    [Test]
     public void BaseNode__ReturnsWzNode()
     {
         var provider = new WzProvider(MaplePath);
 
         var baseNode = provider.BaseNode;
 
-        Assert.IsType<Wz_Node>(baseNode);
+        baseNode.Should().BeOfType<Wz_Node>();
     }
 
-    [Fact]
+    [Test]
     public void FindNodeByPath_StringNodeFromBaseNode_ReturnsWzNode()
     {
         var provider = new WzProvider(MaplePath);
@@ -32,10 +34,10 @@ public class WzProviderTests
 
         var stringNode = baseNode.FindNodeByPath(StringNodePath);
 
-        Assert.IsType<Wz_Node>(stringNode);
+        stringNode.Should().BeOfType<Wz_Node>();
     }
 
-    [Fact]
+    [Test]
     public void FindNodeByPath_StringEqpImgFromBaseNode_ReturnsWzNode()
     {
         var provider = new WzProvider(MaplePath);
@@ -43,10 +45,10 @@ public class WzProviderTests
 
         var stringEqpImg = baseNode.FindNodeByPath(StringEqpNodePath);
 
-        Assert.IsType<Wz_Node>(stringEqpImg);
+        stringEqpImg.Should().BeOfType<Wz_Node>();
     }
 
-    [Fact]
+    [Test]
     public void FindNodeByPath_StringEqpImgFromBaseNode_ReturnsWzNodeWithWzImage()
     {
         var provider = new WzProvider(MaplePath);
@@ -55,6 +57,6 @@ public class WzProviderTests
         var stringEqpNode = baseNode.FindNodeByPath(StringEqpNodePath);
         var stringEqpNodeWzImage = stringEqpNode.GetNodeWzImage();
 
-        Assert.IsType<Wz_Image>(stringEqpNodeWzImage);
+        stringEqpNodeWzImage.Should().BeOfType<Wz_Image>();
     }
 }

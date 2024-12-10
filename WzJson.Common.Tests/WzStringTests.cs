@@ -1,14 +1,14 @@
+using FluentAssertions;
 using WzJson.Common.Data;
 
 namespace WzJson.Common.Tests;
 
 public class WzStringTests
 {
-    [Theory]
-    [InlineData(null, null)]
-    [InlineData("name", null)]
-    [InlineData(null, "desc")]
-    [InlineData("name", "desc")]
+    [TestCase(null, null)]
+    [TestCase("name", null)]
+    [TestCase(null, "desc")]
+    [TestCase("name", "desc")]
     public void ObjectInitializer_NameAndDesc_PropertiesAreEqual(string? name, string? desc)
     {
         var wzString = new WzString
@@ -17,7 +17,7 @@ public class WzStringTests
             Desc = desc
         };
 
-        Assert.Equal(name, wzString.Name);
-        Assert.Equal(desc, wzString.Desc);
+        wzString.Name.Should().Be(name);
+        wzString.Desc.Should().Be(desc);
     }
 }

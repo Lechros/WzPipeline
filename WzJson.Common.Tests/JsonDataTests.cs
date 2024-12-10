@@ -1,10 +1,12 @@
+using FluentAssertions;
 using WzJson.Common.Data;
 
 namespace WzJson.Common.Tests;
 
+[TestFixture]
 public class JsonDataTests
 {
-    [Fact]
+    [Test]
     public void Ctor_LabelAndPath_PropertiesReturn()
     {
         const string label = "label";
@@ -12,11 +14,11 @@ public class JsonDataTests
 
         var data = new JsonData<object>(label, path);
 
-        Assert.Equal(label, data.Label);
-        Assert.Equal(path, data.Path);
+        data.Label.Should().Be(label);
+        data.Path.Should().Be(path);
     }
 
-    [Fact]
+    [Test]
     public void Add_NewKeyValuePair_ItemsContainsPair()
     {
         const string label = "label";
@@ -27,6 +29,6 @@ public class JsonDataTests
 
         data.Add(key, value);
 
-        Assert.Equal(value, data[key]);
+        data[key].Should().Be(value);
     }
 }
