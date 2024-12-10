@@ -3,13 +3,11 @@ using WzJson.Common.Data;
 
 namespace WzJson.Common.Converter;
 
-public class IconOriginConverter(string dataLabel, string dataPath, string originNodePath) : AbstractNodeConverter<int[]>
+public class IconOriginConverter(string originNodePath) : AbstractNodeConverter<int[]>
 {
-    public override IData NewData() => new JsonData(dataLabel, dataPath);
-
     public override string GetNodeKey(Wz_Node node) => WzUtility.GetNodeCode(node);
 
-    public override int[]? ConvertNode(Wz_Node node, string _)
+    public override int[]? Convert(Wz_Node node, string _)
     {
         var originNode = node.FindNodeByPath(originNodePath);
         var vector = originNode?.GetValue<Wz_Vector?>();

@@ -1,18 +1,16 @@
 using WzComparerR2.WzLib;
 using WzJson.Common;
-using WzJson.Common.Data;
+using WzJson.DataProvider;
 using WzJson.Domain;
 using WzJson.Model;
 
 namespace WzJson.Converter;
 
-public class SetItemConverter(string dataLabel, string dataPath, JsonData<ItemOption> itemOptionData) : AbstractNodeConverter<SetItem>
+public class SetItemConverter(ItemOptionDataProvider itemOptionDataProvider) : AbstractNodeConverter<SetItem>
 {
-    public override IData NewData() => new JsonData(dataLabel, dataPath);
-
     public override string GetNodeKey(Wz_Node node) => WzUtility.GetNodeCode(node);
 
-    public override SetItem? ConvertNode(Wz_Node node, string _)
+    public override SetItem? Convert(Wz_Node node, string _)
     {
         var setItem = new SetItem();
         foreach (var subNode in node.Nodes)
@@ -100,9 +98,8 @@ public class SetItemConverter(string dataLabel, string dataPath, JsonData<ItemOp
 
     private GearOption ConvertToGearOption(Wz_Node optionNode)
     {
-        var optionCode = optionNode.Nodes["option"].GetValue<string>();
+        var optionCode = optionNode.Nodes["option"].GetValue<int>();
         var level = optionNode.Nodes["level"].GetValue<int>();
-        var itemOption = itemOptionData.Items[optionCode];
-        return itemOption.Level[level].Option;
+        return itemOptionDataProvider.Data.GetGearOption(optionCode, level);
     }
 }

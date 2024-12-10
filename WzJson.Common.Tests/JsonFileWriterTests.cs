@@ -26,7 +26,7 @@ public class JsonFileWriterTests : OutputPathTestSupport
     public void Supports_JsonData_ReturnsTrue()
     {
         var writer = new JsonFileWriter(OutputPath, jsonSerializer);
-        var data = new JsonData("", "test.json", new Dictionary<string, object>());
+        var data = new JsonData<object>("", "test.json");
 
         Assert.True(writer.Supports(data));
     }
@@ -35,7 +35,7 @@ public class JsonFileWriterTests : OutputPathTestSupport
     public void Supports_NonJsonData_ReturnsFalse()
     {
         var writer = new JsonFileWriter(OutputPath, jsonSerializer);
-        var data = new NonJsonData("test.not.json");
+        var data = new NonJsonData();
 
         Assert.False(writer.Supports(data));
     }
@@ -48,9 +48,10 @@ public class JsonFileWriterTests : OutputPathTestSupport
         const string value = "value";
         var expectedFilename = Path.Join(OutputPath, filename);
         var expectedContent = @"{""key"":""value""}";
-
+        var data = new JsonData<string>(filename, filename);
+        data.Add(key, value);
+        
         var writer = new JsonFileWriter(OutputPath, jsonSerializer);
-        var data = new JsonData(filename, filename, new Dictionary<string, object> { [key] = value });
         writer.Write(data, new Progress<WriteProgressData>());
 
         Assert.True(File.Exists(expectedFilename));
@@ -66,10 +67,10 @@ public class JsonFileWriterTests : OutputPathTestSupport
         const string value = "value";
         var expectedFilename = Path.Join(OutputPath, filename);
         var expectedContent = @"{""key"":""value""}";
+        var data = new JsonData<string>(filename, filename);
+        data.Add(key, value);
 
         var writer = new JsonFileWriter(OutputPath, jsonSerializer);
-        var data = new JsonData(filename, filename, new Dictionary<string, object> { [key] = value });
-
         writer.Write(data, new Progress<WriteProgressData>());
 
         Assert.True(File.Exists(expectedFilename));
@@ -82,41 +83,22 @@ public class JsonFileWriterTests : OutputPathTestSupport
     {
         const string filename = "test.json";
         var expectedFilename = Path.Join(OutputPath, filename);
-        var dict = new Dictionary<string, object>
-        {
-            ["1"] = "1",
-            ["11"] = "11",
-            ["2"] = "2",
-            ["21"] = "21",
-            ["10"] = "10",
-            ["-1"] = "-1"
-        };
         var expectedContent =
             @"{""-1"":""-1"",""1"":""1"",""2"":""2"",""10"":""10"",""11"":""11"",""21"":""21""}";
+        var data = new JsonData<string>(filename, filename);
+        data.Add("1", "1");
+        data.Add("11", "11");
+        data.Add("2", "2");
+        data.Add("21", "21");
+        data.Add("10", "10");
+        data.Add("-1", "-1");
 
         var writer = new JsonFileWriter(OutputPath, jsonSerializer);
-        var data = new JsonData(filename, filename, dict);
-
         writer.Write(data, new Progress<WriteProgressData>());
 
         var content = File.ReadAllText(expectedFilename);
         Assert.Equal(expectedContent, content);
     }
 
-    private class NonJsonData : IData
-    {
-        public NonJsonData(string path)
-        {
-            Path = path;
-            Items = new Dictionary<string, object>();
-        }
-
-        public string Path { get; }
-        public IDictionary<string, object> Items { get; }
-
-        public void Add<T>(string key, T item) where T : notnull
-        {
-            throw new NotImplementedException();
-        }
-    }
+    private class NonJsonData : DefaultKeyValueData<object>;
 }

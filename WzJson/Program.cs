@@ -7,6 +7,9 @@ using Spectre.Console.Rendering;
 using WzComparerR2.Common;
 using WzJson.Common;
 using WzJson.Common.Writer;
+using WzJson.Data;
+using WzJson.DataProvider;
+using WzJson.Model;
 using WzJson.Reader;
 
 namespace WzJson;
@@ -47,7 +50,7 @@ public static class Program
 
         AnsiConsole.MarkupLineInterpolated($"Reading wz string data");
         sw.Restart();
-        _ = kernel.Get<GlobalStringDataProvider>().GlobalStringData;
+        _ = kernel.Get<GlobalStringDataProvider>().Data;
         sw.Stop();
         AnsiConsole.MarkupLine($"Done in {ToSecondsString(sw)}.");
 
@@ -74,6 +77,14 @@ public static class Program
                 GetReadOptions = choices => new ItemOptionReadOptions
                 {
                     ItemOptionJsonPath = choices.Contains("item option data") ? "item-option.json" : null
+                }
+            },
+            new("soul", typeof(SoulReader))
+            {
+                Choices = ["soul data"],
+                GetReadOptions = choices => new SoulReadOptions
+                {
+                    SoulDataJsonPath = choices.Contains("soul data") ? "soul-data.json" : null
                 }
             },
             new("set item", typeof(SetItemReader))
@@ -157,8 +168,8 @@ public static class Program
 
                 var writeTasks = datas.Select(data =>
                 {
-                    var writeDesc = data is ILabeledData labeledData
-                        ? $"Writing {labeledData.Label}"
+                    var writeDesc = data is ILabeled labeled
+                        ? $"Writing {labeled.Label}"
                         : $"Writing ...";
                     return ctx.AddTask(writeDesc);
                 }).ToList();
@@ -182,7 +193,7 @@ public static class Program
                         disposable.Dispose();
                 }
             });
-        
+
         sw.Stop();
         AnsiConsole.MarkupLine($"Done in {ToSecondsString(sw)}.");
     }

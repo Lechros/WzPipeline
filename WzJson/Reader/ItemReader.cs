@@ -1,7 +1,8 @@
+using System.Drawing;
 using WzComparerR2.Common;
-using WzComparerR2.WzLib;
 using WzJson.Common;
 using WzJson.Common.Converter;
+using WzJson.Common.Data;
 using WzJson.Repository;
 
 namespace WzJson.Reader;
@@ -17,13 +18,15 @@ public class ItemReader(ItemNodeRepository itemNodeRepository, GlobalFindNodeFun
 {
     protected override INodeRepository GetNodeRepository(ItemReadOptions _) => itemNodeRepository;
 
-    protected override IList<INodeConverter<object>> GetConverters(ItemReadOptions options)
+    protected override IList<INodeProcessor> GetProcessors(ItemReadOptions options)
     {
-        var converters = new List<INodeConverter<object>>();
+        var processors = new List<INodeProcessor>();
         if (options.ItemIconOriginJsonPath != null)
-            converters.Add(new IconOriginConverter("item icon origins", options.ItemIconOriginJsonPath, @"info\icon\origin"));
+            processors.Add(DefaultNodeProcessor.Of(new IconOriginConverter(@"info\icon\origin"),
+                () => new JsonData<int[]>("item icon origins", options.ItemIconOriginJsonPath)));
         if (options.ItemIconPath != null)
-            converters.Add(new IconBitmapConverter("item icons", options.ItemIconPath, @"info\icon", findNode));
-        return converters;
+            processors.Add(DefaultNodeProcessor.Of(new IconBitmapConverter(@"info\icon", findNode),
+                () => new BitmapData("item icons", options.ItemIconPath)));
+        return processors;
     }
 }

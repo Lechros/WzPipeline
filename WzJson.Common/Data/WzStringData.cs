@@ -15,10 +15,6 @@ public class WzString : Dictionary<string, string>
     }
 }
 
-public class WzStringData : Dictionary<string, WzString>, IData
+public class WzStringData : DefaultKeyValueData<WzString>
 {
-    public void Add<T>(string key, T item) where T : notnull
-    {
-        base.Add(key, item as WzString);
-    }
 }

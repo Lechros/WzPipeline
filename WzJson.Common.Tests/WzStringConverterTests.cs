@@ -23,7 +23,7 @@ public class WzStringConverterTests
 
         Assert.NotNull(node);
 
-        var wzString = converter.ConvertNode(node, string.Empty);
+        var wzString = converter.Convert(node, string.Empty);
 
         Assert.Equal(expectedName, wzString.Name);
         Assert.Equal(expectedDesc, wzString.Desc);

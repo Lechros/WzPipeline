@@ -1,27 +1,23 @@
 using WzComparerR2.Common;
 using WzComparerR2.WzLib;
 using WzJson.Common;
-using WzJson.Common.Data;
+using WzJson.DataProvider;
 using WzJson.Domain;
 using WzJson.Model;
 
 namespace WzJson.Converter;
 
 public class GearConverter(
-    string dataLabel,
-    string dataPath,
-    GlobalStringData globalStringData,
-    JsonData<ItemOption> itemOptionData,
+    GlobalStringDataProvider globalStringDataProvider,
+    ItemOptionDataProvider itemOptionDataProvider,
     GlobalFindNodeFunction findNode)
     : AbstractNodeConverter<Gear>
 {
-    public override IData NewData() => new JsonData<Gear>(dataLabel, dataPath);
-
     public override string GetNodeKey(Wz_Node node) => WzUtility.GetNodeCode(node);
 
-    public override Gear? ConvertNode(Wz_Node node, string key)
+    public override Gear? Convert(Wz_Node node, string key)
     {
-        globalStringData.Eqp.TryGetValue(key, out var gearString);
+        globalStringDataProvider.Data.Eqp.TryGetValue(key, out var gearString);
         if (gearString?.Name == null) return null;
         var infoNode = node.FindNodeByPath("info");
         if (infoNode == null) return null;
@@ -148,13 +144,13 @@ public class GearConverter(
         for (var i = 0; i < propNode.Nodes.Count; i++)
         {
             var optionNode = propNode.Nodes[i];
-            var optionCode = optionNode.Nodes["option"].GetValue<string>();
+            var optionCode = optionNode.Nodes["option"].GetValue<int>();
             var level = optionNode.Nodes["level"].GetValue<int>();
-            var itemOption = itemOptionData.Items[optionCode];
+            var levelInfo = itemOptionDataProvider.Data.GetItemOptionLevelInfo(optionCode, level);
             potentials[i] = new GearPotential
             {
-                Title = itemOption.Level[level].String,
-                Option = itemOption.Level[level].Option
+                Title = levelInfo.String,
+                Option = levelInfo.Option
             };
         }
 

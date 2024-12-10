@@ -14,15 +14,14 @@ public class PngFilesWriter(string outputPath) : AbstractFileWriter(outputPath)
     protected override void WriteItems(IData data, IProgress<WriteProgressData> progress)
     {
         var bitmapData = (BitmapData)data;
-        var items = bitmapData.Items;
 
         var reporter = new ProgressReporter<WriteProgressData>(progress,
             (current, total) => new WriteProgressData(current, total),
-            bitmapData.Items.Count);
+            bitmapData.Count);
 
         var rootPath = Path.Join(OutputPath, bitmapData.Path);
 
-        Parallel.ForEach(items, e =>
+        Parallel.ForEach(bitmapData.AsEnumerable(), e =>
         {
             var (key, bitmap) = e;
             var filename = Path.Join(rootPath, key);

@@ -31,7 +31,6 @@ public class ProgressReporter<TProgressData>
     public void Complete()
     {
         Report(totalCount);
-        GC.SuppressFinalize(this);
     }
 
     private void Report(int count)

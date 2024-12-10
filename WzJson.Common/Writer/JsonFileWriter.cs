@@ -8,51 +8,47 @@ public class JsonFileWriter(string outputPath, JsonSerializer serializer) : Abst
 {
     public override bool Supports(IData data)
     {
-        return data is JsonData;
+        var type = data.GetType();
+        return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(JsonData<>);
     }
 
     protected override void WriteItems(IData data, IProgress<WriteProgressData> progress)
     {
-        var jsonData = (JsonData)data;
-        var sortedItems = ToSortedItems(jsonData);
+        var dictData = (IKeyValueData)data;
+        var sortedItems = ToSortedItems(dictData);
 
         var reporter = new ProgressReporter<WriteProgressData>(progress,
             (current, total) => new WriteProgressData(current, total),
             sortedItems.Count);
 
+        dynamic jsonData = dictData;
         var filename = Path.Join(OutputPath, jsonData.Path);
         EnsureDirectory(filename);
 
         using StreamWriter sw = new(filename);
         using JsonWriter writer = new JsonTextWriter(sw);
         serializer.Serialize(writer, sortedItems);
-        
+
         reporter.Complete();
     }
 
-    private SortedDictionary<string, object> ToSortedItems(JsonData jsonData)
+    private SortedDictionary<string, object?> ToSortedItems(IKeyValueData dictData)
     {
-        var comparer = GetKeyComparer(jsonData.Items);
-        var sortedItems = new SortedDictionary<string, object>(comparer);
-        foreach (DictionaryEntry entry in jsonData.Items)
-            sortedItems.Add((string)entry.Key, entry.Value!);
+        var areAllKeysParsableAsInt = dictData.Keys.Cast<string>().All(key => int.TryParse(key, out _));
+        var comparer = GetKeyComparer(areAllKeysParsableAsInt);
+        var sortedItems = new SortedDictionary<string, object?>(comparer);
+        foreach (dynamic kvp in dictData)
+        {
+            sortedItems.Add(kvp.Key, kvp.Value);
+        }
+
         return sortedItems;
     }
 
-    private IComparer<string> GetKeyComparer(IDictionary dictionary)
+    private IComparer<string> GetKeyComparer(bool areAllKeysParsableAsInt)
     {
-        return AreAllKeysParsableAsInt(dictionary)
+        return areAllKeysParsableAsInt
             ? Comparer<string>.Create((a, b) => int.Parse(a).CompareTo(int.Parse(b)))
             : new NaturalStringComparer();
-    }
-
-    private bool AreAllKeysParsableAsInt(IDictionary dictionary)
-    {
-        foreach (string key in dictionary.Keys)
-        {
-            if (!int.TryParse(key, out _)) return false;
-        }
-
-        return true;
     }
 }

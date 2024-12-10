@@ -1,14 +1,16 @@
 using WzComparerR2.Common;
 using WzJson.Common;
 using WzJson.Common.Converter;
+using WzJson.Common.Data;
 using WzJson.Converter;
+using WzJson.DataProvider;
+using WzJson.Model;
 using WzJson.Repository;
 
 namespace WzJson.Reader;
 
 public class GearReadOptions : IReadOptions
 {
-    public GlobalStringData? GlobalStringData { get; set; }
     public string? GearDataJsonPath { get; set; }
     public string? GearIconOriginJsonPath { get; set; }
     public string? GearIconRawOriginJsonPath { get; set; }
@@ -19,33 +21,29 @@ public class GearReadOptions : IReadOptions
 public class GearReader(
     GlobalFindNodeFunction findNode,
     GearNodeRepository gearNodeRepository,
-    ItemOptionNodeRepository itemOptionNodeRepository,
-    GlobalStringDataProvider globalStringDataProvider)
+    GearConverter gearConverter)
     : AbstractWzReader<GearReadOptions>
 {
     protected override INodeRepository GetNodeRepository(GearReadOptions _) => gearNodeRepository;
 
-    protected override IList<INodeConverter<object>> GetConverters(GearReadOptions options)
+    protected override IList<INodeProcessor> GetProcessors(GearReadOptions options)
     {
-        var itemOptionData =
-            new ItemOptionConverter(string.Empty, string.Empty).Convert(itemOptionNodeRepository.GetNodes());
-        var converters = new List<INodeConverter<object>>();
+        var processors = new List<INodeProcessor>();
         if (options.GearDataJsonPath != null)
-            converters.Add(new GearConverter("gear data", options.GearDataJsonPath,
-                globalStringDataProvider.GlobalStringData,
-                itemOptionData, findNode));
+            processors.Add(DefaultNodeProcessor.Of(gearConverter,
+                () => new JsonData<Gear>("gear data", options.GearDataJsonPath)));
         if (options.GearIconOriginJsonPath != null)
-            converters.Add(new IconOriginConverter("gear icon origins", options.GearIconOriginJsonPath,
-                @"info\icon\origin"));
+            processors.Add(DefaultNodeProcessor.Of(new IconOriginConverter(@"info\icon\origin"),
+                () => new JsonData<int[]>("gear icon origins", options.GearIconOriginJsonPath)));
         if (options.GearIconRawOriginJsonPath != null)
-            converters.Add(new IconOriginConverter("gear raw icon origins", options.GearIconRawOriginJsonPath,
-                @"info\iconRaw\origin"));
+            processors.Add(DefaultNodeProcessor.Of(new IconOriginConverter(@"info\iconRaw\origin"),
+                () => new JsonData<int[]>("gear raw icon origins", options.GearIconRawOriginJsonPath)));
         if (options.GearIconPath != null)
-            converters.Add(new IconBitmapConverter("gear icons", options.GearIconPath, @"info\icon", findNode));
+            processors.Add(DefaultNodeProcessor.Of(new IconBitmapConverter(@"info\icon", findNode),
+                () => new BitmapData("gear icons", options.GearIconPath)));
         if (options.GearIconRawPath != null)
-            converters.Add(
-                new IconBitmapConverter("gear raw icons", options.GearIconRawPath, @"info\iconRaw", findNode));
-
-        return converters;
+            processors.Add(DefaultNodeProcessor.Of(new IconBitmapConverter(@"info\iconRaw", findNode),
+                () => new BitmapData("gear raw icons", options.GearIconRawPath)));
+        return processors;
     }
 }
