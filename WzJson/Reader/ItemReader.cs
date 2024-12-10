@@ -26,7 +26,7 @@ public class ItemReader(ItemNodeRepository itemNodeRepository, GlobalFindNodeFun
                 () => new JsonData<int[]>("item icon origins", options.ItemIconOriginJsonPath)));
         if (options.ItemIconPath != null)
             processors.Add(DefaultNodeProcessor.Of(new IconBitmapConverter(@"info\icon", findNode),
-                () => new JsonData<Bitmap>("item icons", options.ItemIconPath)));
+                () => new BitmapData("item icons", options.ItemIconPath)));
         return processors;
     }
 }
