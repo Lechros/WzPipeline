@@ -5,6 +5,38 @@ namespace WzJson.Data;
 
 public class SkillOptionData : AbstractKeyValueData<SkillOptionNode>
 {
+    private readonly Dictionary<int, List<SkillOptionNode>> nodesBySkillId = new();
+
+    public override SkillOptionNode this[string key]
+    {
+        set
+        {
+            base[key] = value;
+            HandleAdd(key, value);
+        }
+    }
+
+    public override void Add(string key, SkillOptionNode value)
+    {
+        base.Add(key, value);
+        HandleAdd(key, value);
+    }
+
+    public List<SkillOptionNode> GetNodesBySkillId(int skillId)
+    {
+        return nodesBySkillId[skillId];
+    }
+
+    private void HandleAdd(string key, SkillOptionNode skillOptionNode)
+    {
+        if (!nodesBySkillId.TryGetValue(skillOptionNode.SkillId, out var list))
+        {
+            list = [];
+            nodesBySkillId.Add(skillOptionNode.SkillId, list);
+        }
+
+        list.Add(skillOptionNode);
+    }
 }
 
 public class SkillOptionNode

@@ -12,7 +12,9 @@ public class SoulReadOptions : IReadOptions
 
 public class SoulReader(
     SoulNodeRepository soulNodeRepository,
-    GlobalStringDataProvider globalStringDataProvider)
+    GlobalStringDataProvider globalStringDataProvider,
+    SoulCollectionDataProvider soulCollectionDataProvider,
+    SoulSkillOptionDataProvider soulSkillOptionDataProvider)
     : AbstractWzReader<SoulReadOptions>
 {
     protected override INodeRepository GetNodeRepository(SoulReadOptions _) => soulNodeRepository;
@@ -21,7 +23,8 @@ public class SoulReader(
     {
         var converters = new List<INodeConverter<object>>();
         if (options.SoulDataJsonPath != null)
-            converters.Add(new SoulConverter("soul data", options.SoulDataJsonPath, globalStringDataProvider.Data, null));
+            converters.Add(new SoulConverter("soul data", options.SoulDataJsonPath, globalStringDataProvider.Data,
+                soulCollectionDataProvider.Data, soulSkillOptionDataProvider.Data));
         return converters;
     }
 }

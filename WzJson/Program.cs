@@ -77,6 +77,14 @@ public static class Program
                     ItemOptionJsonPath = choices.Contains("item option data") ? "item-option.json" : null
                 }
             },
+            new("soul", typeof(SoulReader))
+            {
+                Choices = ["soul data"],
+                GetReadOptions = choices => new SoulReadOptions
+                {
+                    SoulDataJsonPath = choices.Contains("soul data") ? "soul-data.json" : null
+                }
+            },
             new("set item", typeof(SetItemReader))
             {
                 Choices = ["set item data"],
@@ -183,7 +191,7 @@ public static class Program
                         disposable.Dispose();
                 }
             });
-        
+
         sw.Stop();
         AnsiConsole.MarkupLine($"Done in {ToSecondsString(sw)}.");
     }
