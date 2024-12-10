@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace WzJson.Common;
 
-public abstract class AbstractKeyValueData<TValue> : IKeyValueData<TValue>, IKeyValueData
+public class DefaultKeyValueData<TValue> : IKeyValueData<TValue>
 {
     protected readonly Dictionary<string, TValue> Dict = new();
 

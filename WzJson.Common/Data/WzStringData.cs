@@ -15,6 +15,6 @@ public class WzString : Dictionary<string, string>
     }
 }
 
-public class WzStringData : AbstractKeyValueData<WzString>
+public class WzStringData : DefaultKeyValueData<WzString>
 {
 }

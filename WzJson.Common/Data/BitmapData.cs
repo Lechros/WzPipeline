@@ -3,7 +3,7 @@ using System.Drawing;
 namespace WzJson.Common.Data;
 
 public sealed class BitmapData(string label, string path)
-    : AbstractKeyValueData<Bitmap>, ILabeled, IDisposable
+    : DefaultKeyValueData<Bitmap>, ILabeled, IDisposable
 {
     public string Label { get; } = label;
     public string Path { get; } = path;

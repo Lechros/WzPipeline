@@ -2,7 +2,7 @@ using WzJson.Common;
 
 namespace WzJson.Data;
 
-public class SoulCollectionData : AbstractKeyValueData<SoulSkillNode>
+public class SoulCollectionData : DefaultKeyValueData<SoulSkillNode>
 {
     private const int MagnificentIndex = 8;
 

@@ -109,5 +109,5 @@ public class PngFilesWriterTests : OutputPathTestSupport
         Assert.True(File.Exists(expectedFile2));
     }
 
-    private class NonBitmapData : AbstractKeyValueData<Bitmap>;
+    private class NonBitmapData : DefaultKeyValueData<Bitmap>;
 }

@@ -100,5 +100,5 @@ public class JsonFileWriterTests : OutputPathTestSupport
         Assert.Equal(expectedContent, content);
     }
 
-    private class NonJsonData : AbstractKeyValueData<object>;
+    private class NonJsonData : DefaultKeyValueData<object>;
 }

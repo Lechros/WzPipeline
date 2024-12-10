@@ -3,7 +3,7 @@ using WzJson.Model;
 
 namespace WzJson.Data;
 
-public class SkillOptionData : AbstractKeyValueData<SkillOptionNode>
+public class SkillOptionData : DefaultKeyValueData<SkillOptionNode>
 {
     private readonly Dictionary<int, List<SkillOptionNode>> nodesBySkillId = new();
 
