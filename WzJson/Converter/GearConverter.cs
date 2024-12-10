@@ -144,13 +144,13 @@ public class GearConverter(
         for (var i = 0; i < propNode.Nodes.Count; i++)
         {
             var optionNode = propNode.Nodes[i];
-            var optionCode = optionNode.Nodes["option"].GetValue<string>();
+            var optionCode = optionNode.Nodes["option"].GetValue<int>();
             var level = optionNode.Nodes["level"].GetValue<int>();
-            var itemOption = itemOptionDataProvider.Data[optionCode];
+            var levelInfo = itemOptionDataProvider.Data.GetItemOptionLevelInfo(optionCode, level);
             potentials[i] = new GearPotential
             {
-                Title = itemOption.Level[level].String,
-                Option = itemOption.Level[level].Option
+                Title = levelInfo.String,
+                Option = levelInfo.Option
             };
         }
 

@@ -1,7 +1,6 @@
 using WzJson.Common;
-using WzJson.Common.Data;
 using WzJson.Converter;
-using WzJson.Model;
+using WzJson.Data;
 using WzJson.Repository;
 
 namespace WzJson.DataProvider;
@@ -9,11 +8,11 @@ namespace WzJson.DataProvider;
 public class ItemOptionDataProvider(
     ItemOptionNodeRepository itemOptionNodeRepository,
     ItemOptionConverter itemOptionConverter)
-    : AbstractDataProvider<IKeyValueData<ItemOption>>
+    : AbstractDataProvider<ItemOptionData>
 {
-    protected override IKeyValueData<ItemOption> GetData()
+    protected override ItemOptionData GetData()
     {
-        var processor = DefaultNodeProcessor.Of(itemOptionConverter, () => new JsonData<ItemOption>("", ""));
+        var processor = DefaultNodeProcessor.Of(itemOptionConverter, () => new ItemOptionData());
         return processor.ProcessNodes(itemOptionNodeRepository.GetNodes());
     }
 }

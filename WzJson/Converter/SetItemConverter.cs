@@ -98,9 +98,8 @@ public class SetItemConverter(ItemOptionDataProvider itemOptionDataProvider) : A
 
     private GearOption ConvertToGearOption(Wz_Node optionNode)
     {
-        var optionCode = optionNode.Nodes["option"].GetValue<string>();
+        var optionCode = optionNode.Nodes["option"].GetValue<int>();
         var level = optionNode.Nodes["level"].GetValue<int>();
-        var itemOption = itemOptionDataProvider.Data[optionCode];
-        return itemOption.Level[level].Option;
+        return itemOptionDataProvider.Data.GetGearOption(optionCode, level);
     }
 }

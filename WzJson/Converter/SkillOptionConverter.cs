@@ -5,7 +5,9 @@ using WzJson.DataProvider;
 
 namespace WzJson.Converter;
 
-public class SkillOptionConverter(SoulCollectionDataProvider soulCollectionDataProvider, ItemOptionDataProvider itemOptionDataProvider)
+public class SkillOptionConverter(
+    SoulCollectionDataProvider soulCollectionDataProvider,
+    ItemOptionDataProvider itemOptionDataProvider)
     : AbstractNodeConverter<SkillOptionNode>
 {
     private const int NormalSoulReqLevel = 75;
@@ -30,21 +32,11 @@ public class SkillOptionConverter(SoulCollectionDataProvider soulCollectionDataP
 
         foreach (var optionNode in node.Nodes["tempOption"].Nodes)
         {
-            var id = optionNode.Nodes["id"].GetValue<string>();
-            var gearOption = itemOptionDataProvider.Data[id].Level[GetLevel(skillOptionNode.ReqLevel)].Option;
+            var id = optionNode.Nodes["id"].GetValue<int>();
+            var gearOption = itemOptionDataProvider.Data.GetGearOptionByReqLevel(id, skillOptionNode.ReqLevel);
             skillOptionNode.TempOption.Add(gearOption);
         }
 
         return skillOptionNode;
-    }
-
-    private int GetLevel(int reqLevel)
-    {
-        return reqLevel switch
-        {
-            <= 0 => 1,
-            >= 250 => 25,
-            _ => (reqLevel + 9) / 10
-        };
     }
 }
