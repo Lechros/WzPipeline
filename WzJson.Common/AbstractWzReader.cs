@@ -5,20 +5,18 @@ public abstract class AbstractWzReader<TReadOptions> : IWzReader where TReadOpti
     public IReadOnlyList<IKeyValueData> Read(TReadOptions options, IProgress<ReadProgressData> progress)
     {
         var repository = GetNodeRepository(options);
-        var converters = GetConverters(options);
-        var pairs = converters.Select(converter => new ConverterDataPair(converter)).ToArray();
+        var processors = GetProcessors(options);
+        var units = processors.Select(processor => new ProcessUnit(processor.Converter, processor.CreateData()))
+            .ToArray();
 
         var reporter = new ProgressReporter<ReadProgressData>(progress,
             (current, total) => new ReadProgressData(current, total), repository.GetNodeCount());
 
         foreach (var node in repository.GetNodes())
         {
-            foreach (var pair in pairs)
+            foreach (var unit in units)
             {
-                var name = pair.Converter.GetNodeKey(node);
-                var item = pair.Converter.ConvertNode(node, name);
-                if (item != null)
-                    pair.Data.Add(name, item);
+                unit.ConvertNodeAndAdd(node);
             }
 
             reporter.Increment();
@@ -26,21 +24,15 @@ public abstract class AbstractWzReader<TReadOptions> : IWzReader where TReadOpti
 
         reporter.Complete();
 
-        return pairs.Select(pair => pair.Data).ToList();
+        return units.Select(unit => unit.Data).ToList();
     }
 
     IReadOnlyList<IData> IWzReader.Read(IReadOptions options, IProgress<ReadProgressData> progress)
     {
         return Read((TReadOptions)options, progress);
     }
-    
+
     protected abstract INodeRepository GetNodeRepository(TReadOptions options);
 
-    protected abstract IList<INodeConverter<object>> GetConverters(TReadOptions options);
-
-    private record struct ConverterDataPair(INodeConverter<object> Converter)
-    {
-        public readonly INodeConverter<object> Converter = Converter;
-        public readonly IKeyValueData Data = Converter.NewData();
-    }
+    protected abstract IList<INodeProcessor> GetProcessors(TReadOptions options);
 }

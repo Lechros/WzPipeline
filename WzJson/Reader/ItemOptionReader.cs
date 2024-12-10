@@ -1,6 +1,7 @@
-using WzComparerR2.WzLib;
 using WzJson.Common;
+using WzJson.Common.Data;
 using WzJson.Converter;
+using WzJson.Model;
 using WzJson.Repository;
 
 namespace WzJson.Reader;
@@ -10,15 +11,17 @@ public class ItemOptionReadOptions : IReadOptions
     public string? ItemOptionJsonPath { get; set; }
 }
 
-public class ItemOptionReader(ItemOptionNodeRepository itemOptionNodeRepository) : AbstractWzReader<ItemOptionReadOptions>
+public class ItemOptionReader(ItemOptionNodeRepository itemOptionNodeRepository)
+    : AbstractWzReader<ItemOptionReadOptions>
 {
     protected override INodeRepository GetNodeRepository(ItemOptionReadOptions _) => itemOptionNodeRepository;
 
-    protected override IList<INodeConverter<object>> GetConverters(ItemOptionReadOptions options)
+    protected override IList<INodeProcessor> GetProcessors(ItemOptionReadOptions options)
     {
-        var converters = new List<INodeConverter<object>>();
+        var processors = new List<INodeProcessor>();
         if (options.ItemOptionJsonPath != null)
-            converters.Add(new ItemOptionConverter("item option data", options.ItemOptionJsonPath));
-        return converters;
+            processors.Add(DefaultNodeProcessor.Of(new ItemOptionConverter(),
+                () => new JsonData<ItemOption>("item option data", options.ItemOptionJsonPath)));
+        return processors;
     }
 }

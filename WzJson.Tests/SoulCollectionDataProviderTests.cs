@@ -1,4 +1,5 @@
 using FluentAssertions;
+using WzJson.Converter;
 using WzJson.DataProvider;
 using WzJson.Repository;
 
@@ -12,9 +13,10 @@ public class SoulCollectionDataProviderTests
     [OneTimeSetUp]
     public void SetUp()
     {
-        var wzProviderFixture = new WzProviderFixture();
-        var soulCollectionNodeRepository = new SoulCollectionNodeRepository(wzProviderFixture.WzProvider);
-        soulCollectionDataProvider = new SoulCollectionDataProvider(soulCollectionNodeRepository);
+        var wzProvider = new WzProviderFixture().WzProvider;
+        var soulCollectionNodeRepository = new SoulCollectionNodeRepository(wzProvider);
+        soulCollectionDataProvider =
+            new SoulCollectionDataProvider(soulCollectionNodeRepository, new SoulSkillInfoConverter());
     }
 
     [Test]

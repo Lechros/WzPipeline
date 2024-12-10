@@ -1,6 +1,8 @@
 using WzJson.Common;
+using WzJson.Common.Data;
 using WzJson.Converter;
 using WzJson.DataProvider;
+using WzJson.Model;
 using WzJson.Repository;
 
 namespace WzJson.Reader;
@@ -12,19 +14,17 @@ public class SoulReadOptions : IReadOptions
 
 public class SoulReader(
     SoulNodeRepository soulNodeRepository,
-    GlobalStringDataProvider globalStringDataProvider,
-    SoulCollectionDataProvider soulCollectionDataProvider,
-    SoulSkillOptionDataProvider soulSkillOptionDataProvider)
+    SoulConverter soulConverter)
     : AbstractWzReader<SoulReadOptions>
 {
     protected override INodeRepository GetNodeRepository(SoulReadOptions _) => soulNodeRepository;
 
-    protected override IList<INodeConverter<object>> GetConverters(SoulReadOptions options)
+    protected override IList<INodeProcessor> GetProcessors(SoulReadOptions options)
     {
-        var converters = new List<INodeConverter<object>>();
+        var processors = new List<INodeProcessor>();
         if (options.SoulDataJsonPath != null)
-            converters.Add(new SoulConverter("soul data", options.SoulDataJsonPath, globalStringDataProvider.Data,
-                soulCollectionDataProvider.Data, soulSkillOptionDataProvider.Data));
-        return converters;
+            processors.Add(DefaultNodeProcessor.Of(soulConverter,
+                () => new JsonData<Soul>("soul data", options.SoulDataJsonPath)));
+        return processors;
     }
 }

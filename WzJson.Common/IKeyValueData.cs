@@ -3,15 +3,15 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace WzJson.Common;
 
-public interface IKeyValueData<TValue> : IData, IEnumerable<KeyValuePair<string, TValue>>
+public interface IKeyValueData<TValue> : IData, IEnumerable<KeyValuePair<string, TValue>>, IKeyValueData
 {
-    TValue this[string key] { get; set; }
+    new TValue this[string key] { get; set; }
 
-    ICollection<string> Keys { get; }
+    new ICollection<string> Keys { get; }
 
-    ICollection<TValue> Values { get; }
+    new ICollection<TValue> Values { get; }
 
-    bool ContainsKey(string key);
+    new bool ContainsKey(string key);
 
     void Add(string key, TValue value);
 

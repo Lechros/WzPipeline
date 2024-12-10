@@ -1,19 +1,14 @@
 using WzComparerR2.WzLib;
 using WzJson.Common;
 using WzJson.Data;
-using WzJson.Domain;
 
 namespace WzJson.Converter;
 
 public class SoulSkillInfoConverter : AbstractNodeConverter<SoulSkillNode>
 {
-    public SoulCollectionData Convert(IEnumerable<Wz_Node> nodes) => (SoulCollectionData)base.Convert(nodes);
-
-    public override IKeyValueData NewData() => new SoulCollectionData();
-
     public override string GetNodeKey(Wz_Node node) => node.Text;
 
-    public override SoulSkillNode? ConvertNode(Wz_Node node, string key)
+    public override SoulSkillNode? Convert(Wz_Node node, string key)
     {
         var item = new SoulSkillNode
         {

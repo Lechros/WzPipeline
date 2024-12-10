@@ -1,6 +1,4 @@
-using System.Diagnostics;
 using FluentAssertions;
-using Newtonsoft.Json;
 using WzJson.Common;
 using WzJson.Converter;
 using WzJson.Data;
@@ -15,22 +13,23 @@ public class SkillOptionConverterTests
     private IWzProvider wzProvider;
     private SkillOptionNodeRepository skillOptionNodeRepository;
     private SkillOptionConverter skillOptionConverter;
+    private DefaultNodeProcessor<SkillOptionNode, SkillOptionData> skillOptionProcessor;
 
     [OneTimeSetUp]
     public void SetUp()
     {
         wzProvider = new WzProviderFixture().WzProvider;
-        var soulCollectionData = new SoulCollectionDataProvider(new SoulCollectionNodeRepository(wzProvider)).Data;
-        var itemOptionData =
-            new ItemOptionConverter("", "").Convert(new ItemOptionNodeRepository(wzProvider).GetNodes());
         skillOptionNodeRepository = new SkillOptionNodeRepository(wzProvider);
-        skillOptionConverter = new SkillOptionConverter(soulCollectionData, itemOptionData);
+        var soulCollectionDataProvider = new SoulCollectionDataProvider(new SoulCollectionNodeRepository(wzProvider), new SoulSkillInfoConverter());
+        var itemOptionDataProvider = new ItemOptionDataProvider(new ItemOptionNodeRepository(wzProvider), new ItemOptionConverter());
+        skillOptionConverter = new SkillOptionConverter(soulCollectionDataProvider, itemOptionDataProvider);
+        skillOptionProcessor = DefaultNodeProcessor.Of(skillOptionConverter, () => new SkillOptionData());
     }
 
     [Test]
     public void Convert_ShouldReturnNonEmptySkillOptionData()
     {
-        var data = skillOptionConverter.Convert(skillOptionNodeRepository.GetNodes());
+        var data = skillOptionProcessor.ProcessNodes(skillOptionNodeRepository.GetNodes());
 
         data.Should().BeOfType<SkillOptionData>();
         data.As<SkillOptionData>().Should().HaveCountGreaterThan(0);
@@ -39,7 +38,7 @@ public class SkillOptionConverterTests
     [Test]
     public void Convert_ShouldContainExpectedNumberOfNodesGroupBySkillId()
     {
-        var data = skillOptionConverter.Convert(skillOptionNodeRepository.GetNodes());
+        var data = skillOptionProcessor.ProcessNodes(skillOptionNodeRepository.GetNodes());
         
         data.As<SkillOptionData>().GetNodesBySkillId(80003753).Should().HaveCount(16);
     }

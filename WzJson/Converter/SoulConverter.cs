@@ -1,40 +1,35 @@
 using System.Text.RegularExpressions;
 using WzComparerR2.WzLib;
 using WzJson.Common;
-using WzJson.Common.Data;
 using WzJson.Data;
-using WzJson.Domain;
+using WzJson.DataProvider;
 using WzJson.Model;
 
 namespace WzJson.Converter;
 
 public partial class SoulConverter(
-    string dataLabel,
-    string dataPath,
-    GlobalStringData globalStringData,
-    SoulCollectionData soulCollectionData,
-    SkillOptionData skillOptionData)
+    GlobalStringDataProvider globalStringDataProvider,
+    SoulCollectionDataProvider soulCollectionDataProvider,
+    SkillOptionDataProvider skillOptionDataProvider)
     : AbstractNodeConverter<Soul>
 {
     [GeneratedRegex(@"추가 잠재능력 : ([\w가-힣]+) \+(\d+)")]
     private static partial Regex SoulDescOptionRegex();
 
-    public override IKeyValueData NewData() => new JsonData<Soul>(dataLabel, dataPath);
-
     public override string GetNodeKey(Wz_Node node) => WzUtility.GetNodeCode(node);
 
-    public override Soul? ConvertNode(Wz_Node node, string key)
+    public override Soul? Convert(Wz_Node node, string key)
     {
-        if (!int.TryParse(key, out var soulId) || !soulCollectionData.ContainsSoul(soulId)) return null;
-        var skillId = soulCollectionData.GetSoulSkillId(soulId);
-        var magnificent = soulCollectionData.IsMagnificentSoul(soulId);
-        globalStringData.Consume.TryGetValue(key, out var soulString);
+        if (!int.TryParse(key, out var soulId) || !soulCollectionDataProvider.Data.ContainsSoul(soulId)) return null;
+        var skillId = soulCollectionDataProvider.Data.GetSoulSkillId(soulId);
+        var magnificent = soulCollectionDataProvider.Data.IsMagnificentSoul(soulId);
+        globalStringDataProvider.Data.Consume.TryGetValue(key, out var soulString);
         if (soulString?.Name == null) return null;
 
-        var skillOptionNodes = skillOptionData.GetNodesBySkillId(skillId);
+        var skillOptionNodes = skillOptionDataProvider.Data.GetNodesBySkillId(skillId);
         var skillOptionNode = magnificent
             ? skillOptionNodes[0]
-            : skillOptionNodes[soulCollectionData.GetSoulIndexInList(soulId)];
+            : skillOptionNodes[soulCollectionDataProvider.Data.GetSoulIndexInList(soulId)];
 
         var soul = new Soul
         {
@@ -53,7 +48,7 @@ public partial class SoulConverter(
 
     private string GetSoulSkillName(int skillId)
     {
-        return globalStringData.Skill[skillId.ToString()].Name ??
+        return globalStringDataProvider.Data.Skill[skillId.ToString()].Name ??
                throw new ApplicationException("Skill name not found for: " + skillId);
     }
 

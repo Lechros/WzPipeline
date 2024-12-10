@@ -1,7 +1,9 @@
 using FluentAssertions;
 using FluentAssertions.Execution;
 using WzJson.Common;
+using WzJson.Common.Converter;
 using WzJson.Common.Data;
+using WzJson.Converter;
 using WzJson.DataProvider;
 using WzJson.Domain;
 using WzJson.Model;
@@ -18,17 +20,24 @@ public class GearIntegrationTests
     [OneTimeSetUp]
     public void SetUp()
     {
-        var wzProviderFixture = new WzProviderFixture();
+        var wzProvider = new WzProviderFixture().WzProvider;
         var globalStringDataProvider = new GlobalStringDataProvider(
-            new StringConsumeNodeRepository(wzProviderFixture.WzProvider),
-            new StringEqpNodeRepository(wzProviderFixture.WzProvider),
-            new StringSkillNodeRepository(wzProviderFixture.WzProvider));
+            new StringConsumeNodeRepository(wzProvider),
+            new StringEqpNodeRepository(wzProvider),
+            new StringSkillNodeRepository(wzProvider),
+            new WzStringConverter());
+        var itemOptionDataProvider =
+            new ItemOptionDataProvider(
+                new ItemOptionNodeRepository(wzProvider),
+                new ItemOptionConverter());
         var reader = new GearReader(
-            wzProviderFixture.WzProvider.FindNode,
-            new GearNodeRepository(wzProviderFixture.WzProvider),
-            new ItemOptionNodeRepository(wzProviderFixture.WzProvider),
-            globalStringDataProvider
-        );
+            wzProvider.FindNode,
+            new GearNodeRepository(wzProvider),
+            new GearConverter(
+                globalStringDataProvider,
+                itemOptionDataProvider,
+                wzProvider.FindNode));
+
         var options = new GearReadOptions
         {
             GearDataJsonPath = " "
@@ -37,9 +46,9 @@ public class GearIntegrationTests
             .ToDictionary();
 
         wzGears = new Dictionary<string, WzComparerR2Gear>();
-        foreach (var node in new GearNodeRepository(wzProviderFixture.WzProvider).GetNodes())
+        foreach (var node in new GearNodeRepository(wzProvider).GetNodes())
         {
-            var wzGear = WzComparerR2Gear.CreateFromNode(node, wzProviderFixture.WzProvider.FindNode);
+            var wzGear = WzComparerR2Gear.CreateFromNode(node, wzProvider.FindNode);
             if (wzGear != null)
                 wzGears.Add(wzGear.ItemID.ToString(), wzGear);
         }

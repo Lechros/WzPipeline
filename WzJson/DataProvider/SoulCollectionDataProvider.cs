@@ -1,14 +1,16 @@
+using WzJson.Common;
 using WzJson.Converter;
 using WzJson.Data;
 using WzJson.Repository;
 
 namespace WzJson.DataProvider;
 
-public class SoulCollectionDataProvider(SoulCollectionNodeRepository soulCollectionNodeRepository)
+public class SoulCollectionDataProvider(SoulCollectionNodeRepository soulCollectionNodeRepository, SoulSkillInfoConverter soulSkillInfoConverter)
     : AbstractDataProvider<SoulCollectionData>
 {
     protected override SoulCollectionData GetData()
     {
-        return new SoulSkillInfoConverter().Convert(soulCollectionNodeRepository.GetNodes());
+        var processor = DefaultNodeProcessor.Of(soulSkillInfoConverter, () => new SoulCollectionData());
+        return processor.ProcessNodes(soulCollectionNodeRepository.GetNodes());
     }
 }

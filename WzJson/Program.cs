@@ -7,7 +7,9 @@ using Spectre.Console.Rendering;
 using WzComparerR2.Common;
 using WzJson.Common;
 using WzJson.Common.Writer;
+using WzJson.Data;
 using WzJson.DataProvider;
+using WzJson.Model;
 using WzJson.Reader;
 
 namespace WzJson;
