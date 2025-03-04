@@ -62,7 +62,7 @@ public static class Program
                 GetReadOptions = choices => new GearReadOptions
                 {
                     GearDataJsonPath = choices.Contains("gear data") ? "gear-data.json" : null,
-                    GearIconPath = choices.Contains("gear data") ? "gear-icon" : null,
+                    GearIconPath = choices.Contains("gear icons") ? "gear-icon" : null,
                     GearIconOriginJsonPath = choices.Contains("gear icon origins") ? "gear-origin.json" : null,
                     GearIconRawPath = choices.Contains("gear raw icons") ? "gear-raw-icon" : null,
                     GearIconRawOriginJsonPath =
