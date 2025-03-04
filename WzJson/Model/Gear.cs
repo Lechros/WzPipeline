@@ -75,6 +75,9 @@ public class GearAttribute
     public bool Superior { get; set; }
 
     [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+    public int AttackSpeed { get; set; }
+
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
     public bool CannotUpgrade { get; set; }
 
     [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
