@@ -144,7 +144,8 @@ public class GearAttribute
     {
         None = 0,
         Can = 1,
-        Cannot = 2
+        Cannot = 2,
+        Fixed = 3,
     }
 
     public enum PotentialCan

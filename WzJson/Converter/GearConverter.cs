@@ -235,7 +235,7 @@ public class GearConverter(
                 gear.Attributes.CanAddOption = GearAttribute.AddOptionCan.Cannot;
                 break;
             case GearPropType.exUpgradeChangeBlock:
-                gear.Attributes.CanAddOption = GearAttribute.AddOptionCan.Cannot;
+                gear.Attributes.CanAddOption = GearAttribute.AddOptionCan.Fixed;
                 break;
 
             // Upgrade
