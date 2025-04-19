@@ -29,6 +29,8 @@ public class SkillOptionData : DefaultKeyValueData<SkillOptionNode>
 
     private void HandleAdd(string key, SkillOptionNode skillOptionNode)
     {
+        if (skillOptionNode.IncTableId == 0) return;
+        
         if (!nodesBySkillId.TryGetValue(skillOptionNode.SkillId, out var list))
         {
             list = [];
