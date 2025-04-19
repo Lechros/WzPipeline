@@ -42,6 +42,9 @@ public class GearOption
 
     [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
     public int MaxMpRate { get; set; }
+    
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+    public int MaxDemonForce { get; set; }
 
     [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
     public int AttackPower { get; set; }
@@ -66,6 +69,9 @@ public class GearOption
 
     [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
     public int Jump { get; set; }
+
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+    public int Knockback { get; set; }
 
     [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
     public int BossDamage { get; set; }

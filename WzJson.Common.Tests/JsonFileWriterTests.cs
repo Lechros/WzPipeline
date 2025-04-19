@@ -1,46 +1,49 @@
+using FluentAssertions;
 using Newtonsoft.Json;
 using WzJson.Common.Data;
 using WzJson.Common.Writer;
 
 namespace WzJson.Common.Tests;
 
+[TestFixture]
 public class JsonFileWriterTests : OutputPathTestSupport
 {
     private readonly JsonSerializer jsonSerializer = new();
 
-    [Fact]
+    [Test]
     public void Ctor_FileOutputPath_ThrowsArgumentException()
     {
         var path = Path.Join(OutputPath, "test.json");
 
-        Assert.Throws<ArgumentException>(() => new JsonFileWriter(path, jsonSerializer));
+        Action act = () => new JsonFileWriter(path, jsonSerializer);
+        act.Should().Throw<ArgumentException>();
     }
 
-    [Fact]
+    [Test]
     public void Ctor_DirectoryOutputPath_DoesNotThrow()
     {
         var writer = new JsonFileWriter(OutputPath, jsonSerializer);
     }
 
-    [Fact]
+    [Test]
     public void Supports_JsonData_ReturnsTrue()
     {
         var writer = new JsonFileWriter(OutputPath, jsonSerializer);
         var data = new JsonData<object>("", "test.json");
 
-        Assert.True(writer.Supports(data));
+        writer.Supports(data).Should().BeTrue();
     }
 
-    [Fact]
+    [Test]
     public void Supports_NonJsonData_ReturnsFalse()
     {
         var writer = new JsonFileWriter(OutputPath, jsonSerializer);
         var data = new NonJsonData();
 
-        Assert.False(writer.Supports(data));
+        writer.Supports(data).Should().BeFalse();
     }
 
-    [Fact]
+    [Test]
     public void Write_JsonData_SavesSingleJsonFileWithName()
     {
         const string filename = "test.json";
@@ -50,16 +53,16 @@ public class JsonFileWriterTests : OutputPathTestSupport
         var expectedContent = @"{""key"":""value""}";
         var data = new JsonData<string>(filename, filename);
         data.Add(key, value);
-        
+
         var writer = new JsonFileWriter(OutputPath, jsonSerializer);
         writer.Write(data, new Progress<WriteProgressData>());
 
-        Assert.True(File.Exists(expectedFilename));
+        File.Exists(expectedFilename).Should().BeTrue();
         var content = File.ReadAllText(expectedFilename);
-        Assert.Equal(expectedContent, content);
+        expectedContent.Should().Be(content);
     }
 
-    [Fact]
+    [Test]
     public void Write_NestedPathName_SaveSuccesses()
     {
         const string filename = "nested/path/test.json";
@@ -73,12 +76,12 @@ public class JsonFileWriterTests : OutputPathTestSupport
         var writer = new JsonFileWriter(OutputPath, jsonSerializer);
         writer.Write(data, new Progress<WriteProgressData>());
 
-        Assert.True(File.Exists(expectedFilename));
+        File.Exists(expectedFilename).Should().BeTrue();
         var content = File.ReadAllText(expectedFilename);
-        Assert.Equal(expectedContent, content);
+        expectedContent.Should().Be(content);
     }
 
-    [Fact]
+    [Test]
     public void Write_NumberKeys_SortedInNaturalOrder()
     {
         const string filename = "test.json";
@@ -96,8 +99,9 @@ public class JsonFileWriterTests : OutputPathTestSupport
         var writer = new JsonFileWriter(OutputPath, jsonSerializer);
         writer.Write(data, new Progress<WriteProgressData>());
 
+        File.Exists(expectedFilename).Should().BeTrue();
         var content = File.ReadAllText(expectedFilename);
-        Assert.Equal(expectedContent, content);
+        expectedContent.Should().Be(content);
     }
 
     private class NonJsonData : DefaultKeyValueData<object>;

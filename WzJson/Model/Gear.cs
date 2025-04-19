@@ -75,6 +75,9 @@ public class GearAttribute
     public bool Superior { get; set; }
 
     [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+    public int AttackSpeed { get; set; }
+
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
     public bool CannotUpgrade { get; set; }
 
     [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
@@ -95,7 +98,8 @@ public class GearAttribute
     [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
     public GearCuttable Cuttable { get; set; }
 
-    public int? CuttableCount { get; set; }
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+    public int CuttableCount { get; set; }
 
     [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
     public bool AccountShareTag { get; set; }
@@ -120,7 +124,6 @@ public class GearAttribute
     [JsonIgnore] public bool _OnlyUpgrade { get; set; }
     [JsonIgnore] public bool _SharableOnce { get; set; }
 
-    public bool ShouldSerializeCuttableCount() => CuttableCount != null;
     public bool ShouldSerializeIncline() => !Incline.IsEmpty();
 
     public enum GearTrade
@@ -141,7 +144,8 @@ public class GearAttribute
     {
         None = 0,
         Can = 1,
-        Cannot = 2
+        Cannot = 2,
+        Fixed = 3,
     }
 
     public enum PotentialCan

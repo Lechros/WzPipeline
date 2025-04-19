@@ -226,13 +226,16 @@ public class GearConverter(
             case GearPropType.bossReward:
                 gear.Attributes.BossReward = true;
                 break;
+            case GearPropType.attackSpeed:
+                gear.Attributes.AttackSpeed = value;
+                break;
 
             // AddOption
             case GearPropType.exUpgradeBlock:
                 gear.Attributes.CanAddOption = GearAttribute.AddOptionCan.Cannot;
                 break;
             case GearPropType.exUpgradeChangeBlock:
-                gear.Attributes.CanAddOption = GearAttribute.AddOptionCan.Cannot;
+                gear.Attributes.CanAddOption = GearAttribute.AddOptionCan.Fixed;
                 break;
 
             // Upgrade

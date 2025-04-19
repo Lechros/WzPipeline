@@ -7,9 +7,7 @@ using Spectre.Console.Rendering;
 using WzComparerR2.Common;
 using WzJson.Common;
 using WzJson.Common.Writer;
-using WzJson.Data;
 using WzJson.DataProvider;
-using WzJson.Model;
 using WzJson.Reader;
 
 namespace WzJson;
@@ -64,7 +62,7 @@ public static class Program
                 GetReadOptions = choices => new GearReadOptions
                 {
                     GearDataJsonPath = choices.Contains("gear data") ? "gear-data.json" : null,
-                    GearIconPath = choices.Contains("gear data") ? "gear-icon" : null,
+                    GearIconPath = choices.Contains("gear icons") ? "gear-icon" : null,
                     GearIconOriginJsonPath = choices.Contains("gear icon origins") ? "gear-origin.json" : null,
                     GearIconRawPath = choices.Contains("gear raw icons") ? "gear-raw-icon" : null,
                     GearIconRawOriginJsonPath =
@@ -97,11 +95,14 @@ public static class Program
             },
             new("item", typeof(ItemReader))
             {
-                Choices = ["item icons", "item icon origins"],
+                Choices = ["item icons", "item icon origins", "item raw icons", "item raw icon origins"],
                 GetReadOptions = choices => new ItemReadOptions
                 {
                     ItemIconPath = choices.Contains("item icons") ? "item-icon" : null,
-                    ItemIconOriginJsonPath = choices.Contains("item icon origins") ? "item-origin.json" : null
+                    ItemIconOriginJsonPath = choices.Contains("item icon origins") ? "item-origin.json" : null,
+                    ItemIconRawPath = choices.Contains("item raw icons") ? "item-raw-icon" : null,
+                    ItemIconRawOriginJsonPath =
+                        choices.Contains("item raw icon origins") ? "item-raw-origin.json" : null
                 }
             },
             new("skill", typeof(SkillReader))
