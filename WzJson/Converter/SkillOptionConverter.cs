@@ -10,9 +10,6 @@ public class SkillOptionConverter(
     ItemOptionDataProvider itemOptionDataProvider)
     : AbstractNodeConverter<SkillOptionNode>
 {
-    private const int NormalSoulReqLevel = 75;
-    private const int MagnificentSoulReqLevel = 100;
-
     public override string GetNodeKey(Wz_Node node) => node.Text;
 
     public override SkillOptionNode? Convert(Wz_Node node, string key)
@@ -26,14 +23,10 @@ public class SkillOptionConverter(
 
         if (!soulCollectionDataProvider.Data.ContainsSkill(skillOptionNode.SkillId)) return null;
 
-        var magnificent = soulCollectionDataProvider.Data.IsMagnificentSoulSkill(skillOptionNode.SkillId);
-        var expectedReqLevel = magnificent ? MagnificentSoulReqLevel : NormalSoulReqLevel;
-        if (skillOptionNode.ReqLevel != expectedReqLevel) return null;
-
         foreach (var optionNode in node.Nodes["tempOption"].Nodes)
         {
             var id = optionNode.Nodes["id"].GetValue<int>();
-            var gearOption = itemOptionDataProvider.Data.GetGearOptionByReqLevel(id, skillOptionNode.ReqLevel);
+            var gearOption = itemOptionDataProvider.Data.GetGearOptionByReqLevel(id, 75);
             skillOptionNode.TempOption.Add(gearOption);
         }
 
