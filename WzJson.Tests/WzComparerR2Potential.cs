@@ -74,7 +74,7 @@ public class WzComparerR2Potential
                             || gearType == GearType.glove
                             || gearType == GearType.cape
                             || gearType == GearType.belt
-                            || gearType == GearType.shoulder;
+                            || gearType == GearType.shoulderPad;
             case 40: return gearType == GearType.faceAccessory
                             || gearType == GearType.eyeAccessory
                             || gearType == GearType.ring
