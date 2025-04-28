@@ -13,6 +13,94 @@ public class GearConverter(
     GlobalFindNodeFunction findNode)
     : AbstractNodeConverter<Gear>
 {
+    private static readonly HashSet<string> Ignore =
+    [
+        "islot",
+        "vslot",
+        "price",
+        "slotMax",
+        "notSale",
+        "noDrop",
+        "undecomposable",
+        "unsyntesizable",
+        "exItem",
+        "exGrade",
+        "epic",
+        "expireOnLogout",
+        "expireOnNonPremiumLogin",
+        "variableStat",
+        "exceptToadsHammer",
+        "exceptTransmission",
+        "cubeExBaseOptionLevel",
+        "gatherTool",
+        "invisibleFace",
+        "collabo",
+        "equipDrop",
+        "specialID",
+        "tutorial",
+
+        "icnSTR",
+        "tradBlock",
+        "bonusExp",
+        "MaxHP",
+        "speed",
+        "incHP",
+        "addtion",
+        "additon",
+        "noExtend",
+        "hitDamRatePlus",
+        "hitDamRatePlus2",
+
+        "sfx",
+        "walk",
+        "stand",
+        "attack",
+        "afterImage",
+
+        "info",
+        "recovery",
+        "jewelCraft",
+        "scope",
+        "replace",
+        "reissueBan",
+        "StarPlanet",
+        "dayOfWeekItemStat",
+        "randVariation",
+        "icon2",
+        "icon3",
+        "icon4",
+        "icon5",
+        "icon6",
+        "icon7",
+        "iconRaw2",
+        "iconRaw3",
+        "iconRaw4",
+        "iconRaw5",
+        "iconRaw6",
+        "iconRaw7",
+        "iconD",
+        "iconRawD",
+        "toolTipPreview",
+        "dialogPreview",
+        "androidAni",
+        "removeEar",
+        "quest",
+        "noPotentialFieldtype",
+        "lookChangeType",
+        "sample",
+        "linkedPairItem",
+        "chatBalloon",
+        "effect",
+        "reqSpecJobs",
+        "pmdR",
+        "fs",
+        "head",
+        "scanTradeBlock",
+        "kaiserOffsetY",
+        "incAttackCount",
+        "kaiserOffsetX",
+    ];
+
     public override string GetNodeKey(Wz_Node node) => WzUtility.GetNodeCode(node);
 
     public override Gear? Convert(Wz_Node node, string key)
@@ -39,6 +127,8 @@ public class GearConverter(
                     var resolvedIconNode = WzUtility.ResolveLinkedNode(propNode, findNode);
                     var linkedGearNode = resolvedIconNode.ParentNode.ParentNode;
                     gear.Icon = WzUtility.GetNodeCode(linkedGearNode);
+                    break;
+                case "iconRaw":
                     break;
                 case "addition":
                     break;
@@ -68,7 +158,7 @@ public class GearConverter(
             potentials.Add(new GearPotential
             {
                 Grade = optionCode / 10000,
-                Title = levelInfo.String,
+                Summary = levelInfo.String,
                 Option = levelInfo.Option
             });
         }
@@ -79,7 +169,11 @@ public class GearConverter(
     private void HandlePropNodeDefault(Gear gear, Wz_Node propNode)
     {
         if (int.TryParse(propNode.Text, out _)) return;
-        if (!Enum.TryParse(propNode.Text, out GearPropType propType)) return;
+        if (Ignore.Contains(propNode.Text)) return;
+        if (!Enum.TryParse(propNode.Text, out GearPropType propType))
+        {
+            throw new ArgumentException($"Unknown GearPropType in {gear.Id}: {propNode.Text}");
+        }
 
         var value = propNode.GetValue<int>();
         if (value != 0)
