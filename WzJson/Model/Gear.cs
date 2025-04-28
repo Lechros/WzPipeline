@@ -32,7 +32,7 @@ public class GearPotential
 {
     public required int Grade { get; set; }
     
-    public required string Title { get; set; }
+    public required string Summary { get; set; }
 
     public GearOption Option { get; set; } = new();
 }

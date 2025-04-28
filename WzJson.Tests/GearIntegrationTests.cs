@@ -73,7 +73,7 @@ public class GearIntegrationTests
                     var potential = gear.Potentials![i];
                     var option = wzGear.Options[i];
                     potential.Should().NotBeNull(Cuz(gear, "option is not null at index " + i));
-                    potential!.Title.Should().Be(option.ConvertSummary(),
+                    potential!.Summary.Should().Be(option.ConvertSummary(),
                         Cuz(gear, "option summary at index " + i));
                 }
             }
