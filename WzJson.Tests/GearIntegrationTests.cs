@@ -91,6 +91,26 @@ public class GearIntegrationTests
         }
     }
 
+    [Test]
+    public void GenesisWeapon_ContainsSkills()
+    {
+        using var scope = new AssertionScope();
+        foreach (var id in new[]{"1212129", "1222122", "1232122"})
+        {
+            gears[id].Skills.Should().Equal("파괴의 얄다바오트", "창조의 아이온");
+        }
+    }
+
+    [Test]
+    public void DestinyWeapon_ContainsSkills()
+    {
+        using var scope = new AssertionScope();
+        foreach (var id in new[]{"1232135", "1362161", "1522164"})
+        {
+            gears[id].Skills.Should().Equal("초월 : 결전의 의지", "초월 : 불굴의 결의");
+        }
+    }
+
     private IEnumerable<(Gear, WzComparerR2Gear)> GearPairs()
     {
         foreach (var (key, gear) in gears)
