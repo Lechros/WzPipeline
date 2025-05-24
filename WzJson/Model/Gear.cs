@@ -23,8 +23,12 @@ public class Gear
     [JsonConverter(typeof(StringEnumConverter))]
     [JsonExtensionData]
     public Dictionary<string, JToken> Props { get; set; } = new();
+    
+    public string[]? Skills { get; set; }
 
     public bool ShouldSerializePotentials() => Potentials != null;
+    
+    public bool ShouldSerializeSkills() => Skills != null;
 }
 
 [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]

@@ -144,7 +144,103 @@ public class GearConverter(
             }
         }
 
+        var skillIds = new List<int>();
+        if (IsDestinyWeapon(gear))
+        {
+            skillIds.Add(80003873);
+            skillIds.Add(80003874);
+        }
+        else if (IsGenesisWeapon(gear))
+        {
+            skillIds.Add(80002632);
+            skillIds.Add(80002633);
+        }
+
+        if (skillIds.Count > 0)
+        {
+            gear.Skills = skillIds.Select(skillId => globalStringDataProvider.Data.Skill[skillId.ToString()].Name!)
+                .ToArray();
+        }
+
         return gear;
+    }
+
+    private bool IsGenesisWeapon(Gear gear)
+    {
+        var type = GetGearType(gear.Id);
+        if (!type.IsWeapon()) return false;
+        if (!gear.Props.TryGetValue(nameof(GearPropType.setItemID), out var setItemIdToken)) return false;
+        var setItemId = setItemIdToken.ToObject<int>();
+        if (886 > setItemId || setItemId > 890) return false;
+        return true;
+    }
+
+    private bool IsDestinyWeapon(Gear gear)
+    {
+        var type = GetGearType(gear.Id);
+        if (!type.IsWeapon()) return false;
+        if (!gear.Props.TryGetValue(nameof(GearPropType.setItemID), out var setItemIdToken)) return false;
+        var setItemId = setItemIdToken.ToObject<int>();
+        if (886 > setItemId || setItemId > 890) return false;
+        if (!gear.Props.TryGetValue(nameof(GearPropType.reqLevel), out var reqLevelToken)) return false;
+        var reqLevel = reqLevelToken.ToObject<int>();
+        return reqLevel == 250;
+    }
+
+    private GearType GetGearType(int code)
+    {
+        switch (code / 1000)
+        {
+            case 1098:
+                return GearType.soulShield;
+            case 1099:
+                return GearType.demonShield;
+            case 1212:
+                return GearType.shiningRod;
+            case 1213:
+                return GearType.tuner;
+            case 1214:
+                return GearType.breathShooter;
+            case 1252:
+            case 1259:
+                return (GearType)(code / 1000);
+            case 1403:
+                return GearType.boxingCannon;
+            case 1404:
+                return GearType.chakram;
+            case 1712:
+                return GearType.arcaneSymbol;
+            case 1713:
+                return GearType.authenticSymbol;
+            case 1714:
+                return GearType.grandAuthenticSymbol;
+        }
+
+        if (code / 10000 == 135)
+        {
+            switch (code / 100)
+            {
+                case 13522:
+                case 13528:
+                case 13529:
+                case 13540:
+                    return (GearType)(code / 10);
+
+                default:
+                    return (GearType)(code / 100 * 10);
+            }
+        }
+
+        if (code / 10000 == 119)
+        {
+            switch (code / 100)
+            {
+                case 11902:
+                    return (GearType)(code / 10);
+            }
+        }
+
+        return (GearType)(code / 10000);
     }
 
     private GearPotential[] ConvertToGearPotentials(Wz_Node propNode)
