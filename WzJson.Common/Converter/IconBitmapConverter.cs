@@ -14,7 +14,7 @@ public class IconBitmapConverter(string iconNodePath, GlobalFindNodeFunction fin
     {
         var iconNode = node.FindNodeByPath(iconNodePath);
         if (iconNode == null) return null;
-        var resolvedIconNode = WzUtility.ResolveLinkedNode(iconNode, findNode);
+        var resolvedIconNode = WzUtility.ResolveLinkedNode(iconNode.HandleFullUol(findNode), findNode);
         return resolvedIconNode.GetValue<Wz_Png>().ExtractPng();
     }
 }

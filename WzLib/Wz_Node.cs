@@ -111,23 +111,23 @@ namespace WzComparerR2.WzLib
             return this.Text + " " + (this.value != null ? this.value.ToString() : "-") + " " + this.nodes.Count;
         }
 
-        public Wz_Node? FindNodeByPath(string fullPath)
+        public Wz_Node FindNodeByPath(string fullPath)
         {
             return FindNodeByPath(fullPath, false);
         }
 
-        public Wz_Node? FindNodeByPath(string fullPath, bool extractImage)
+        public Wz_Node FindNodeByPath(string fullPath, bool extractImage)
         {
             string[] patten = fullPath.Split('\\');
             return FindNodeByPath(extractImage, patten);
         }
 
-        public Wz_Node? FindNodeByPath(bool extractImage, params string[] fullPath)
+        public Wz_Node FindNodeByPath(bool extractImage, params string[] fullPath)
         {
             return FindNodeByPath(extractImage, false, fullPath);
         }
 
-        public Wz_Node? FindNodeByPath(bool extractImage, bool ignoreCase, params string[] fullPath)
+        public Wz_Node FindNodeByPath(bool extractImage, bool ignoreCase, params string[] fullPath)
         {
             Wz_Node node = this;
 
@@ -485,8 +485,7 @@ namespace WzComparerR2.WzLib
         {
             if (node == null)
                 return null;
-            Wz_Uol uol;
-            while ((uol = node?.GetValueEx<Wz_Uol>(null)) != null)
+            while (node?.Value is Wz_Uol uol)
             {
                 node = uol.HandleUol(node);
             }
@@ -498,42 +497,43 @@ namespace WzComparerR2.WzLib
         /// </summary>
         /// <param Name="node">要搜索的wznode。</param>
         /// <returns></returns>
-        public static Wz_File GetNodeWzFile(this Wz_Node node, bool returnClosestWzFile = false)
+        public static Wz_File GetNodeWzFile(this Wz_Node node)
         {
             Wz_File wzfile = null;
             while (node != null)
             {
                 if ((wzfile = node.Value as Wz_File) != null)
                 {
-                    if (wzfile.OwnerWzFile != null)
+                    while (wzfile.OwnerWzFile != null)
                     {
                         wzfile = wzfile.OwnerWzFile;
                         node = wzfile.Node;
                     }
-                    if (!wzfile.IsSubDir || returnClosestWzFile)
+                    if (!wzfile.IsSubDir)
                     {
-                        break;
+                        return wzfile;
                     }
                 }
-                else if (node.Value is Wz_Image wzImg
-                    || (wzImg = (node as Wz_Image.Wz_ImageNode)?.Image) != null)
+                else if (node.Value is Wz_Image wzImg || (wzImg = (node as Wz_Image.Wz_ImageNode)?.Image) != null)
                 {
-                    wzfile = GetImageWzFile(wzImg, returnClosestWzFile);
-                    break;
+                    switch (wzImg.WzFile)
+                    {
+                        case Wz_File wzfile2:
+                            node = wzfile2.Node;
+                            continue;
+
+                        default:
+                            if (node.ParentNode == null)
+                            {
+                                node = wzImg.OwnerNode;
+                                continue;
+                            }
+                            break;
+                    }
                 }
                 node = node.ParentNode;
             }
             return wzfile;
-        }
-
-        public static Wz_File GetImageWzFile(this Wz_Image wzImg, bool returnClosestWzFile = false)
-        {
-            if (!returnClosestWzFile && wzImg.WzFile != null)
-            {
-                return GetNodeWzFile(wzImg.WzFile.Node, returnClosestWzFile);
-            }
-
-            return wzImg.WzFile;
         }
 
         public static int GetMergedVersion(this Wz_File wzFile)
@@ -552,9 +552,9 @@ namespace WzComparerR2.WzLib
             return 0;
         }
 
-        public static Wz_Image? GetNodeWzImage(this Wz_Node node)
+        public static Wz_Image GetNodeWzImage(this Wz_Node node)
         {
-            Wz_Image? wzImg = null;
+            Wz_Image wzImg = null;
             while (node != null)
             {
                 if ((wzImg = node.Value as Wz_Image) != null
@@ -576,47 +576,80 @@ namespace WzComparerR2.WzLib
                 writer.WriteStartElement("dir");
                 writer.WriteAttributeString("name", node.Text);
             }
-            else if (value is Wz_Png)
+            else if (value is Wz_Png png)
             {
-                var png = (Wz_Png)value;
                 writer.WriteStartElement("png");
                 writer.WriteAttributeString("name", node.Text);
-                using (var bmp = png.ExtractPng())
+                writer.WriteAttributeString("width", png.Width.ToString());
+                writer.WriteAttributeString("height", png.Height.ToString());
+                writer.WriteAttributeString("format", ((int)png.Format).ToString());
+                writer.WriteAttributeString("scale", png.Scale.ToString());
+                writer.WriteAttributeString("pages", png.Pages.ToString());
+                for(int i = 0; i < png.ActualPages; i++)
                 {
-                    using (var ms = new MemoryStream())
+                    using (var bmp = png.ExtractPng())
                     {
-                        bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
-                        byte[] data = ms.ToArray();
-                        writer.WriteAttributeString("value", Convert.ToBase64String(data));
+                        using (var ms = new MemoryStream())
+                        {
+                            bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                            byte[] data = ms.ToArray();
+                            string attrName = "value" + (i > 0 ? (i + 1).ToString() : null);
+                            writer.WriteAttributeString(attrName, Convert.ToBase64String(data));
+                        }
                     }
                 }
             }
-            else if (value is Wz_Uol)
+            else if (value is Wz_Uol uol)
             {
-                var uol = (Wz_Uol)value;
                 writer.WriteStartElement("uol");
                 writer.WriteAttributeString("name", node.Text);
                 writer.WriteAttributeString("value", uol.Uol);
             }
-            else if (value is Wz_Vector)
+            else if (value is Wz_Vector vector)
             {
-                var vector = (Wz_Vector)value;
                 writer.WriteStartElement("vector");
                 writer.WriteAttributeString("name", node.Text);
                 writer.WriteAttributeString("value", $"{vector.X}, {vector.Y}");
             }
-            else if (value is Wz_Sound)
+            else if (value is Wz_Sound sound)
             {
-                var sound = (Wz_Sound)value;
                 writer.WriteStartElement("sound");
                 writer.WriteAttributeString("name", node.Text);
                 byte[] data = sound.ExtractSound();
                 if (data == null)
                 {
                     data = new byte[sound.DataLength];
-                    sound.WzFile.FileStream.Seek(sound.Offset, SeekOrigin.Begin);
-                    sound.WzFile.FileStream.Read(data, 0, sound.DataLength);
+                    sound.CopyTo(data, 0);
                 }
+                writer.WriteAttributeString("value", Convert.ToBase64String(data));
+            }
+            else if (value is Wz_Convex contex)
+            {
+                writer.WriteStartElement("convex");
+                writer.WriteAttributeString("name", node.Text);
+                foreach (var point in contex.Points)
+                {
+                    writer.WriteStartElement("vector");
+                    writer.WriteAttributeString("value", $"{point.X}, {point.Y}");
+                    writer.WriteEndElement();
+                }
+            }
+            else if (value is Wz_RawData rawdata)
+            {
+                writer.WriteStartElement("rawdata");
+                writer.WriteAttributeString("name", node.Text);
+                writer.WriteAttributeString("length", rawdata.Length.ToString());
+                byte[] data = new byte[rawdata.Length];
+                rawdata.CopyTo(data, 0);
+                writer.WriteAttributeString("value", Convert.ToBase64String(data));
+            }
+            else if (value is Wz_Video video)
+            {
+                writer.WriteStartElement("video");
+                writer.WriteAttributeString("name", node.Text);
+                writer.WriteAttributeString("length", video.Length.ToString());
+                byte[] data = new byte[video.Length];
+                video.CopyTo(data, 0);
                 writer.WriteAttributeString("value", Convert.ToBase64String(data));
             }
             else
