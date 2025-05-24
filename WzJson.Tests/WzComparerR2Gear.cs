@@ -469,9 +469,9 @@ public class WzComparerR2Gear
             case GearType.card:
             // case GearType.box:
             case GearType.orb:
-            case GearType.dragonEssence:
-            case GearType.soulRing:
-            case GearType.magnum:
+            case GearType.novaMarrow:
+            case GearType.soulBangle:
+            case GearType.mailin:
             case GearType.emblem:
                 return true;
             default:
