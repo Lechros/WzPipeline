@@ -16,7 +16,15 @@ public abstract class AbstractWzReader<TReadOptions> : IWzReader where TReadOpti
         {
             foreach (var unit in units)
             {
-                unit.ConvertNodeAndAdd(node);
+                try
+                {
+                    unit.ConvertNodeAndAdd(node);
+                }
+                catch (Exception e)
+                {
+                    Console.Error.WriteLine($"Error while processing node: {node.FullPath}");
+                    throw;
+                }
             }
 
             reporter.Increment();
