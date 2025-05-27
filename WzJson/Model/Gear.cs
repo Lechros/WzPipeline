@@ -34,6 +34,8 @@ public class Gear
 [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
 public class GearPotential
 {
+    public required int Id { get; set; }
+    
     public required int Grade { get; set; }
     
     public required string Summary { get; set; }

@@ -253,6 +253,7 @@ public class GearConverter(
             var levelInfo = itemOptionDataProvider.Data.GetItemOptionLevelInfo(optionCode, level);
             potentials.Add(new GearPotential
             {
+                Id = optionCode,
                 Grade = optionCode / 10000,
                 Summary = levelInfo.String,
                 Option = levelInfo.Option
