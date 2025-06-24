@@ -1,20 +1,8 @@
-using WzComparerR2.WzLib;
 using WzJson.Common;
 
 namespace WzJson.Repository;
 
-public class StringConsumeNodeRepository(IWzProvider wzProvider) : AbstractNodeRepository(wzProvider)
+public class StringConsumeNodeRepository(IWzProvider wzProvider)
+    : GlobNodeRepositoryAdapter(wzProvider, "String/Consume.img/*")
 {
-    protected override string RootNodePath => @"String\Consume.img";
-
-    public override IEnumerable<Wz_Node> GetNodes()
-    {
-        var rootNode = GetRootNode();
-        foreach (var itemNode in rootNode.Nodes)
-        {
-            yield return itemNode;
-        }
-
-        rootNode.GetNodeWzImage()?.Unextract();
-    }
 }
