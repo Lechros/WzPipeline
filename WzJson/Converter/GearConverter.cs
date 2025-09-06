@@ -99,6 +99,8 @@ public class GearConverter(
         "kaiserOffsetY",
         "incAttackCount",
         "kaiserOffsetX",
+        "noPrism",
+        "setExtraOption"
     ];
 
     public override string GetNodeKey(Wz_Node node) => WzUtility.GetNodeCode(node);

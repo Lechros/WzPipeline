@@ -7,7 +7,7 @@ public static class WzUtility
 {
     public static string GetNodeCode(Wz_Node node)
     {
-        return node.Text.Split('.')[0].TrimStart('0');
+        return node.Text.Split('.')[0].TrimStart('0').TrimEnd('_');
     }
 
     public static Wz_Node ResolveLinkedNode(Wz_Node node, GlobalFindNodeFunction findNode)
