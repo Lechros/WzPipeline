@@ -1,4 +1,4 @@
-namespace WzJson.Common.V2.Graph;
+namespace WzJson.Core.Pipeline;
 
 public interface IGraphNode
 {

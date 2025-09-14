@@ -1,4 +1,4 @@
-namespace WzJson.Common.V2;
+namespace WzJson.Core.Abstractions;
 
 public abstract class AbstractProcessor<TIn, TOut> : IProcessor<TIn, TOut>, IProcessor
 {

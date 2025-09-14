@@ -1,4 +1,6 @@
-namespace WzJson.Common.V2.Graph.Dsl;
+using WzJson.Core.Abstractions;
+
+namespace WzJson.Core.Pipeline.Dsl;
 
 public class ConverterConfig<TNode, TResult>(IConverterNode node) where TNode : INode
 {

@@ -1,4 +1,6 @@
-namespace WzJson.Common.V2.Graph;
+using WzJson.Core.Abstractions;
+
+namespace WzJson.Core.Pipeline;
 
 public class ConverterNode(IGraphNode parent, IConverter converter) : IConverterNode
 {

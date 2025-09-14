@@ -1,3 +1,3 @@
-namespace WzJson.Common.V2.Graph.Dsl;
+namespace WzJson.Core.Pipeline.Dsl;
 
 public class ExporterConfig<T>(IExporterNode node);

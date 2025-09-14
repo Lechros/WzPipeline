@@ -1,4 +1,4 @@
-namespace WzJson.Common.V2;
+namespace WzJson.Core.Abstractions;
 
 public abstract class AbstractConverter<TNode, TResult> : IConverter<TNode, TResult>, IConverter where TNode : INode
 {
