@@ -1,6 +1,6 @@
-using WzJson.Core.Abstractions;
+using WzJson.Core.Pipeline.Abstractions;
 
-namespace WzJson.Core.Pipeline.Dsl;
+namespace WzJson.Core.Pipeline.Graph.Dsl;
 
 public class ProcessorConfig<TIn, TOut>(IProcessorNode node)
 {

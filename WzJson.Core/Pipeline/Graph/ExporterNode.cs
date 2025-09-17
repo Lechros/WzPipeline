@@ -1,6 +1,6 @@
-using WzJson.Core.Abstractions;
+using WzJson.Core.Pipeline.Abstractions;
 
-namespace WzJson.Core.Pipeline;
+namespace WzJson.Core.Pipeline.Graph;
 
 public class ExporterNode(IGraphNode parent, IExporter exporter, string path) : IExporterNode
 {

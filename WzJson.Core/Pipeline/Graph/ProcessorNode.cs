@@ -1,12 +1,12 @@
-using WzJson.Core.Abstractions;
+using WzJson.Core.Pipeline.Abstractions;
 
-namespace WzJson.Core.Pipeline;
+namespace WzJson.Core.Pipeline.Graph;
 
-public class ConverterNode(IGraphNode parent, IConverter converter) : IConverterNode
+public class ProcessorNode(IGraphNode parent, IProcessor processor) : IProcessorNode
 {
     public IGraphNode? Parent { get; } = parent;
     public IList<IGraphNode> Children { get; } = [];
-    public IConverter Converter { get; } = converter;
+    public IProcessor Processor { get; } = processor;
 
     public void AddChild(IProcessorNode node)
     {

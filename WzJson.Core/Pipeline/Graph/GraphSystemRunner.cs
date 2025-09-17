@@ -1,4 +1,4 @@
-namespace WzJson.Core.Pipeline;
+namespace WzJson.Core.Pipeline.Graph;
 
 internal static class GraphSystemRunner
 {
