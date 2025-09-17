@@ -1,6 +1,6 @@
-using WzJson.Core.Pipeline.Abstractions;
+using WzJson.V2.Pipeline.Abstractions;
 
-namespace WzJson.Core.Pipeline.Graph.Dsl;
+namespace WzJson.V2.Pipeline.Graph.Dsl;
 
 public class RootConfig(GraphSystem.RootNode node)
 {

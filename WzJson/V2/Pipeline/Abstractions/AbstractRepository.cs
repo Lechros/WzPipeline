@@ -1,4 +1,4 @@
-namespace WzJson.Core.Pipeline.Abstractions;
+namespace WzJson.V2.Pipeline.Abstractions;
 
 public abstract class AbstractRepository<TNode> : IRepository<TNode>, IRepository where TNode : INode
 {

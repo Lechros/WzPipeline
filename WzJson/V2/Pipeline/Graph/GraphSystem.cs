@@ -1,6 +1,6 @@
-using WzJson.Core.Pipeline.Graph.Dsl;
+using WzJson.V2.Pipeline.Graph.Dsl;
 
-namespace WzJson.Core.Pipeline.Graph;
+namespace WzJson.V2.Pipeline.Graph;
 
 public class GraphSystem(GraphSystem.RootNode root)
 {

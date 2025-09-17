@@ -1,4 +1,4 @@
-namespace WzJson.Core.Pipeline.Graph.Dsl;
+namespace WzJson.V2.Pipeline.Graph.Dsl;
 
 public readonly struct Condition
 {

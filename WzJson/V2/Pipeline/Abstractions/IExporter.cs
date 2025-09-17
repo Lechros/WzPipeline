@@ -1,4 +1,4 @@
-namespace WzJson.Core.Pipeline.Abstractions;
+namespace WzJson.V2.Pipeline.Abstractions;
 
 public interface IExporter
 {

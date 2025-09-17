@@ -15,8 +15,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WzJson.Tests", "WzJson.Test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WzJson.Common.Tests", "WzJson.Common.Tests\WzJson.Common.Tests.csproj", "{0ACA4842-9F56-4310-8703-6B813629267D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WzJson.Core", "WzJson.Core\WzJson.Core.csproj", "{FF848A8F-D1F1-41D3-97B6-BE54E9CA2657}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,10 +45,6 @@ Global
 		{0ACA4842-9F56-4310-8703-6B813629267D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0ACA4842-9F56-4310-8703-6B813629267D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0ACA4842-9F56-4310-8703-6B813629267D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FF848A8F-D1F1-41D3-97B6-BE54E9CA2657}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FF848A8F-D1F1-41D3-97B6-BE54E9CA2657}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FF848A8F-D1F1-41D3-97B6-BE54E9CA2657}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FF848A8F-D1F1-41D3-97B6-BE54E9CA2657}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
