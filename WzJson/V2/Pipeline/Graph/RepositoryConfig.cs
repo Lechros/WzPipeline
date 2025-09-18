@@ -1,6 +1,6 @@
-using WzJson.V2.Pipeline.Abstractions;
+using WzJson.V2.Stereotype;
 
-namespace WzJson.V2.Pipeline.Graph.Dsl;
+namespace WzJson.V2.Pipeline.Graph;
 
 public class RepositoryConfig<TNode>(IRepositoryNode node) where TNode : INode
 {

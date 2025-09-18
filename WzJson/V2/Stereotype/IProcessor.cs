@@ -1,4 +1,4 @@
-namespace WzJson.V2.Pipeline.Abstractions;
+namespace WzJson.V2.Stereotype;
 
 public interface IProcessor
 {

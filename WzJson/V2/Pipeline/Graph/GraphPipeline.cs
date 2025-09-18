@@ -1,18 +1,10 @@
-using WzJson.V2.Pipeline.Graph.Dsl;
-
 namespace WzJson.V2.Pipeline.Graph;
 
-public class GraphSystem(GraphSystem.RootNode root)
+public class GraphPipeline(RootNode root)
 {
-    public static RootConfig Builder()
-    {
-        RootNode root = new RootNode();
-        return new RootConfig(root);
-    }
-
     public void Run()
     {
-        GraphSystemRunner.Run(root);
+        GraphPipelineRunner.Run(root);
     }
 
     public void Prune()
@@ -37,11 +29,5 @@ public class GraphSystem(GraphSystem.RootNode root)
                 children.RemoveAt(i);
             }
         }
-    }
-
-    public class RootNode : IGraphNode
-    {
-        public IGraphNode? Parent => null;
-        public IList<IGraphNode> Children { get; } = [];
     }
 }

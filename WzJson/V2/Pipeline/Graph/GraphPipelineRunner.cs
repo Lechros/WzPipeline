@@ -1,8 +1,8 @@
 namespace WzJson.V2.Pipeline.Graph;
 
-internal static class GraphSystemRunner
+internal static class GraphPipelineRunner
 {
-    public static void Run(GraphSystem.RootNode root)
+    public static void Run(RootNode root)
     {
         foreach (IRepositoryNode repositoryNode in root.Children)
         {

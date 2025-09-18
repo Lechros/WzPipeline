@@ -1,4 +1,4 @@
-namespace WzJson.V2.Pipeline.Abstractions;
+namespace WzJson.V2.Stereotype;
 
 public abstract class AbstractRepository<TNode> : IRepository<TNode>, IRepository where TNode : INode
 {

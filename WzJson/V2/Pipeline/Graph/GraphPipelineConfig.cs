@@ -1,10 +1,10 @@
-using WzJson.V2.Pipeline.Abstractions;
+using WzJson.V2.Stereotype;
 
-namespace WzJson.V2.Pipeline.Graph.Dsl;
+namespace WzJson.V2.Pipeline.Graph;
 
-public class RootConfig(GraphSystem.RootNode node)
+public class GraphPipelineConfig(RootNode node)
 {
-    public RootConfig Repository<TNode>(IRepository<TNode> repository,
+    public GraphPipelineConfig Repository<TNode>(IRepository<TNode> repository,
         Action<RepositoryConfig<TNode>> config) where TNode : INode
     {
         var childNode = new RepositoryNode(node, (IRepository)repository);
@@ -14,15 +14,15 @@ public class RootConfig(GraphSystem.RootNode node)
         return this;
     }
 
-    public RootConfig Repository<TNode>(Condition when, IRepository<TNode> repository,
+    public GraphPipelineConfig Repository<TNode>(Condition when, IRepository<TNode> repository,
         Action<RepositoryConfig<TNode>> config) where TNode : INode
     {
         if (when.Value) Repository(repository, config);
         return this;
     }
 
-    public GraphSystem Build()
+    public GraphPipeline Build()
     {
-        return new GraphSystem(node);
+        return new GraphPipeline(node);
     }
 }
