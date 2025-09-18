@@ -1,12 +1,12 @@
 using WzJson.V2.Stereotype;
 
-namespace WzJson.V2.Pipeline.Graph;
+namespace WzJson.V2.Pipeline;
 
-public class RepositoryNode(IGraphNode parent, IRepository repository) : IRepositoryNode
+public class TraverserNode(IGraphNode parent, ITraverser traverser) : ITraverserNode
 {
     public IGraphNode? Parent { get; } = parent;
     public IList<IGraphNode> Children { get; } = [];
-    public IRepository Repository { get; } = repository;
+    public ITraverser Traverser { get; } = traverser;
 
     public void AddChild(IConverterNode node)
     {

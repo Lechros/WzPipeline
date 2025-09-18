@@ -6,10 +6,10 @@ public class LinearPipeline<T>(RootNode root)
 {
     public T Run()
     {
-        var repositoryNode = (IRepositoryNode)root.Children.Single();
-        var converterNode = (IConverterNode)repositoryNode.Children.Single();
+        var traverserNode = (ITraverserNode)root.Children.Single();
+        var converterNode = (IConverterNode)traverserNode.Children.Single();
         var convertResults = new List<object>();
-        foreach (var node in repositoryNode.Repository.EnumerateNodes())
+        foreach (var node in traverserNode.Traverser.EnumerateNodes())
         {
             var convertResult = converterNode.Converter.Convert(node);
             if (convertResult != null)

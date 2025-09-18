@@ -3,7 +3,7 @@ using WzJson.V2.Stereotype;
 
 namespace WzJson.V2.Pipeline.Linear;
 
-public class RepositoryConfig<TNode>(IRepositoryNode node) where TNode : INode
+public class TraverserConfig<TNode>(ITraverserNode node) where TNode : INode
 {
     public ConverterConfig<TNode, TNextOut> Converter<TNextOut>(IConverter<TNode, TNextOut> converter)
     {

@@ -5,10 +5,10 @@ namespace WzJson.V2.Pipeline.Linear;
 
 public class LinearPipelineConfig(RootNode node)
 {
-    public RepositoryConfig<TNode> Repository<TNode>(IRepository<TNode> repository) where TNode : INode
+    public TraverserConfig<TNode> Traverser<TNode>(ITraverser<TNode> traverser) where TNode : INode
     {
-        var childNode = new RepositoryNode(node, (IRepository)repository);
+        var childNode = new TraverserNode(node, (ITraverser)traverser);
         node.Children.Add(childNode);
-        return new RepositoryConfig<TNode>(childNode);
+        return new TraverserConfig<TNode>(childNode);
     }
 }

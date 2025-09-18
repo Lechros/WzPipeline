@@ -4,20 +4,20 @@ namespace WzJson.V2.Pipeline.Graph;
 
 public class GraphPipelineConfig(RootNode node)
 {
-    public GraphPipelineConfig Repository<TNode>(IRepository<TNode> repository,
-        Action<RepositoryConfig<TNode>> config) where TNode : INode
+    public GraphPipelineConfig Traverser<TNode>(ITraverser<TNode> traverser,
+        Action<TraverserConfig<TNode>> config) where TNode : INode
     {
-        var childNode = new RepositoryNode(node, (IRepository)repository);
+        var childNode = new TraverserNode(node, (ITraverser)traverser);
         node.Children.Add(childNode);
-        var childConfig = new RepositoryConfig<TNode>(childNode);
+        var childConfig = new TraverserConfig<TNode>(childNode);
         config(childConfig);
         return this;
     }
 
-    public GraphPipelineConfig Repository<TNode>(Condition when, IRepository<TNode> repository,
-        Action<RepositoryConfig<TNode>> config) where TNode : INode
+    public GraphPipelineConfig Traverser<TNode>(Condition when, ITraverser<TNode> traverser,
+        Action<TraverserConfig<TNode>> config) where TNode : INode
     {
-        if (when.Value) Repository(repository, config);
+        if (when.Value) Traverser(traverser, config);
         return this;
     }
 

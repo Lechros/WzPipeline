@@ -1,6 +1,6 @@
 using WzJson.V2.Stereotype;
 
-namespace WzJson.V2.Pipeline.Graph;
+namespace WzJson.V2.Pipeline;
 
 public class ProcessorNode(IGraphNode parent, IProcessor processor) : IProcessorNode
 {

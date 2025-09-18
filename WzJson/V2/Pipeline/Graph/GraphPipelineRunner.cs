@@ -4,11 +4,11 @@ internal static class GraphPipelineRunner
 {
     public static void Run(RootNode root)
     {
-        foreach (IRepositoryNode repositoryNode in root.Children)
+        foreach (ITraverserNode traverserNode in root.Children)
         {
-            IReadOnlyList<(IConverterNode, List<object>)> converterPairs = repositoryNode.Children
+            IReadOnlyList<(IConverterNode, List<object>)> converterPairs = traverserNode.Children
                 .Select(converterNode => ((IConverterNode)converterNode, new List<object>())).ToList();
-            foreach (var node in repositoryNode.Repository.EnumerateNodes())
+            foreach (var node in traverserNode.Traverser.EnumerateNodes())
             {
                 foreach (var (converterNode, convertResults) in converterPairs)
                 {

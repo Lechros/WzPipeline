@@ -1,6 +1,6 @@
 using WzJson.V2.Stereotype;
 
-namespace WzJson.V2.Pipeline.Graph;
+namespace WzJson.V2.Pipeline;
 
 public class ExporterNode(IGraphNode parent, IExporter exporter, string path) : IExporterNode
 {

@@ -2,9 +2,9 @@ using WzJson.V2.Stereotype;
 
 namespace WzJson.V2.Pipeline.Graph;
 
-public class RepositoryConfig<TNode>(IRepositoryNode node) where TNode : INode
+public class TraverserConfig<TNode>(ITraverserNode node) where TNode : INode
 {
-    public RepositoryConfig<TNode> Converter<TNextOut>(IConverter<TNode, TNextOut> converter,
+    public TraverserConfig<TNode> Converter<TNextOut>(IConverter<TNode, TNextOut> converter,
         Action<ConverterConfig<TNode, TNextOut>> config)
     {
         var childNode = new ConverterNode(node, (IConverter)converter);
@@ -14,7 +14,7 @@ public class RepositoryConfig<TNode>(IRepositoryNode node) where TNode : INode
         return this;
     }
 
-    public RepositoryConfig<TNode> Converter<TNextOut>(Condition when, IConverter<TNode, TNextOut> converter,
+    public TraverserConfig<TNode> Converter<TNextOut>(Condition when, IConverter<TNode, TNextOut> converter,
         Action<ConverterConfig<TNode, TNextOut>> config)
     {
         if (when.Value) Converter(converter, config);
