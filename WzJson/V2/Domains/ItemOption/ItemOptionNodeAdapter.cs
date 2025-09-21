@@ -1,6 +1,6 @@
 using WzComparerR2.WzLib;
 
-namespace WzJson.V2.Domains.ItemOption.Nodes;
+namespace WzJson.V2.Domains.ItemOption;
 
 public class ItemOptionNodeAdapter(Wz_Node node, Wz_Node infoNode, Wz_Node levelNode) : IItemOptionNode
 {
@@ -21,6 +21,6 @@ public class ItemOptionNodeAdapter(Wz_Node node, Wz_Node infoNode, Wz_Node level
 
     public string String => infoNode.Nodes["string"].GetValue<string>();
 
-    public (int, Dictionary<string, string>)[] LevelOptions => infoNode.Nodes["level"].Nodes.Select(level =>
+    public (int, Dictionary<string, string>)[] LevelOptions => node.Nodes["level"].Nodes.Select(level =>
         (int.Parse(level.Text), level.Nodes.ToDictionary(n => n.Text, n => n.GetValue<string>()))).ToArray();
 }

@@ -41,10 +41,9 @@ public class GearNodeAdapter(Wz_Node node, Wz_Node infoNode, GlobalFindNodeFunct
         get
         {
             var optionNode = infoNode.Nodes["option"];
-            if (optionNode == null) return null;
-            return optionNode.Nodes
+            return optionNode?.Nodes
                 .Select(n => (
-                    n.Nodes["opion"].GetValue<int>(),
+                    n.Nodes["option"].GetValue<int>(),
                     n.Nodes["level"].GetValue<int>()))
                 .ToArray();
         }

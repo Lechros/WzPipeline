@@ -1,6 +1,6 @@
 using WzJson.V2.Core.Stereotype;
 
-namespace WzJson.V2.Domains.ItemOption.Nodes;
+namespace WzJson.V2.Domains.ItemOption;
 
 public interface IItemOptionNode : INode
 {
