@@ -9,10 +9,18 @@ public class LinearPipeline<T>(RootNode root)
         var convertResults = new List<object>();
         foreach (var node in traverserNode.Traverser.EnumerateNodes())
         {
-            var convertResult = converterNode.Converter.Convert(node);
-            if (convertResult != null)
+            try
             {
-                convertResults.Add(convertResult);
+                var convertResult = converterNode.Converter.Convert(node);
+                if (convertResult != null)
+                {
+                    convertResults.Add(convertResult);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error on node {node.Id}");
+                throw;
             }
         }
 

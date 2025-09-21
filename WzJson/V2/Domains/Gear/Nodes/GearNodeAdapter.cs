@@ -1,0 +1,76 @@
+using SixLabors.ImageSharp;
+using WzComparerR2.Common;
+using WzComparerR2.WzLib;
+using WzJson.V2.Shared;
+
+namespace WzJson.V2.Domains.Gear.Nodes;
+
+public class GearNodeAdapter(Wz_Node node, Wz_Node infoNode, GlobalFindNodeFunction findNode) : IGearNode
+{
+    public static GearNodeAdapter? Create(Wz_Node node, GlobalFindNodeFunction findNode)
+    {
+        var infoNode = node.Nodes["info"];
+        return infoNode == null ? null : new GearNodeAdapter(node, infoNode, findNode);
+    }
+
+    public string Id => node.Text.Split('.')[0].TrimStart('0');
+
+    public string IconId => Id;
+
+    public Image? Icon => Utility.GetIconImage(infoNode, "icon", findNode);
+
+    public Point? IconOrigin => Utility.GetIconOrigin(infoNode, @"icon\origin");
+
+    public string RawIconId => Id;
+
+    public Image? RawIcon => Utility.GetIconImage(infoNode, "iconRaw", findNode);
+
+    public Point? RawIconOrigin => Utility.GetIconOrigin(infoNode, @"iconRaw\origin");
+
+    public bool IsCash
+    {
+        get
+        {
+            var cashNode = infoNode.Nodes["cash"];
+            return cashNode != null && cashNode.GetValue<int>() != 0;
+        }
+    }
+
+    public (int OptionCode, int Level)[]? Options
+    {
+        get
+        {
+            var optionNode = infoNode.Nodes["option"];
+            if (optionNode == null) return null;
+            return optionNode.Nodes
+                .Select(n => (
+                    n.Nodes["opion"].GetValue<int>(),
+                    n.Nodes["level"].GetValue<int>()))
+                .ToArray();
+        }
+    }
+
+    public IEnumerable<(string Type, int Value)> Properties
+    {
+        get
+        {
+            foreach (var propNode in infoNode.Nodes)
+            {
+                switch (propNode.Text)
+                {
+                    case "icon":
+                    case "iconRaw":
+                    case "addition":
+                    case "option":
+                        break;
+                    case "onlyUpgrade":
+                        yield return (propNode.Text, 1);
+                        break;
+                    default:
+                        yield return (propNode.Text, propNode.GetValue<int>());
+                        break;
+                }
+            }
+        }
+    }
+}
