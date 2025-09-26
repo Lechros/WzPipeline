@@ -2,7 +2,7 @@ using WzJson.V2.Core.Stereotype;
 
 namespace WzJson.V2.Core.Pipeline;
 
-public interface IProcessorNode : IGraphNode
+public interface IProcessorNode : IPipelineNode
 {
     public IProcessor Processor { get; }
 

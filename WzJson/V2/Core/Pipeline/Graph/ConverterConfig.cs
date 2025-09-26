@@ -14,23 +14,10 @@ public class ConverterConfig<TNode, TResult>(IConverterNode node) where TNode : 
         return this;
     }
 
-    public ConverterConfig<TNode, TResult> Processor<TNextOut>(Condition when, IProcessor<TResult, TNextOut> processor,
-        Action<ProcessorConfig<TResult, TNextOut>> config)
+    public ConverterConfig<TNode, TResult> Exporter(IExporter<TResult> exporter)
     {
-        if (when.Value) Processor(processor, config);
-        return this;
-    }
-
-    public ConverterConfig<TNode, TResult> Exporter(IExporter<TResult> exporter, string path)
-    {
-        var childNode = new ExporterNode(node, (IExporter)exporter, path);
+        var childNode = new ExporterNode(node, (IExporter)exporter);
         node.AddChild(childNode);
-        return this;
-    }
-
-    public ConverterConfig<TNode, TResult> Exporter(Condition when, IExporter<TResult> exporter, string path)
-    {
-        if (when.Value) Exporter(exporter, path);
         return this;
     }
 }

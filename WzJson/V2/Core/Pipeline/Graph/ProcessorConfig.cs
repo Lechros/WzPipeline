@@ -21,16 +21,16 @@ public class ProcessorConfig<TIn, TOut>(IProcessorNode node)
         return this;
     }
 
-    public ProcessorConfig<TIn, TOut> Exporter(IExporter<TOut> exporter, string path)
+    public ProcessorConfig<TIn, TOut> Exporter(IExporter<TOut> exporter)
     {
-        var childNode = new ExporterNode(node, (IExporter)exporter, path);
+        var childNode = new ExporterNode(node, (IExporter)exporter);
         node.AddChild(childNode);
         return this;
     }
 
-    public ProcessorConfig<TIn, TOut> Exporter(Condition when, IExporter<TOut> exporter, string path)
+    public ProcessorConfig<TIn, TOut> Exporter(Condition when, IExporter<TOut> exporter)
     {
-        if (when.Value) Exporter(exporter, path);
+        if (when.Value) Exporter(exporter);
         return this;
     }
 }

@@ -11,14 +11,24 @@ public class ProcessorConfig<TIn, TOut>(IProcessorNode node)
         return new ProcessorConfig<TOut, TNextOut>(childNode);
     }
 
+    public ExporterConfig<TOut> Exporter(IExporter<TOut> exporter)
+    {
+        var childNode = new ExporterNode(node, (IExporter)exporter);
+        node.AddChild(childNode);
+        return new ExporterConfig<TOut>(childNode);
+    }
+
     public LinearPipeline<TOut> Build()
     {
-        IGraphNode curNode = node;
+        var holder = new SingleValueHolder<TOut>();
+        Exporter(holder);
+
+        IPipelineNode curNode = node;
         while (curNode.Parent != null)
             curNode = curNode.Parent;
 
         return curNode is RootNode rootNode
-            ? new LinearPipeline<TOut>(rootNode)
-            : throw new InvalidOperationException();
+            ? new LinearPipeline<TOut>(rootNode, holder)
+            : throw new InvalidOperationException("Invalid Linear Pipeline");
     }
 }

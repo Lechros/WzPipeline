@@ -23,10 +23,6 @@
     <ProjectReference Include="..\WzLib\WzComparerR2.WzLib.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="V2\Core\" />
-  </ItemGroup>
-
   <!-- Build Scripts pnpm project -->
   <Target Name="NpmBuild" BeforeTargets="Build">
     <Exec Command="pnpm install --frozen-lockfile" WorkingDirectory="$(ProjectDir)Scripts"/>

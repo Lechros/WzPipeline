@@ -2,10 +2,11 @@ using WzJson.V2.Core.Stereotype;
 
 namespace WzJson.V2.Core.Pipeline;
 
-public class ProcessorNode(IGraphNode parent, IProcessor processor) : IProcessorNode
+public class ProcessorNode(IPipelineNode parent, IProcessor processor) : IProcessorNode
 {
-    public IGraphNode? Parent { get; } = parent;
-    public IList<IGraphNode> Children { get; } = [];
+    public PipelineNodeType Type => PipelineNodeType.Processor;
+    public IPipelineNode? Parent { get; } = parent;
+    public IList<IPipelineNode> Children { get; } = [];
     public IProcessor Processor { get; } = processor;
 
     public void AddChild(IProcessorNode node)

@@ -3,14 +3,17 @@ using WzJson.V2.Core.Stereotype;
 
 namespace WzJson.V2.Domains.Icon;
 
-public class IconImageExporter : AbstractExporter<IconOrigin>
+public class IconImageExporter(string outputPath) : AbstractExporter<IconOrigin>
 {
-    public override void Export(IEnumerable<IconOrigin> models, string path)
-    {
-        Directory.CreateDirectory(path);
+    private readonly string _outputPath = outputPath ?? throw new ArgumentNullException(nameof(outputPath));
 
-        var iconOrigins = models as IconOrigin[] ?? models.ToArray();
-        Parallel.ForEach(iconOrigins,
-            iconOrigin => { iconOrigin.Image.SaveAsPng(Path.Join(path, $"{iconOrigin.Id}.png")); });
+    protected override void Prepare()
+    {
+        Directory.CreateDirectory(_outputPath);
+    }
+
+    public override Task Export(IconOrigin iconOrigin)
+    {
+        return iconOrigin.Image.SaveAsPngAsync(Path.Join(_outputPath, $"{iconOrigin.Id}.png"));
     }
 }

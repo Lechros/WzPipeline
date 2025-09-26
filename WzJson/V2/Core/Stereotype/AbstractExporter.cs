@@ -2,10 +2,23 @@ namespace WzJson.V2.Core.Stereotype;
 
 public abstract class AbstractExporter<T> : IExporter<T>, IExporter
 {
-    public abstract void Export(IEnumerable<T> models, string path);
+    protected abstract void Prepare();
 
-    public void Export(IEnumerable<object> models, string path)
+    void IExporter<T>.Prepare()
     {
-        Export(models.Cast<T>(), path);
+        Prepare();
+    }
+
+    void IExporter.Prepare()
+    {
+        Prepare();
+    }
+
+    public abstract Task Export(T model);
+
+
+    public Task Export(object model)
+    {
+        return Export((T)model);
     }
 }

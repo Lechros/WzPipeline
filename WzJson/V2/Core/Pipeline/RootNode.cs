@@ -1,7 +1,8 @@
 namespace WzJson.V2.Core.Pipeline;
 
-public class RootNode : IGraphNode
+public class RootNode : IPipelineNode
 {
-    public IGraphNode? Parent => null;
-    public IList<IGraphNode> Children { get; } = [];
+    public PipelineNodeType Type => PipelineNodeType.Default;
+    public IPipelineNode? Parent => null;
+    public IList<IPipelineNode> Children { get; } = [];
 }

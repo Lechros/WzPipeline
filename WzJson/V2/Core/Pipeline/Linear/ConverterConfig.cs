@@ -11,14 +11,24 @@ public class ConverterConfig<TNode, TResult>(IConverterNode node) where TNode : 
         return new ProcessorConfig<TResult, TNextOut>(childNode);
     }
 
+    public ExporterConfig<TResult> Exporter(IExporter<TResult> exporter)
+    {
+        var childNode = new ExporterNode(node, (IExporter)exporter);
+        node.AddChild(childNode);
+        return new ExporterConfig<TResult>(childNode);
+    }
+
     public LinearPipeline<TResult> Build()
     {
-        IGraphNode curNode = node;
+        var holder = new SingleValueHolder<TResult>();
+        Exporter(holder);
+
+        IPipelineNode curNode = node;
         while (curNode.Parent != null)
             curNode = curNode.Parent;
 
         return curNode is RootNode rootNode
-            ? new LinearPipeline<TResult>(rootNode)
-            : throw new InvalidOperationException();
+            ? new LinearPipeline<TResult>(rootNode, holder)
+            : throw new InvalidOperationException("Invalid Linear Pipeline");
     }
 }
