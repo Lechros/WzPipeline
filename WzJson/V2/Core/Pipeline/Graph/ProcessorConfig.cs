@@ -4,26 +4,19 @@ namespace WzJson.V2.Core.Pipeline.Graph;
 
 public class ProcessorConfig<TIn, TOut>(IProcessorNode node)
 {
-    public ProcessorConfig<TIn, TOut> Processor<TNextOut>(IProcessor<TOut, TNextOut> processor,
+    public ProcessorConfig<TIn, TOut> Processor<TNextOut>(string name, IProcessor<TOut, TNextOut> processor,
         Action<ProcessorConfig<TOut, TNextOut>> config)
     {
-        var childNode = new ProcessorNode(node, (IProcessor)processor);
+        var childNode = new ProcessorNode(node, (IProcessor)processor, name);
         node.AddChild(childNode);
         var childConfig = new ProcessorConfig<TOut, TNextOut>(childNode);
         config(childConfig);
         return this;
     }
 
-    public ProcessorConfig<TIn, TOut> Processor<TNextOut>(Condition when, IProcessor<TOut, TNextOut> processor,
-        Action<ProcessorConfig<TOut, TNextOut>> config)
+    public ProcessorConfig<TIn, TOut> Exporter(string name, IExporter<TOut> exporter)
     {
-        if (when.Value) Processor(processor, config);
-        return this;
-    }
-
-    public ProcessorConfig<TIn, TOut> Exporter(IExporter<TOut> exporter)
-    {
-        var childNode = new ExporterNode(node, (IExporter)exporter);
+        var childNode = new ExporterNode(node, (IExporter)exporter, name);
         node.AddChild(childNode);
         return this;
     }
