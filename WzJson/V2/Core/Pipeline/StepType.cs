@@ -1,6 +1,6 @@
 namespace WzJson.V2.Core.Pipeline;
 
-public enum PipelineNodeType
+public enum StepType
 {
     Default,
     Traverser,

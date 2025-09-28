@@ -2,94 +2,94 @@ namespace WzJson.V2.Core.Pipeline.Runner;
 
 internal class ExecutionContext
 {
-    private readonly NodeState _rootState;
-    private readonly Dictionary<IPipelineNode, NodeState> _states = new();
-    private readonly IProgress<INodeState>? _progress;
+    private readonly StepState _rootState;
+    private readonly Dictionary<IStep, StepState> _states = new();
+    private readonly IProgress<IStepState>? _progress;
 
-    private readonly List<ITraverserNode> _traverserNodes = [];
+    private readonly List<ITraverserStep> _traverserSteps = [];
 
-    internal ExecutionContext(RootNode root, IProgress<INodeState>? progress = null)
+    internal ExecutionContext(PipelineRoot root, IProgress<IStepState>? progress = null)
     {
         Root = root;
         _rootState = InitializeDfs(root);
         _progress = progress;
     }
 
-    public RootNode Root { get; }
-    public IReadOnlyList<ITraverserNode> TraverserNodes => _traverserNodes;
+    public PipelineRoot Root { get; }
+    public IReadOnlyList<ITraverserStep> TraverserSteps => _traverserSteps;
 
-    public NodeState GetNodeState(IPipelineNode pipelineNode)
+    public StepState GetStepState(IStep step)
     {
-        return _states[pipelineNode];
+        return _states[step];
     }
 
-    public ExecutionContext SetTotalCountBeforeStart(int totalCount, params IPipelineNode[] nodes)
+    public ExecutionContext SetTotalCountBeforeStart(int totalCount, params IStep[] nodes)
     {
         foreach (var node in nodes)
         {
-            var state = GetNodeState(node);
+            var state = GetStepState(node);
             state.SetTotalCountBeforeStart(totalCount);
         }
 
         return this;
     }
 
-    public ExecutionContext Start(params IPipelineNode[] nodes)
+    public ExecutionContext Start(params IStep[] nodes)
     {
         foreach (var node in nodes)
         {
-            var state = GetNodeState(node);
+            var state = GetStepState(node);
             state.Start();
         }
 
         return this;
     }
 
-    public ExecutionContext StartWithTotalCount(int totalCount, params IPipelineNode[] nodes)
+    public ExecutionContext StartWithTotalCount(int totalCount, params IStep[] nodes)
     {
         foreach (var node in nodes)
         {
-            var state = GetNodeState(node);
+            var state = GetStepState(node);
             state.StartWithTotalCount(totalCount);
         }
 
         return this;
     }
 
-    public ExecutionContext IncrementCount(params IPipelineNode[] nodes)
+    public ExecutionContext IncrementCount(params IStep[] nodes)
     {
         foreach (var node in nodes)
         {
-            var state = GetNodeState(node);
+            var state = GetStepState(node);
             state.IncrementCount();
         }
 
         return this;
     }
 
-    public ExecutionContext Complete(params IPipelineNode[] nodes)
+    public ExecutionContext Complete(params IStep[] nodes)
     {
         foreach (var node in nodes)
         {
-            var state = GetNodeState(node);
+            var state = GetStepState(node);
             state.Complete();
         }
 
         return this;
     }
 
-    public ExecutionContext CompleteWithCount(int count, params IPipelineNode[] nodes)
+    public ExecutionContext CompleteWithCount(int count, params IStep[] nodes)
     {
         foreach (var node in nodes)
         {
-            var state = GetNodeState(node);
+            var state = GetStepState(node);
             state.CompleteWithCount(count);
         }
 
         return this;
     }
 
-    public INodeState GetRootState()
+    public IStepState GetRootState()
     {
         return _rootState;
     }
@@ -99,14 +99,14 @@ internal class ExecutionContext
         _progress?.Report(_rootState);
     }
 
-    private NodeState InitializeDfs(IPipelineNode node)
+    private StepState InitializeDfs(IStep node)
     {
-        var nodeInfo = new NodeState(node.Name);
+        var nodeInfo = new StepState(node.Name);
 
         _states[node] = nodeInfo;
-        if (node.Type == PipelineNodeType.Traverser)
+        if (node.Type == StepType.Traverser)
         {
-            _traverserNodes.Add((ITraverserNode)node);
+            _traverserSteps.Add((ITraverserStep)node);
         }
 
         foreach (var child in node.Children)

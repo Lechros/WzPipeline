@@ -4,17 +4,17 @@ namespace WzJson.V2.Core.Pipeline.Runner;
 
 internal static class PipelineRunner
 {
-    public static ExecutionContext Run(RootNode root, IProgress<INodeState>? progress = null)
+    public static ExecutionContext Run(PipelineRoot root, IProgress<IStepState>? progress = null)
     {
         var ctx = new ExecutionContext(root, progress);
-        ctx.StartWithTotalCount(ctx.TraverserNodes.Count, root);
+        ctx.StartWithTotalCount(ctx.TraverserSteps.Count, root);
 
-        var processorQueue = new Queue<(IProcessorNode, ICollection<object>)>();
-        var exporterQueue = new Queue<(IExporterNode, ICollection<object>)>();
+        var processorQueue = new Queue<(IProcessorStep, ICollection<object>)>();
+        var exporterQueue = new Queue<(IExporterStep, ICollection<object>)>();
 
-        foreach (var traverserNode in ctx.TraverserNodes)
+        foreach (var traverserNode in ctx.TraverserSteps)
         {
-            var converterNodes = traverserNode.Children.Select(node => (IConverterNode)node).ToArray();
+            var converterNodes = traverserNode.Children.Select(node => (IConverterStep)node).ToArray();
             var converterPairs = converterNodes.Select(converter => (converter, new List<object>())).ToArray();
 
             var totalNodeCount = traverserNode.Traverser.GetNodeCount();
@@ -42,11 +42,11 @@ internal static class PipelineRunner
                 {
                     switch (child.Type)
                     {
-                        case PipelineNodeType.Processor:
-                            processorQueue.Enqueue(((IProcessorNode)child, converterResults));
+                        case StepType.Processor:
+                            processorQueue.Enqueue(((IProcessorStep)child, converterResults));
                             break;
-                        case PipelineNodeType.Exporter:
-                            exporterQueue.Enqueue(((IExporterNode)child, converterResults));
+                        case StepType.Exporter:
+                            exporterQueue.Enqueue(((IExporterStep)child, converterResults));
                             break;
                         default:
                             throw new InvalidOperationException(
@@ -71,11 +71,11 @@ internal static class PipelineRunner
             {
                 switch (child.Type)
                 {
-                    case PipelineNodeType.Processor:
-                        processorQueue.Enqueue(((IProcessorNode)child, processResult));
+                    case StepType.Processor:
+                        processorQueue.Enqueue(((IProcessorStep)child, processResult));
                         break;
-                    case PipelineNodeType.Exporter:
-                        exporterQueue.Enqueue(((IExporterNode)child, processResult));
+                    case StepType.Exporter:
+                        exporterQueue.Enqueue(((IExporterStep)child, processResult));
                         break;
                     default:
                         throw new InvalidOperationException($"Invalid child node type for ConverterNode: {child.Type}");
@@ -91,7 +91,7 @@ internal static class PipelineRunner
         while (exporterQueue.Count > 0)
         {
             var (exporterNode, inputs) = exporterQueue.Dequeue();
-            var state = ctx.GetNodeState(exporterNode);
+            var state = ctx.GetStepState(exporterNode);
             state.Start();
             ctx.Report();
 

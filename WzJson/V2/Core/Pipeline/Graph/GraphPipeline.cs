@@ -2,9 +2,9 @@ using WzJson.V2.Core.Pipeline.Runner;
 
 namespace WzJson.V2.Core.Pipeline.Graph;
 
-public class GraphPipeline(RootNode root)
+public class GraphPipeline(PipelineRoot root)
 {
-    public GraphPipelineResult Run(IProgress<INodeState> progress)
+    public GraphPipelineResult Run(IProgress<IStepState> progress)
     {
         var ctx = PipelineRunner.Run(root, progress);
         return new GraphPipelineResult(ctx.GetRootState());
@@ -13,9 +13,9 @@ public class GraphPipeline(RootNode root)
 
 public class GraphPipelineResult
 {
-    public INodeState State;
+    public IStepState State;
 
-    internal GraphPipelineResult(INodeState state)
+    internal GraphPipelineResult(IStepState state)
     {
         State = state;
     }

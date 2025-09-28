@@ -1,12 +1,12 @@
 namespace WzJson.V2.Core.Pipeline.Runner;
 
-internal class NodeState(string name) : INodeState
+internal class StepState(string name) : IStepState
 {
     private int _count;
-    public List<NodeState> ChildNodes = [];
+    public List<StepState> ChildNodes = [];
 
     public string Name { get; } = name;
-    public IEnumerable<INodeState> Children => ChildNodes;
+    public IEnumerable<IStepState> Children => ChildNodes;
     public NodeStatus Status { get; private set; }
 
     public int Count

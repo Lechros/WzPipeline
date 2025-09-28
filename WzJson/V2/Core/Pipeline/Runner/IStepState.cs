@@ -1,9 +1,9 @@
 namespace WzJson.V2.Core.Pipeline.Runner;
 
-public interface INodeState
+public interface IStepState
 {
     public string Name { get; }
-    public IEnumerable<INodeState> Children { get; }
+    public IEnumerable<IStepState> Children { get; }
 
     public NodeStatus Status { get; }
     public int Count { get; }

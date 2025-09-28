@@ -2,9 +2,9 @@ using WzJson.V2.Core.Pipeline.Runner;
 
 namespace WzJson.V2.Core.Pipeline.Linear;
 
-public class LinearPipeline<T>(RootNode root, SingleValueHolder<T> holder)
+public class LinearPipeline<T>(PipelineRoot root, SingleValueHolder<T> holder)
 {
-    public LinearPipelineResult<T> Run(IProgress<INodeState> progress)
+    public LinearPipelineResult<T> Run(IProgress<IStepState> progress)
     {
         holder.ClearValue();
         var ctx = PipelineRunner.Run(root, progress);
@@ -12,9 +12,9 @@ public class LinearPipeline<T>(RootNode root, SingleValueHolder<T> holder)
     }
 }
 
-public class LinearPipeline(RootNode root)
+public class LinearPipeline(PipelineRoot root)
 {
-    public LinearPipelineResult Run(IProgress<INodeState> progress)
+    public LinearPipelineResult Run(IProgress<IStepState> progress)
     {
         var ctx = PipelineRunner.Run(root, progress);
         return new LinearPipelineResult(ctx.GetRootState());
@@ -23,10 +23,10 @@ public class LinearPipeline(RootNode root)
 
 public class LinearPipelineResult<T>
 {
-    public INodeState State;
+    public IStepState State;
     public T Value;
 
-    internal LinearPipelineResult(INodeState state, T value)
+    internal LinearPipelineResult(IStepState state, T value)
     {
         State = state;
         Value = value;
@@ -35,9 +35,9 @@ public class LinearPipelineResult<T>
 
 public class LinearPipelineResult
 {
-    public INodeState State;
+    public IStepState State;
 
-    internal LinearPipelineResult(INodeState state)
+    internal LinearPipelineResult(IStepState state)
     {
         State = state;
     }

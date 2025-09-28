@@ -2,19 +2,19 @@ using WzJson.V2.Core.Stereotype;
 
 namespace WzJson.V2.Core.Pipeline.Linear;
 
-public class ConverterConfig<TNode, TResult>(IConverterNode node) where TNode : INode
+public class ConverterConfig<TNode, TResult>(IConverterStep step) where TNode : INode
 {
     public ProcessorConfig<TResult, TNextOut> Processor<TNextOut>(string name, IProcessor<TResult, TNextOut> processor)
     {
-        var childNode = new ProcessorNode(node, (IProcessor)processor, name);
-        node.AddChild(childNode);
+        var childNode = new ProcessorStep(step, (IProcessor)processor, name);
+        step.AddChild(childNode);
         return new ProcessorConfig<TResult, TNextOut>(childNode);
     }
 
     public ExporterConfig<TResult> Exporter(string name, IExporter<TResult> exporter)
     {
-        var childNode = new ExporterNode(node, (IExporter)exporter, name);
-        node.AddChild(childNode);
+        var childNode = new ExporterStep(step, (IExporter)exporter, name);
+        step.AddChild(childNode);
         return new ExporterConfig<TResult>(childNode);
     }
 
@@ -23,11 +23,11 @@ public class ConverterConfig<TNode, TResult>(IConverterNode node) where TNode : 
         var holder = new SingleValueHolder<TResult>();
         Exporter("Result", holder);
 
-        IPipelineNode curNode = node;
+        IStep curNode = step;
         while (curNode.Parent != null)
             curNode = curNode.Parent;
 
-        return curNode is RootNode rootNode
+        return curNode is PipelineRoot rootNode
             ? new LinearPipeline<TResult>(rootNode, holder)
             : throw new InvalidOperationException("Invalid Linear Pipeline");
     }

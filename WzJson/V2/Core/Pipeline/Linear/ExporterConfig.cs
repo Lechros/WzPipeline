@@ -1,14 +1,14 @@
 namespace WzJson.V2.Core.Pipeline.Linear;
 
-public class ExporterConfig<TResult>(IExporterNode node)
+public class ExporterConfig<TResult>(IExporterStep step)
 {
     public LinearPipeline Build()
     {
-        IPipelineNode curNode = node;
+        IStep curNode = step;
         while (curNode.Parent != null)
             curNode = curNode.Parent;
 
-        return curNode is RootNode rootNode
+        return curNode is PipelineRoot rootNode
             ? new LinearPipeline(rootNode)
             : throw new InvalidOperationException("Invalid Linear Pipeline");
     }
