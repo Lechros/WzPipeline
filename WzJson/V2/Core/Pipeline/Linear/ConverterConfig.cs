@@ -4,16 +4,16 @@ namespace WzJson.V2.Core.Pipeline.Linear;
 
 public class ConverterConfig<TNode, TResult>(IConverterNode node) where TNode : INode
 {
-    public ProcessorConfig<TResult, TNextOut> Processor<TNextOut>(IProcessor<TResult, TNextOut> processor)
+    public ProcessorConfig<TResult, TNextOut> Processor<TNextOut>(string name, IProcessor<TResult, TNextOut> processor)
     {
-        var childNode = new ProcessorNode(node, (IProcessor)processor);
+        var childNode = new ProcessorNode(node, (IProcessor)processor, name);
         node.AddChild(childNode);
         return new ProcessorConfig<TResult, TNextOut>(childNode);
     }
 
-    public ExporterConfig<TResult> Exporter(IExporter<TResult> exporter)
+    public ExporterConfig<TResult> Exporter(string name, IExporter<TResult> exporter)
     {
-        var childNode = new ExporterNode(node, (IExporter)exporter);
+        var childNode = new ExporterNode(node, (IExporter)exporter, name);
         node.AddChild(childNode);
         return new ExporterConfig<TResult>(childNode);
     }
@@ -21,7 +21,7 @@ public class ConverterConfig<TNode, TResult>(IConverterNode node) where TNode : 
     public LinearPipeline<TResult> Build()
     {
         var holder = new SingleValueHolder<TResult>();
-        Exporter(holder);
+        Exporter("Result", holder);
 
         IPipelineNode curNode = node;
         while (curNode.Parent != null)

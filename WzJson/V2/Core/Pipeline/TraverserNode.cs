@@ -2,8 +2,9 @@ using WzJson.V2.Core.Stereotype;
 
 namespace WzJson.V2.Core.Pipeline;
 
-public class TraverserNode(IPipelineNode parent, ITraverser traverser) : ITraverserNode
+public class TraverserNode(IPipelineNode parent, ITraverser traverser, string name) : ITraverserNode
 {
+    public string Name => name;
     public PipelineNodeType Type => PipelineNodeType.Traverser;
     public IPipelineNode? Parent { get; } = parent;
     public IList<IPipelineNode> Children { get; } = [];

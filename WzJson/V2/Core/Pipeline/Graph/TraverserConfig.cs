@@ -13,11 +13,4 @@ public class TraverserConfig<TNode>(ITraverserNode node) where TNode : INode
         config(childConfig);
         return this;
     }
-
-    public TraverserConfig<TNode> Converter<TNextOut>(Condition when, IConverter<TNode, TNextOut> converter,
-        Action<ConverterConfig<TNode, TNextOut>> config)
-    {
-        if (when.Value) Converter(converter, config);
-        return this;
-    }
 }

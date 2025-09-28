@@ -14,13 +14,6 @@ public class GraphPipelineConfig(RootNode node)
         return this;
     }
 
-    public GraphPipelineConfig Traverser<TNode>(Condition when, ITraverser<TNode> traverser,
-        Action<TraverserConfig<TNode>> config) where TNode : INode
-    {
-        if (when.Value) Traverser(traverser, config);
-        return this;
-    }
-
     public GraphPipeline Build()
     {
         return new GraphPipeline(node);

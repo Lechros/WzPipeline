@@ -20,10 +20,4 @@ public class ProcessorConfig<TIn, TOut>(IProcessorNode node)
         node.AddChild(childNode);
         return this;
     }
-
-    public ProcessorConfig<TIn, TOut> Exporter(Condition when, IExporter<TOut> exporter)
-    {
-        if (when.Value) Exporter(exporter);
-        return this;
-    }
 }

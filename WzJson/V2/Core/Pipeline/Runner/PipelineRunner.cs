@@ -1,27 +1,28 @@
+using System.Net.Mime;
+
 namespace WzJson.V2.Core.Pipeline.Runner;
 
-public class PipelineRunner
+internal static class PipelineRunner
 {
-    public static void Run(RootNode root)
+    public static ExecutionContext Run(RootNode root, IProgress<INodeState>? progress = null)
     {
-        var context = new ExecutionContext();
-        foreach (var (node, _) in DfsNodes(root, 0))
-        {
-            switch (node.Type)
-            {
-                case PipelineNodeType.Traverser:
-                    context.TraverserNodes.Add((ITraverserNode)node);
-                    break;
-            }
-        }
+        var ctx = new ExecutionContext(root, progress);
+        ctx.StartWithTotalCount(ctx.TraverserNodes.Count, root);
 
-        foreach (var traverserNode in context.TraverserNodes)
+        var processorQueue = new Queue<(IProcessorNode, ICollection<object>)>();
+        var exporterQueue = new Queue<(IExporterNode, ICollection<object>)>();
+
+        foreach (var traverserNode in ctx.TraverserNodes)
         {
-            IReadOnlyList<(IConverterNode, List<object>)> converters = traverserNode.Children
-                .Select(converterNode => ((IConverterNode)converterNode, new List<object>())).ToList();
+            var converterNodes = traverserNode.Children.Select(node => (IConverterNode)node).ToArray();
+            var converterPairs = converterNodes.Select(converter => (converter, new List<object>())).ToArray();
+
+            var totalNodeCount = traverserNode.Traverser.GetNodeCount();
+            ctx.StartWithTotalCount(totalNodeCount, [traverserNode, ..converterNodes]).Report();
+
             foreach (var node in traverserNode.Traverser.EnumerateNodes())
             {
-                foreach (var (converterNode, converterResults) in converters)
+                foreach (var (converterNode, converterResults) in converterPairs)
                 {
                     var convertResult = converterNode.Converter.Convert(node);
                     if (convertResult != null)
@@ -29,73 +30,92 @@ public class PipelineRunner
                         converterResults.Add(convertResult);
                     }
                 }
+
+                ctx.IncrementCount([traverserNode, ..converterNodes]).Report();
             }
 
-            foreach (var (converterNode, converterResults) in converters)
+            ctx.Complete([traverserNode, ..converterNodes]).Report();
+
+            foreach (var (converterNode, converterResults) in converterPairs)
             {
                 foreach (var child in converterNode.Children)
                 {
                     switch (child.Type)
                     {
                         case PipelineNodeType.Processor:
-                            context.ProcessorNodeQueue.Enqueue(((IProcessorNode)child, converterResults));
+                            processorQueue.Enqueue(((IProcessorNode)child, converterResults));
                             break;
                         case PipelineNodeType.Exporter:
-                            context.ExporterNodeQueue.Enqueue(((IExporterNode)child, converterResults));
+                            exporterQueue.Enqueue(((IExporterNode)child, converterResults));
                             break;
                         default:
                             throw new InvalidOperationException(
                                 $"Invalid child node type for ConverterNode: {child.Type}");
                     }
+
+                    ctx.SetTotalCountBeforeStart(converterResults.Count, child);
                 }
             }
+
+            ctx.IncrementCount(root).Report();
         }
 
-        while (context.ProcessorNodeQueue.Count > 0)
+        while (processorQueue.Count > 0)
         {
-            var (processorNode, input) = context.ProcessorNodeQueue.Dequeue();
+            var (processorNode, input) = processorQueue.Dequeue();
+            ctx.StartWithTotalCount(input.Count, processorNode).Report();
             var processResult = EnsureCollection(processorNode.Processor.Process(input));
+            ctx.CompleteWithCount(input.Count, processorNode);
+
             foreach (var child in processorNode.Children)
             {
                 switch (child.Type)
                 {
                     case PipelineNodeType.Processor:
-                        context.ProcessorNodeQueue.Enqueue(((IProcessorNode)child, processResult));
+                        processorQueue.Enqueue(((IProcessorNode)child, processResult));
                         break;
                     case PipelineNodeType.Exporter:
-                        context.ExporterNodeQueue.Enqueue(((IExporterNode)child, processResult));
+                        exporterQueue.Enqueue(((IExporterNode)child, processResult));
                         break;
                     default:
                         throw new InvalidOperationException($"Invalid child node type for ConverterNode: {child.Type}");
                 }
+
+                ctx.SetTotalCountBeforeStart(processResult.Count, child);
             }
+
+            ctx.Report();
         }
 
-        var exportTasks = new List<Task>(context.ExporterNodeQueue.Count);
-        while (context.ExporterNodeQueue.Count > 0)
+        var exportTasks = new List<Task>(exporterQueue.Count);
+        while (exporterQueue.Count > 0)
         {
-            var (exporterNode, inputs) = context.ExporterNodeQueue.Dequeue();
-            var task = Parallel.ForEachAsync(inputs,
-                async (input, _) =>
+            var (exporterNode, inputs) = exporterQueue.Dequeue();
+            var state = ctx.GetNodeState(exporterNode);
+            state.Start();
+            ctx.Report();
+
+            var task = Task.Run(async () =>
+            {
+                await Parallel.ForEachAsync(inputs, async (input, _) =>
                 {
                     await exporterNode.Exporter.Export(input);
+                    state.IncrementCount();
+                    ctx.Report();
                 });
+
+                state.Complete();
+                ctx.Report();
+            });
+
             exportTasks.Add(task);
         }
 
         Task.WhenAll(exportTasks).Wait();
-    }
 
-    private static IEnumerable<(IPipelineNode, int)> DfsNodes(IPipelineNode node, int depth)
-    {
-        yield return (node, depth);
-        foreach (var child in node.Children)
-        {
-            foreach (var descendantDepth in DfsNodes(child, depth + 1))
-            {
-                yield return descendantDepth;
-            }
-        }
+        ctx.Complete(root).Report();
+
+        return ctx;
     }
 
     private static ICollection<T> EnsureCollection<T>(IEnumerable<T> enumerable)

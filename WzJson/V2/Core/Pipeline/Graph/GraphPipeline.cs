@@ -4,8 +4,19 @@ namespace WzJson.V2.Core.Pipeline.Graph;
 
 public class GraphPipeline(RootNode root)
 {
-    public void Run()
+    public GraphPipelineResult Run(IProgress<INodeState> progress)
     {
-        PipelineRunner.Run(root);
+        var ctx = PipelineRunner.Run(root, progress);
+        return new GraphPipelineResult(ctx.GetRootState());
+    }
+}
+
+public class GraphPipelineResult
+{
+    public INodeState State;
+
+    internal GraphPipelineResult(INodeState state)
+    {
+        State = state;
     }
 }

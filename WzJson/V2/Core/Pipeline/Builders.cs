@@ -5,15 +5,15 @@ namespace WzJson.V2.Core.Pipeline;
 
 public static class Builders
 {
-    public static LinearPipelineConfig LinearPipelineBuilder()
+    public static LinearPipelineConfig LinearPipelineBuilder(string pipelineName)
     {
-        var root = new RootNode();
+        var root = new RootNode(pipelineName);
         return new LinearPipelineConfig(root);
     }
 
-    public static GraphPipelineConfig GraphPipelineBuilder()
+    public static GraphPipelineConfig GraphPipelineBuilder(string pipelineName)
     {
-        var root = new RootNode();
+        var root = new RootNode(pipelineName);
         return new GraphPipelineConfig(root);
     }
 }
