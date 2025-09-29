@@ -1,4 +1,3 @@
-using SixLabors.ImageSharp;
 using WzJson.V2.Core.Stereotype;
 
 namespace WzJson.V2.Domains.Icon;
@@ -14,6 +13,14 @@ public class IconImageExporter(string outputPath) : AbstractExporter<IconOrigin>
 
     public override Task Export(IconOrigin iconOrigin)
     {
-        return iconOrigin.Image.SaveAsPngAsync(Path.Join(_outputPath, $"{iconOrigin.Id}.png"));
+        return Task.Run(() =>
+        {
+            iconOrigin.Image.Save(Path.Join(_outputPath, $"{iconOrigin.Id}.png"));
+        });
+    }
+
+    public override void Cleanup(IconOrigin model)
+    {
+        model.Image.Dispose();
     }
 }

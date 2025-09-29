@@ -1,5 +1,3 @@
-using System.Net.Mime;
-
 namespace WzJson.V2.Core.Pipeline.Runner;
 
 internal static class PipelineRunner
@@ -10,7 +8,7 @@ internal static class PipelineRunner
         ctx.StartWithTotalCount(ctx.TraverserSteps.Count, root);
 
         var processorQueue = new Queue<(IProcessorStep, ICollection<object>)>();
-        var exporterQueue = new Queue<(IExporterStep, ICollection<object>)>();
+        var exporterList = new List<(IExporterStep, ICollection<object>)>();
 
         foreach (var traverserNode in ctx.TraverserSteps)
         {
@@ -46,7 +44,7 @@ internal static class PipelineRunner
                             processorQueue.Enqueue(((IProcessorStep)child, converterResults));
                             break;
                         case StepType.Exporter:
-                            exporterQueue.Enqueue(((IExporterStep)child, converterResults));
+                            exporterList.Add(((IExporterStep)child, converterResults));
                             break;
                         default:
                             throw new InvalidOperationException(
@@ -75,7 +73,7 @@ internal static class PipelineRunner
                         processorQueue.Enqueue(((IProcessorStep)child, processResult));
                         break;
                     case StepType.Exporter:
-                        exporterQueue.Enqueue(((IExporterStep)child, processResult));
+                        exporterList.Add(((IExporterStep)child, processResult));
                         break;
                     default:
                         throw new InvalidOperationException($"Invalid child node type for ConverterNode: {child.Type}");
@@ -87,15 +85,14 @@ internal static class PipelineRunner
             ctx.Report();
         }
 
-        var exportTasks = new List<Task>(exporterQueue.Count);
-        while (exporterQueue.Count > 0)
+        var exportTasks = new List<Task>(exporterList.Count);
+        foreach (var (exporterNode, inputs) in exporterList)
         {
-            var (exporterNode, inputs) = exporterQueue.Dequeue();
             var state = ctx.GetStepState(exporterNode);
             state.Start();
             ctx.Report();
 
-            var task = Task.Run(async () =>
+            var exportTask = Task.Run(async () =>
             {
                 await Parallel.ForEachAsync(inputs, async (input, _) =>
                 {
@@ -108,11 +105,16 @@ internal static class PipelineRunner
                 ctx.Report();
             });
 
-            exportTasks.Add(task);
+            exportTasks.Add(exportTask);
         }
 
         Task.WhenAll(exportTasks).Wait();
 
+        Parallel.ForEach(exporterList, (tuple, _) =>
+        {
+            var (exporterStep, inputs) = tuple;
+            Parallel.ForEach(inputs, input => { exporterStep.Exporter.Cleanup(input); });
+        });
         ctx.Complete(root).Report();
 
         return ctx;

@@ -1,4 +1,4 @@
-using SixLabors.ImageSharp;
+using System.Drawing;
 using WzJson.V2.Core.Stereotype;
 
 namespace WzJson.V2.Domains.Icon;

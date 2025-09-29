@@ -1,6 +1,7 @@
-using SixLabors.ImageSharp;
+using System.Drawing;
 using WzComparerR2.Common;
 using WzComparerR2.WzLib;
+using WzJson.V2.Domains.Icon;
 using WzJson.V2.Shared;
 
 namespace WzJson.V2.Domains.Gear.Nodes;
@@ -17,15 +18,15 @@ public class GearNodeAdapter(Wz_Node node, Wz_Node infoNode, GlobalFindNodeFunct
 
     public string IconId => Id;
 
-    public Image? Icon => Utility.GetIconImage(infoNode, "icon", findNode);
+    public Bitmap? Icon => IconUtility.GetIconImage(infoNode, "icon", findNode);
 
-    public Point? IconOrigin => Utility.GetIconOrigin(infoNode, @"icon\origin");
+    public Point? IconOrigin => IconUtility.GetIconOrigin(infoNode, @"icon\origin");
 
     public string RawIconId => Id;
 
-    public Image? RawIcon => Utility.GetIconImage(infoNode, "iconRaw", findNode);
+    public Bitmap? RawIcon => IconUtility.GetIconImage(infoNode, "iconRaw", findNode);
 
-    public Point? RawIconOrigin => Utility.GetIconOrigin(infoNode, @"iconRaw\origin");
+    public Point? RawIconOrigin => IconUtility.GetIconOrigin(infoNode, @"iconRaw\origin");
 
     public bool IsCash
     {

@@ -2,7 +2,9 @@ namespace WzJson.V2.Core.Stereotype;
 
 public abstract class AbstractExporter<T> : IExporter<T>, IExporter
 {
-    protected abstract void Prepare();
+    protected virtual void Prepare()
+    {
+    }
 
     void IExporter<T>.Prepare()
     {
@@ -16,9 +18,17 @@ public abstract class AbstractExporter<T> : IExporter<T>, IExporter
 
     public abstract Task Export(T model);
 
-
     public Task Export(object model)
     {
         return Export((T)model);
+    }
+
+    public virtual void Cleanup(T model)
+    {
+    }
+
+    public void Cleanup(object model)
+    {
+        Cleanup((T)model);
     }
 }

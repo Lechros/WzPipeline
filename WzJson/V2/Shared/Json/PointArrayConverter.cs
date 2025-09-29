@@ -1,5 +1,5 @@
+using System.Drawing;
 using Newtonsoft.Json;
-using SixLabors.ImageSharp;
 using JsonSerializer = Newtonsoft.Json.JsonSerializer;
 
 namespace WzJson.V2.Shared.Json;

@@ -1,4 +1,4 @@
-using SixLabors.ImageSharp;
+using System.Drawing;
 using WzJson.V2.Core.Stereotype;
 
 namespace WzJson.V2.Domains.Icon;
@@ -6,6 +6,6 @@ namespace WzJson.V2.Domains.Icon;
 public interface IIconNode : INode
 {
     public string IconId { get; }
-    public Image? Icon { get; }
+    public Bitmap? Icon { get; }
     public Point? IconOrigin { get; }
 }
