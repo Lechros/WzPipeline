@@ -20,13 +20,13 @@ public class GearNodeAdapter(Wz_Node node, Wz_Node infoNode, GlobalFindNodeFunct
 
     public Bitmap? Icon => IconUtility.GetIconImage(infoNode, "icon", findNode);
 
-    public Point? IconOrigin => IconUtility.GetIconOrigin(infoNode, @"icon\origin");
+    public Point? IconOrigin => IconUtility.GetIconOrigin(infoNode, "icon", findNode);
 
     public string RawIconId => Id;
 
     public Bitmap? RawIcon => IconUtility.GetIconImage(infoNode, "iconRaw", findNode);
 
-    public Point? RawIconOrigin => IconUtility.GetIconOrigin(infoNode, @"iconRaw\origin");
+    public Point? RawIconOrigin => IconUtility.GetIconOrigin(infoNode, "iconRaw", findNode);
 
     public bool IsCash
     {

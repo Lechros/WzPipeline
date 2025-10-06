@@ -14,14 +14,6 @@ public class IconUtility
         return iconNode.GetValue<Wz_Png>().ExtractPng();
     }
 
-    public static Point? GetIconOrigin(Wz_Node node, string path)
-    {
-        var originNode = node.FindNodeByPath(path);
-        if (originNode == null) return null;
-        var vector = originNode.GetValue<Wz_Vector>();
-        return new Point(vector.X, vector.Y);
-    }
-
     public static Point? GetIconOrigin(Wz_Node node, string path, GlobalFindNodeFunction findNode)
     {
         var iconNode = node.FindNodeByPath(false, path.Split("/"));
