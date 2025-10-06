@@ -15,7 +15,7 @@ public class IconConverter : AbstractConverter<IIconNode, IconOrigin>
             return null;
         return new IconOrigin
         {
-            Id = node.Id,
+            Id = node.IconId,
             Image = icon,
             Origin = (Point)origin
         };
