@@ -2,7 +2,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Sprache;
 using WzComparerR2.WzLib;
-using WzJson.Common;
 
 namespace WzJson.V2.Shared.Traverser.Internal;
 

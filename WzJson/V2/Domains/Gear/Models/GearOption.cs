@@ -247,7 +247,7 @@ public class GearOption
 
     static GearOption()
     {
-        Properties = typeof(Model.GearOption).GetProperties()
+        Properties = typeof(GearOption).GetProperties()
             .Where(p => p.GetIndexParameters().Length == 0)
             .ToDictionary(p => p.Name, p => p);
     }

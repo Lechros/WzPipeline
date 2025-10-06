@@ -1,12 +1,20 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using WzComparerR2.WzLib;
 
-namespace WzJson.Common;
+namespace WzJson.V2.Shared;
+
+public interface IWzProvider
+{
+    public Wz_Node BaseNode { get; }
+
+    public Wz_Node? FindNode(string fullPath);
+}
+
 
 public class WzProvider : IWzProvider
 {
-    private Wz_Structure openedWz;
+    private Wz_Structure _openedWz;
 
     static WzProvider()
     {
@@ -23,9 +31,9 @@ public class WzProvider : IWzProvider
         OpenWz(baseWzPath);
     }
 
-    public Wz_Node BaseNode => openedWz.WzNode;
+    public Wz_Node BaseNode => _openedWz.WzNode;
 
-    [MemberNotNull(nameof(openedWz))]
+    [MemberNotNull(nameof(_openedWz))]
     private void OpenWz(string wzFilePath)
     {
         var wz = new Wz_Structure();
@@ -34,7 +42,7 @@ public class WzProvider : IWzProvider
         else
             wz.Load(wzFilePath, true);
 
-        openedWz = wz;
+        _openedWz = wz;
     }
 
     public Wz_Node? FindNode(string fullPath)
@@ -54,7 +62,7 @@ public class WzProvider : IWzProvider
         {
             Wz_File? baseWz = null;
             var find = false;
-            foreach (var wzf in openedWz.wz_files)
+            foreach (var wzf in _openedWz.wz_files)
             {
                 if (wzf.Type == wzType)
                 {
