@@ -92,6 +92,8 @@ internal static class PipelineRunner
             state.Start();
             ctx.Report();
 
+            exporterNode.Exporter.Prepare();
+
             var exportTask = Task.Run(async () =>
             {
                 await Parallel.ForEachAsync(inputs, async (input, _) =>
