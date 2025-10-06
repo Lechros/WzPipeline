@@ -204,6 +204,12 @@ public class GearOption
             case GearPropType.incLUKlv:
                 LukLv += value;
                 break;
+            case GearPropType.incAllStat:
+                Str += value;
+                Dex += value;
+                Int += value;
+                Luk += value;
+                break;
             default:
                 return false;
         }
