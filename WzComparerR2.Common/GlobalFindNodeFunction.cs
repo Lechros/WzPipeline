@@ -2,4 +2,4 @@
 
 namespace WzComparerR2.Common;
 
-public delegate Wz_Node? GlobalFindNodeFunction(string fullPath);
+public delegate Wz_Node GlobalFindNodeFunction(string fullPath);
