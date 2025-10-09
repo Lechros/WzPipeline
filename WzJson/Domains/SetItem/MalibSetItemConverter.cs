@@ -5,7 +5,7 @@ using WzJson.Domains.ItemOption;
 
 namespace WzJson.Domains.SetItem;
 
-public class MalibSetItemConverter(IReadOnlyDictionary<int, ItemOptionEntry> itemOptionData)
+public class MalibSetItemConverter(IItemOptionData itemOptionData)
     : AbstractConverter<ISetItemNode, MalibSetItem>
 {
     public override MalibSetItem? Convert(ISetItemNode node)
@@ -41,6 +41,7 @@ public class MalibSetItemConverter(IReadOnlyDictionary<int, ItemOptionEntry> ite
 
                 option.Add(prop, value);
             }
+
             result.Add(effectNode.Index, option);
         }
 

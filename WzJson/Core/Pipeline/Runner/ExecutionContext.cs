@@ -10,12 +10,10 @@ internal class ExecutionContext
 
     internal ExecutionContext(PipelineRoot root, IProgress<IStepState>? progress = null)
     {
-        Root = root;
         _rootState = InitializeDfs(root);
         _progress = progress;
     }
 
-    public PipelineRoot Root { get; }
     public IReadOnlyList<ITraverserStep> TraverserSteps => _traverserSteps;
 
     public StepState GetStepState(IStep step)

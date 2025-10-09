@@ -3,14 +3,12 @@ using WzJson.Core.Stereotype;
 
 namespace WzJson.Shared.Exporter;
 
-public class DictionaryJsonWriter<TKey, TValue>(JsonSerializer serializer, string outputPath)
+public class DictionaryJsonWriter<TKey, TValue>(JsonSerializer serializer, string filename)
     : AbstractExporter<IDictionary<TKey, TValue>>
 {
-    private readonly string _outputPath = outputPath ?? throw new ArgumentNullException(nameof(outputPath));
-
     protected override void Prepare()
     {
-        var directory = Path.GetDirectoryName(_outputPath);
+        var directory = Path.GetDirectoryName(filename);
         if (!string.IsNullOrEmpty(directory))
         {
             Directory.CreateDirectory(directory);
@@ -19,9 +17,17 @@ public class DictionaryJsonWriter<TKey, TValue>(JsonSerializer serializer, strin
 
     public override async Task Export(IDictionary<TKey, TValue> model)
     {
-        await using var sw = new StreamWriter(_outputPath);
+        await using var sw = new StreamWriter(filename);
         await using var writer = new JsonTextWriter(sw);
         serializer.Serialize(writer, model);
         await writer.FlushAsync();
+    }
+}
+
+public class DictionaryJsonWriterFactory(JsonSerializer serializer)
+{
+    public DictionaryJsonWriter<TKey, TValue> WithFilename<TKey, TValue>(string filename)
+    {
+        return new DictionaryJsonWriter<TKey, TValue>(serializer, filename);
     }
 }

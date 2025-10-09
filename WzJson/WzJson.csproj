@@ -10,10 +10,9 @@
 
   <ItemGroup>
     <PackageReference Include="Jering.Javascript.NodeJS" Version="7.0.0" />
-    <PackageReference Include="JetBrains.Annotations" Version="2025.2.2" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="Ninject" Version="3.3.6" />
-    <PackageReference Include="Spectre.Console" Version="0.49.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.9" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+    <PackageReference Include="Spectre.Console" Version="0.51.1" />
     <PackageReference Include="Sprache" Version="2.3.1" />
   </ItemGroup>
 
@@ -32,6 +31,9 @@
     <Content Include="Scripts/dist/index.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Cli\ProgramOld.cs" />
   </ItemGroup>
     
 </Project>

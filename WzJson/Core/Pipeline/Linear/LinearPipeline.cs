@@ -4,27 +4,27 @@ namespace WzJson.Core.Pipeline.Linear;
 
 public class LinearPipeline<T>(PipelineRoot root, SingleValueHolder<T> holder)
 {
-    public LinearPipelineResult<T> Run(IProgress<IStepState> progress)
+    public LinearPipelineResult<T> Run(IPipelineRunner runner, IProgress<IStepState>? progress = null)
     {
         holder.ClearValue();
-        var ctx = PipelineRunner.Run(root, progress);
-        return new LinearPipelineResult<T>(ctx.GetRootState(), holder.Value);
+        var state = runner.Run(root, progress);
+        return new LinearPipelineResult<T>(state, holder.Value);
     }
 }
 
 public class LinearPipeline(PipelineRoot root)
 {
-    public LinearPipelineResult Run(IProgress<IStepState> progress)
+    public LinearPipelineResult Run(IPipelineRunner runner, IProgress<IStepState>? progress = null)
     {
-        var ctx = PipelineRunner.Run(root, progress);
-        return new LinearPipelineResult(ctx.GetRootState());
+        var state = runner.Run(root, progress);
+        return new LinearPipelineResult(state);
     }
 }
 
 public class LinearPipelineResult<T>
 {
-    public IStepState State;
-    public T Value;
+    public IStepState State { get; }
+    public T Value { get; }
 
     internal LinearPipelineResult(IStepState state, T value)
     {
@@ -35,7 +35,7 @@ public class LinearPipelineResult<T>
 
 public class LinearPipelineResult
 {
-    public IStepState State;
+    public IStepState State { get; }
 
     internal LinearPipelineResult(IStepState state)
     {

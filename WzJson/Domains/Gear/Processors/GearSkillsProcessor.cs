@@ -1,9 +1,10 @@
 using WzJson.Core.Stereotype;
 using WzJson.Domains.Gear.Models;
+using WzJson.Domains.String;
 
 namespace WzJson.Domains.Gear.Processors;
 
-public class GearSkillsProcessor(IDictionary<string, string> skillNameData)
+public class GearSkillsProcessor(ISkillNameData skillNameData)
     : AbstractProcessor<MalibGear, MalibGear>
 {
     public override IEnumerable<MalibGear> Process(IEnumerable<MalibGear> models)

@@ -7,13 +7,13 @@ using WzJson.Domains.String;
 namespace WzJson.Domains.Gear.Converters;
 
 public class RawGearConverter(
-    IReadOnlyDictionary<string, NameDesc> gearStringData,
-    IReadOnlyDictionary<int, ItemOptionEntry> itemOptionData)
+    IGearNameDescData gearNameDescData,
+    IItemOptionData itemOptionData)
     : AbstractConverter<IGearNode, RawGear>
 {
     public override RawGear? Convert(IGearNode node)
     {
-        gearStringData.TryGetValue(node.Id, out var gearNameDesc);
+        gearNameDescData.TryGetValue(node.Id, out var gearNameDesc);
         if (gearNameDesc?.Name == null)
         {
             return null;

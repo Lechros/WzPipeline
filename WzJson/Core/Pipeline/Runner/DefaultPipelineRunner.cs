@@ -1,8 +1,8 @@
 namespace WzJson.Core.Pipeline.Runner;
 
-internal static class PipelineRunner
+public class DefaultPipelineRunner : IPipelineRunner
 {
-    public static ExecutionContext Run(PipelineRoot root, IProgress<IStepState>? progress = null)
+    public IStepState Run(PipelineRoot root, IProgress<IStepState>? progress = null)
     {
         var ctx = new ExecutionContext(root, progress);
         ctx.StartWithTotalCount(ctx.TraverserSteps.Count, root);
@@ -32,7 +32,7 @@ internal static class PipelineRunner
                 ctx.IncrementCount([traverserNode, ..converterNodes]).Report();
             }
 
-            ctx.Complete([traverserNode, ..converterNodes]).Report();
+            ctx.CompleteWithCount(totalNodeCount, [traverserNode, ..converterNodes]).Report();
 
             foreach (var (converterNode, converterResults) in converterPairs)
             {
@@ -119,7 +119,7 @@ internal static class PipelineRunner
         });
         ctx.Complete(root).Report();
 
-        return ctx;
+        return ctx.GetRootState();
     }
 
     private static ICollection<T> EnsureCollection<T>(IEnumerable<T> enumerable)

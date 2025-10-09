@@ -6,7 +6,7 @@ using WzJson.Domains.Soul.Nodes;
 
 namespace WzJson.Domains.Soul.Converters;
 
-public class SkillOptionConverter(IReadOnlyDictionary<int, ItemOptionEntry> itemOptionData)
+public class SkillOptionConverter(IItemOptionData itemOptionData)
     : AbstractConverter<ISkillOptionNode, SkillOption>
 {
     public override SkillOption? Convert(ISkillOptionNode node)

@@ -19,3 +19,12 @@ public class GlobTraverser<TNode>(IWzProvider wzProvider, string path, Func<Wz_N
         return _walker.GetNodeCount();
     }
 }
+
+public static class GlobTraverser
+{
+    public static GlobTraverser<TNode> Create<TNode>(IWzProvider wzProvider, string path, Func<Wz_Node, TNode?> factory)
+        where TNode : INode
+    {
+        return new GlobTraverser<TNode>(wzProvider, path, factory);
+    }
+}

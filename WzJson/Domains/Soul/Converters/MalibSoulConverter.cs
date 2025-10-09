@@ -2,14 +2,15 @@ using WzJson.Core.Stereotype;
 using WzJson.Domains.Gear.Models;
 using WzJson.Domains.Soul.Models;
 using WzJson.Domains.Soul.Nodes;
+using WzJson.Domains.String;
 
 namespace WzJson.Domains.Soul.Converters;
 
 public class MalibSoulConverter(
-    IReadOnlyDictionary<string, string> soulNameData,
-    IReadOnlyDictionary<string, string> skillNameData,
-    IReadOnlyDictionary<int, SoulInfo> soulInfoData,
-    IReadOnlyDictionary<int, List<SkillOption>> skillOptionData) : AbstractConverter<ISoulNode, MalibSoul>
+    IConsumeNameData soulNameData,
+    ISkillNameData skillNameData,
+    ISoulInfoData soulInfoData,
+    ISkillOptionData skillOptionData) : AbstractConverter<ISoulNode, MalibSoul>
 {
     public override MalibSoul? Convert(ISoulNode node)
     {
