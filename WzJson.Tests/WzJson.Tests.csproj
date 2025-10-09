@@ -20,6 +20,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\WzComparerR2.WzLib\WzComparerR2.WzLib.csproj" />
       <ProjectReference Include="..\WzJson\WzJson.csproj" />
     </ItemGroup>
 

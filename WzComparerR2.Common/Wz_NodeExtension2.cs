@@ -63,7 +63,7 @@ public static class Wz_NodeExtension2
         {
             if (node == null) return null;
 
-            if (node?.Value is Wz_Uol uol)
+            if (node.Value is Wz_Uol uol)
             {
                 if (uol.Uol.StartsWith("/"))
                 {
