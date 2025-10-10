@@ -82,6 +82,10 @@ public static class Program
     {
         return new Dictionary<string, List<(string, Action<Workflow>)>>
         {
+            ["ExclusiveEquip"] =
+            [
+                ("ExclusiveEquipData", w => w.AddExclusiveEquipDataJob(Path.Join(root, "exclusive-equip.json")))
+            ],
             ["Gear"] =
             [
                 ("GearData", w => w.AddGearDataJob(Path.Join(root, "gear.json"))),

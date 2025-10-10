@@ -46,6 +46,14 @@ public class DependencyInjectionTests
     }
 
     [Test]
+    public void ExclusiveEquipData()
+    {
+        workflow.AddExclusiveEquipDataJob(path);
+        var serviceProvider = services.BuildServiceProvider();
+        workflow.Run(serviceProvider);
+    }
+
+    [Test]
     public void GearData()
     {
         workflow.AddGearDataJob(path);
