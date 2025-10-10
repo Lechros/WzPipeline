@@ -35,7 +35,8 @@ public class ExclusiveEquipConverter(IGearNameDescData gearNameDescData)
         }
         else
         {
-            return node.ItemIds.Select(GetGearName).Distinct().ToArray();
+            var names = node.ItemIds.Select(GetGearName).Distinct().ToArray();
+            return names.Length == 1 ? [] : names;
         }
     }
 
