@@ -94,6 +94,14 @@ public class DependencyInjectionTests
     }
 
     [Test]
+    public void GearDebug()
+    {
+        workflow.AddGearDebugJob(path);
+        var serviceProvider = services.BuildServiceProvider();
+        workflow.Run(serviceProvider);
+    }
+
+    [Test]
     public void ItemIcon()
     {
         workflow.AddItemIconJob(path);

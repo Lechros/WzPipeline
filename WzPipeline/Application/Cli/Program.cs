@@ -1,8 +1,8 @@
 using System.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 using Spectre.Console;
-using WzPipeline.Application.DependencyInjection;
 using WzPipeline.Application;
+using WzPipeline.Application.DependencyInjection;
 using WzPipeline.Cli.Reporting;
 using WzPipeline.Core.Pipeline.Runner;
 using WzPipeline.Shared;
@@ -92,7 +92,7 @@ public static class Program
                 ("GearIcon", w => w.AddGearIconJob(Path.Join(root, "gear-icon"))),
                 ("GearIconOrigin", w => w.AddGearIconOriginJob(Path.Join(root, "gear-icon-origin.json"))),
                 ("GearRawIcon", w => w.AddGearRawIconJob(Path.Join(root, "gear-raw-icon"))),
-                ("GearRawIconOrigin", w => w.AddGearRawIconOriginJob(Path.Join(root, "gear-raw-icon-origin.json")))
+                ("GearRawIconOrigin", w => w.AddGearRawIconOriginJob(Path.Join(root, "gear-raw-icon-origin.json"))),
             ],
             ["Item"] =
             [
@@ -108,6 +108,10 @@ public static class Program
             ["Soul"] =
             [
                 ("SoulData", w => w.AddSoulDataJob(Path.Join(root, "soul.json")))
+            ],
+            ["Debug"] =
+            [
+                ("Gear", w => w.AddGearDebugJob(Path.Join(root, "debug-gear.json")))
             ]
         };
     }

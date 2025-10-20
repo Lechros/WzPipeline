@@ -2,6 +2,7 @@ using System.Drawing;
 using Jering.Javascript.NodeJS;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Newtonsoft.Json.Linq;
 using WzPipeline.Application.DependencyInjection.Data;
 using WzPipeline.Core.Pipeline.Graph;
 using WzPipeline.Domains.Gear.Converters;
@@ -10,10 +11,11 @@ using WzPipeline.Domains.Gear.Nodes;
 using WzPipeline.Domains.Gear.Processors;
 using WzPipeline.Domains.Icon;
 using WzPipeline.Shared;
+using WzPipeline.Shared.Converter;
 using WzPipeline.Shared.Exporter;
+using WzPipeline.Shared.Node;
 using WzPipeline.Shared.Processor;
 using WzPipeline.Shared.Traverser;
-using Icon_IconConverter = WzPipeline.Domains.Icon.IconConverter;
 using IconConverter = WzPipeline.Domains.Icon.IconConverter;
 
 namespace WzPipeline.Application.DependencyInjection;
@@ -76,7 +78,7 @@ public static class Gear
 
     private static void TryAddGearIconJobDependencies(this IServiceCollection services)
     {
-        services.TryAddSingleton<Icon_IconConverter>();
+        services.TryAddSingleton<IconConverter>();
     }
 
     public static void AddGearIconOriginJob(this Workflow workflow, string filename)
@@ -99,7 +101,7 @@ public static class Gear
 
     private static void TryAddGearIconOriginJobDependencies(this IServiceCollection services)
     {
-        services.TryAddSingleton<Icon_IconConverter>();
+        services.TryAddSingleton<IconConverter>();
         services.TryAddSingleton<NaturalStringComparer>();
         services.TryAddDictionaryJsonWriterFactory();
     }
@@ -119,7 +121,7 @@ public static class Gear
 
     private static void TryAddGearRawIconJobDependencies(this IServiceCollection services)
     {
-        services.TryAddSingleton<Icon_IconConverter>();
+        services.TryAddSingleton<IconConverter>();
     }
 
     public static void AddGearRawIconOriginJob(this Workflow workflow, string filename)
@@ -142,9 +144,38 @@ public static class Gear
 
     private static void TryAddGearRawIconOriginJobDependencies(this IServiceCollection services)
     {
-        services.TryAddSingleton<Icon_IconConverter>();
+        services.TryAddSingleton<IconConverter>();
         services.TryAddSingleton<NaturalStringComparer>();
         services.TryAddDictionaryJsonWriterFactory();
+    }
+
+    public static void AddGearDebugJob(this Workflow workflow, string filename)
+    {
+        workflow.ServiceCollection.TryAddGearDebugJobDependencies();
+
+        workflow.Configurers.Add((provider, ctx) =>
+        {
+            var wzProvider = provider.GetRequiredService<IWzProvider>();
+            var traverser = GlobTraverser.Create(wzProvider, NodePath, WzNode.Create);
+            var converter = new NodeJsonConverter("info");
+            var comparer = provider.GetRequiredService<NaturalStringComparer>();
+            var collector = DictionaryCollector.Create((KeyedString t) => t.Key, t => t.Value,
+                () => new SortedDictionary<string, string>(comparer));
+            var exporter = provider.GetRequiredService<JsonStringDictionaryWriterFactory>()
+                .IndentedWithFilename(filename);
+            ctx.Config
+                .Traverser("Traverse Gear (Debug)", traverser, t => t
+                    .Converter("Convert", converter, c => c
+                        .Processor("Collect", collector, p => p
+                            .Exporter("Save Debug Json", exporter))));
+        });
+    }
+
+    private static void TryAddGearDebugJobDependencies(this IServiceCollection services)
+    {
+        services.TryAddGearNameDescData();
+        services.TryAddSingleton<NaturalStringComparer>();
+        services.TryAddJsonStringDictionaryWriterFactory();
     }
 
     private static void TryAddRawGearConverter(this IServiceCollection services)
@@ -193,7 +224,7 @@ public static class Gear
         return ctx.GetConfigOrCreate(IconConverterConfigKey, () =>
         {
             ConverterConfig<IGearNode, IconOrigin>? config = null;
-            var converter = provider.GetRequiredService<Icon_IconConverter>();
+            var converter = provider.GetRequiredService<IconConverter>();
             GearTraverser(provider, ctx)
                 .Converter("Convert Icon", converter, c => config = c);
             return config!;
@@ -206,7 +237,7 @@ public static class Gear
         return ctx.GetConfigOrCreate(RawIconConverterConfigKey, () =>
         {
             ConverterConfig<IGearNode, IconOrigin>? config = null;
-            var converter = provider.GetRequiredService<Icon_IconConverter>();
+            var converter = provider.GetRequiredService<IconConverter>();
             GearTraverser(provider, ctx)
                 .Converter("Convert Raw Icon", converter, c => config = c);
             return config!;

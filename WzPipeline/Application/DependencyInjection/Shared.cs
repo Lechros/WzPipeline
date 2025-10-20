@@ -37,4 +37,11 @@ public static class Shared
 
         return services;
     }
+    
+    public static IServiceCollection TryAddJsonStringDictionaryWriterFactory(this IServiceCollection services)
+    {
+        services.TryAddSingleton<JsonStringDictionaryWriterFactory>();
+        
+        return services;
+    }
 }

@@ -6,6 +6,8 @@ namespace WzPipeline.Shared.Exporter;
 public class DictionaryJsonWriter<TKey, TValue>(JsonSerializer serializer, string filename)
     : AbstractExporter<IDictionary<TKey, TValue>>
 {
+    public bool Indented { get; set; } = false;
+
     protected override void Prepare()
     {
         var directory = Path.GetDirectoryName(filename);
@@ -19,6 +21,8 @@ public class DictionaryJsonWriter<TKey, TValue>(JsonSerializer serializer, strin
     {
         await using var sw = new StreamWriter(filename);
         await using var writer = new JsonTextWriter(sw);
+        if (Indented)
+            serializer.Formatting = Formatting.Indented;
         serializer.Serialize(writer, model);
         await writer.FlushAsync();
     }
@@ -29,5 +33,13 @@ public class DictionaryJsonWriterFactory(JsonSerializer serializer)
     public DictionaryJsonWriter<TKey, TValue> WithFilename<TKey, TValue>(string filename)
     {
         return new DictionaryJsonWriter<TKey, TValue>(serializer, filename);
+    }
+
+    public DictionaryJsonWriter<TKey, TValue> IndentedWithFilename<TKey, TValue>(string filename)
+    {
+        return new DictionaryJsonWriter<TKey, TValue>(serializer, filename)
+        {
+            Indented = true
+        };
     }
 }
