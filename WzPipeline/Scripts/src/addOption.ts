@@ -15,6 +15,9 @@ export function getCanAddOption(input: InputGear): GearCapability {
   if (input.rawAttributes?.exUpgradeChangeBlock) {
     return GearCapability.Fixed;
   }
+  if (input.rawAttributes?.setExtraOption) {
+      return GearCapability.Can;
+  }
   return typeSupportsAddOption(input.type)
     ? GearCapability.Can
     : GearCapability.Cannot;

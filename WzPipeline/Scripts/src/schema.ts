@@ -27,7 +27,6 @@ export interface InputRawAttributes {
   specialGrade?: number;
   superiorEqp?: number;
   jokerToSetItem?: number;
-  blockGoldHammer?: number;
   exceptUpgrade?: number;
   onlyUpgrade?: number;
   noLookChange?: number;
@@ -36,4 +35,5 @@ export interface InputRawAttributes {
   exUpgradeBlock?: number;
   exUpgradeChangeBlock?: number;
   bossReward?: number;
+  setExtraOption?: number;
 }

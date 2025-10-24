@@ -108,7 +108,6 @@ public class RawGearToGearProcessor : AbstractProcessor<RawGear, MalibGear>
     private Dictionary<GearPropType, int> GetRawAttributes(RawGear raw)
     {
         return raw.Props
-            .Where(kv => AttributeTypes.Contains(kv.Key))
             .ToDictionary(kv => kv.Key, kv => kv.Value);
     }
 
@@ -139,33 +138,4 @@ public class RawGearToGearProcessor : AbstractProcessor<RawGear, MalibGear>
 
         return 0;
     }
-
-    private static readonly HashSet<GearPropType> AttributeTypes =
-    [
-        GearPropType.attackSpeed,
-        GearPropType.setItemID,
-        GearPropType.only,
-        GearPropType.tradeBlock,
-        GearPropType.accountSharable,
-        GearPropType.onlyEquip,
-        GearPropType.tradeAvailable,
-        GearPropType.equipTradeBlock,
-        GearPropType.sharableOnce,
-        GearPropType.notExtend,
-        GearPropType.accountShareTag,
-        GearPropType.noPotential,
-        GearPropType.fixedPotential,
-        GearPropType.specialGrade,
-        GearPropType.superiorEqp,
-        GearPropType.jokerToSetItem,
-        GearPropType.blockGoldHammer,
-        GearPropType.exceptUpgrade,
-        GearPropType.onlyUpgrade,
-        GearPropType.noLookChange,
-        GearPropType.tucIgnoreForPotential,
-        GearPropType.CuttableCount,
-        GearPropType.exUpgradeBlock,
-        GearPropType.exUpgradeChangeBlock,
-        GearPropType.bossReward
-    ];
 }
