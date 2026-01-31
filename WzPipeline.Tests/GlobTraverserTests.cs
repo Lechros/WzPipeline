@@ -1,4 +1,5 @@
 using FluentAssertions;
+using WzComparerR2.WzLib.Utilities;
 using WzPipeline.Shared;
 using WzPipeline.Shared.Traverser;
 
@@ -21,6 +22,27 @@ public class GlobTraverserTests
             "Character/{Accessory,Android,Cap,Cape,Coat,Dragon,Glove,Longcoat,Mechanic,Pants,Ring,Shield,Shoes,Weapon}/*.img";
         var traverser = GlobTraverser.Create(wzProvider, path, TestUtils.DefaultNode.Create);
 
+        var count = traverser.GetNodeCount();
+        count.Should().NotBe(0);
+        
+        var enumeratedCount = traverser.EnumerateNodes().Count();
+        count.Should().Be(enumeratedCount);
+    }
+
+    [Test]
+    public void ItemOptionTraverser_Count_Equals()
+    {
+        var traverser2 = GlobTraverser.Create(wzProvider, "Item/ItemOption.img", TestUtils.DefaultNode.Create);
+        foreach (var node in traverser2.EnumerateNodes())
+        {
+            Console.WriteLine(node);
+        }
+
+        traverser2.EnumerateNodes();
+        
+        var path = "Item/ItemOption.img/*";
+        var traverser = GlobTraverser.Create(wzProvider, path, TestUtils.DefaultNode.Create);
+        
         var count = traverser.GetNodeCount();
         count.Should().NotBe(0);
         

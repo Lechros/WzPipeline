@@ -308,4 +308,6 @@ public enum GearPropType
     onlyCash,
     baseLevel,
     origin,
+    minMVPGrade,
+    maxMVPGrade,
 }
