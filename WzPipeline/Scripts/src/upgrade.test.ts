@@ -5,10 +5,9 @@ import { getCanScroll } from "./upgrade";
 describe("getCanScroll", () => {
   it("returns Cannot for tuc === undefined", () => {
     const input: InputGear = {
-      meta: {
-        id: 0,
-        version: 1,
-      },
+      id: 0,
+      version: 2,
+      icon: "",
       name: "",
       type: GearType.cap,
       req: {},
@@ -21,10 +20,9 @@ describe("getCanScroll", () => {
 
   it("returns Cannot for tuc === 0", () => {
     const input: InputGear = {
-      meta: {
-        id: 0,
-        version: 1,
-      },
+      id: 0,
+      version: 2,
+      icon: "",
       name: "",
       type: GearType.cap,
       req: {},
@@ -37,10 +35,9 @@ describe("getCanScroll", () => {
 
   it("returns Fixed for exceptUpgrade === 1", () => {
     const input: InputGear = {
-      meta: {
-        id: 0,
-        version: 1,
-      },
+      id: 0,
+      version: 2,
+      icon: "",
       name: "",
       type: GearType.cap,
       req: {},
@@ -56,10 +53,9 @@ describe("getCanScroll", () => {
 
   it("returns Can for tuc > 0", () => {
     const input: InputGear = {
-      meta: {
-        id: 0,
-        version: 1,
-      },
+      id: 0,
+      version: 2,
+      icon: "",
       name: "",
       type: GearType.cap,
       req: {},

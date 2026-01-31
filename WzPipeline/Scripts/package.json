@@ -11,7 +11,7 @@
   },
   "packageManager": "pnpm@10.15.1",
   "devDependencies": {
-    "@malib/gear": "1.0.0-next.9",
+    "@malib/gear": "1.0.0-next.11",
     "rolldown": "1.0.0-beta.38",
     "tsdown": "^0.15.3",
     "typescript": "^5.9.2",

@@ -8,7 +8,7 @@ export function getGender(input: InputGear): GearGender | undefined {
     case GearType.jewel:
       return undefined;
   }
-  const value = Math.floor(input.meta.id / 1000) % 10;
+  const value = Math.floor(input.id / 1000) % 10;
   switch (value) {
     case GearGender.Male:
       return GearGender.Male;

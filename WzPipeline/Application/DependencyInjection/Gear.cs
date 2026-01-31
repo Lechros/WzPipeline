@@ -39,7 +39,7 @@ public static class Gear
             var processor1 = provider.GetRequiredService<RawGearToGearProcessor>();
             var processor2 = provider.GetRequiredService<GearRawAttributesProcessor>();
             var processor3 = provider.GetRequiredService<GearSkillsProcessor>();
-            var collector = DictionaryCollector.Create((MalibGear g) => g.Meta.Id,
+            var collector = DictionaryCollector.Create((MalibGear g) => g.Id,
                 () => new SortedDictionary<int, MalibGear>());
             var exporter = provider.GetRequiredService<DictionaryJsonWriterFactory>()
                 .WithFilename<int, MalibGear>(filename);

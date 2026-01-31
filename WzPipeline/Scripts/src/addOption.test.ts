@@ -4,10 +4,9 @@ import { InputGear } from "./schema";
 
 test("exUpgradeBlock returns Cannot", () => {
   const input: InputGear = {
-    meta: {
-      id: 0,
-      version: 1,
-    },
+    id: 0,
+    version: 2,
+    icon: "",
     name: "",
     type: GearType.cap,
     req: {},
@@ -24,10 +23,9 @@ test("exUpgradeBlock returns Cannot", () => {
 
 test("exUpgradeChangeBlock returns Fixed", () => {
   const input: InputGear = {
-    meta: {
-      id: 0,
-      version: 1,
-    },
+    id: 0,
+    version: 2,
+    icon: "",
     name: "",
     type: GearType.cap,
     req: {},
@@ -44,10 +42,9 @@ test("exUpgradeChangeBlock returns Fixed", () => {
 
 test("exUpgradeBlock, exUpgradeChangeBlock returns Cannot", () => {
   const input: InputGear = {
-    meta: {
-      id: 0,
-      version: 1,
-    },
+    id: 0,
+    version: 2,
+    icon: "",
     name: "",
     type: GearType.cap,
     req: {},
@@ -65,10 +62,9 @@ test("exUpgradeBlock, exUpgradeChangeBlock returns Cannot", () => {
 
 test("no add option related props calculates by gear type", () => {
   const input: InputGear = {
-    meta: {
-      id: 0,
-      version: 1,
-    },
+    id: 0,
+    version: 2,
+    icon: "",
     name: "",
     type: GearType.cap,
     req: {},

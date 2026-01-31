@@ -2,9 +2,11 @@ namespace WzPipeline.Domains.Gear.Models;
 
 public class MalibGear
 {
-    public required GearMeta Meta { get; set; }
+    public int Version => 2;
+    public required int Id { get; set; }
     public required string Name { get; set; }
     public string? Desc { get; set; }
+    public required string Icon { get; set; }
     public GearType Type { get; set; }
     public required GearReq Req { get; set; }
     public GearAttribute Attributes { get; set; } = new();
@@ -28,12 +30,6 @@ public class MalibGear
     {
         return RawAttributes != null;
     }
-}
-
-public class GearMeta(int id)
-{
-    public int Id { get; } = id;
-    public int Version => 1;
 }
 
 public class GearAttribute

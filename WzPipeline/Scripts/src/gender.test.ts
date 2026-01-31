@@ -4,10 +4,8 @@ import { InputGear } from "./schema";
 
 test("Test gender", () => {
   const gearData: InputGear = {
-    meta: {
-      id: 1040122,
-      version: 1,
-    },
+    id: 1040122,
+    version: 2,
     name: "블랙 네오스",
     icon: "1040122",
     type: GearType.coat,

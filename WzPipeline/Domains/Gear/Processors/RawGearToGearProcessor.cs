@@ -17,9 +17,10 @@ public class RawGearToGearProcessor : AbstractProcessor<RawGear, MalibGear>
     {
         return new MalibGear
         {
-            Meta = new GearMeta(raw.Id),
+            Id = raw.Id,
             Name = raw.Name,
             Desc = raw.Desc,
+            Icon = raw.Id.ToString(),
             Type = GetGearType(raw.Id),
             Req = GetGearReq(raw),
             Attributes = new GearAttribute(),
