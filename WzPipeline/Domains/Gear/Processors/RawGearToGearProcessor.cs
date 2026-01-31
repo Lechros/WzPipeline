@@ -93,6 +93,31 @@ public class RawGearToGearProcessor : AbstractProcessor<RawGear, MalibGear>
             }
         }
 
+        // 아스트라 보조무기
+        if (code / 10000 == 172)
+        {
+            var index = (code % 10000) / 100;
+            var typeList = new[]
+            {
+                GearType.medallion, GearType.rosary, GearType.ironChain, // 0 1 2
+                GearType.magicBook1, GearType.magicBook2, GearType.magicBook3, // 3 4 5
+                GearType.arrowFletching, GearType.bowThimble, GearType.relic, // 6 7 8
+                GearType.charm, GearType.daggerScabbard, // 9 10
+                GearType.wristBand, GearType.farSight, GearType.powderKeg, // 11 12 13
+                GearType.jewel, GearType.jewel, GearType.jewel, GearType.jewel, GearType.jewel,
+                GearType.jewel, // 14 15 16 17 18 19
+                GearType.mass, GearType.magicArrow, GearType.card, GearType.orb, GearType.foxMarble,
+                GearType.document, // 20 21 22 23 24 25
+                GearType.demonShield, GearType.magicMarble, GearType.arrowhead, GearType.magnum, GearType.controller,
+                GearType.charge, GearType.demonShield, // 26 27 28 29 30 31 32
+                GearType.dragonEssence, GearType.weaponBelt, GearType.transmitter, GearType.soulRing, // 33 34 35 36
+                GearType.hourGlass, GearType.chessPiece, // 37 38
+                GearType.bracelet, GearType.magicWing, GearType.hexSeeker, GearType.pathOfAbyss, // 39 40 41 42
+                GearType.sacredJewel, GearType.ornament, GearType.fanTassel, // 43 44 45
+            };
+            return typeList[index];
+        }
+
         return (GearType)(code / 10000);
     }
 

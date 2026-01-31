@@ -38,7 +38,8 @@ public static class Gear
             var converter = provider.GetRequiredService<RawGearConverter>();
             var processor1 = provider.GetRequiredService<RawGearToGearProcessor>();
             var processor2 = provider.GetRequiredService<GearRawAttributesProcessor>();
-            var processor3 = provider.GetRequiredService<GearSkillsProcessor>();
+            var processor3 = provider.GetRequiredService<GearAstraSubWeaponMaxStarProcessor>();
+            var processor4 = provider.GetRequiredService<GearSkillsProcessor>();
             var collector = DictionaryCollector.Create((MalibGear g) => g.Id,
                 () => new SortedDictionary<int, MalibGear>());
             var exporter = provider.GetRequiredService<DictionaryJsonWriterFactory>()
@@ -48,9 +49,10 @@ public static class Gear
                 .Converter("Convert Data", converter, c => c
                     .Processor("Process RawGearToGear", processor1, p1 => p1
                         .Processor("Process GearRawAttributes", processor2, p2 => p2
-                            .Processor("Process GearSkills", processor3, p3 => p3
-                                .Processor("Collect", collector, p4 => p4
-                                    .Exporter("Save Json", exporter))))));
+                            .Processor("Process AstraSubWeapon", processor3, p3 => p3
+                                .Processor("Process GearSkills", processor4, p4 => p4
+                                    .Processor("Collect", collector, cl => cl
+                                        .Exporter("Save Json", exporter)))))));
         });
     }
 
@@ -59,6 +61,7 @@ public static class Gear
         services.TryAddRawGearConverter();
         services.TryAddSingleton<RawGearToGearProcessor>();
         services.TryAddGearRawAttributesProcessor();
+        services.TryAddGearAstraSubWeaponMaxStarProcessor();
         services.TryAddGearSkillsProcessor();
         services.TryAddDictionaryJsonWriterFactory();
     }
@@ -196,6 +199,12 @@ public static class Gear
     {
         var nodeJsService = provider.GetRequiredService<INodeJSService>();
         return new GearRawAttributesProcessor(nodeJsService, "Scripts/dist/index.js");
+    }
+
+    private static void TryAddGearAstraSubWeaponMaxStarProcessor(this IServiceCollection services)
+    {
+        services.TryAddAstraSubWeaponData();
+        services.TryAddSingleton<GearAstraSubWeaponMaxStarProcessor>();
     }
 
     private static void TryAddGearSkillsProcessor(this IServiceCollection services)

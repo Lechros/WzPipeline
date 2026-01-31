@@ -47,6 +47,7 @@ public class GearAttribute
     public int CanAddOption { get; set; }
     public int CanPotential { get; set; }
     public int CanAdditionalPotential { get; set; }
+    public int? FixedMaxStar { get; set; }
 
     public bool SpecialGrade { get; set; }
     public int Cuttable { get; set; }
