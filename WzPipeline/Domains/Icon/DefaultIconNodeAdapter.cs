@@ -1,4 +1,5 @@
 using System.Drawing;
+using WzComparerR2;
 using WzComparerR2.Common;
 using WzComparerR2.WzLib;
 

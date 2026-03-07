@@ -1,0 +1,4 @@
+[submodule "WzComparerR2"]
+	path = WzComparerR2
+	url = https://github.com/seotbeo/WzComparerR2.git
+	branch = seotbeo_main

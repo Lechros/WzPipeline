@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
+        <TargetFramework>net8.0-windows</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
 
@@ -20,7 +20,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\WzComparerR2.WzLib\WzComparerR2.WzLib.csproj" />
+      <ProjectReference Include="..\WzComparerR2\WzComparerR2.WzLib\WzComparerR2.WzLib.csproj" />
       <ProjectReference Include="..\WzPipeline\WzPipeline.csproj" />
     </ItemGroup>
 
