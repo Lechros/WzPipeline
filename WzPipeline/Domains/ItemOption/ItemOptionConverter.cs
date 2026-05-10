@@ -17,10 +17,12 @@ public class ItemOptionConverter : AbstractConverter<IItemOptionNode, ItemOption
         var template = node.String;
         foreach (var (level, optionsDict) in node.LevelOptions)
         {
+            optionsDict.TryGetValue("fixedGrade", out var fixedGrade);
             var option = new LevelOption
             {
                 String = InterpolateString(template, optionsDict),
-                Option = ConvertGearOption(optionsDict)
+                Option = ConvertGearOption(optionsDict),
+                FixedGrade = fixedGrade != null ? int.Parse(fixedGrade) : null
             };
             itemOption.Level.Add(level, option);
         }

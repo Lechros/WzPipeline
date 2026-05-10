@@ -14,4 +14,5 @@ public class LevelOption
 {
     public required string String { get; set; }
     public GearOption Option { get; set; } = new();
+    public int? FixedGrade { get; set; }
 }

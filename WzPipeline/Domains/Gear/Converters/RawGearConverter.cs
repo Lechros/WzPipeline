@@ -64,10 +64,13 @@ public class RawGearConverter(
         {
             var itemOption = itemOptionData[optionCode];
             var levelOption = itemOption.Level[level];
+            var grade = levelOption.FixedGrade != null
+                ? GetPotentialGradeFromFixedGrade(levelOption.FixedGrade.Value)
+                : optionCode / 10000;
             var potential = new GearPotential
             {
                 Id = optionCode,
-                Grade = optionCode / 10000,
+                Grade = grade,
                 Summary = levelOption.String,
                 Option = levelOption.Option
             };
@@ -80,5 +83,17 @@ public class RawGearConverter(
     private int[] ConvertReqSpecJobs(IEnumerable<int> reqSpecJobs)
     {
         return reqSpecJobs.ToArray();
+    }
+
+    private int GetPotentialGradeFromFixedGrade(int fixedGrade)
+    {
+        return fixedGrade switch
+        {
+            2 => 1,
+            3 => 2,
+            5 => 3,
+            7 => 4,
+            _ => fixedGrade - 1
+        };
     }
 }
