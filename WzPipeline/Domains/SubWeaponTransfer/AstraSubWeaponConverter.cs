@@ -17,7 +17,7 @@ public class AstraSubWeaponConverter : AbstractConverter<ISubWeaponTransferNode,
                 {
                     Id = targetId,
                     Index = index++,
-                    Job = job
+                    Jobs = [job]
                 });
             }
         }

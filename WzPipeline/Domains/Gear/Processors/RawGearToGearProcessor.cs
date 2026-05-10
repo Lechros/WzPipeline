@@ -126,9 +126,52 @@ public class RawGearToGearProcessor : AbstractProcessor<RawGear, MalibGear>
         return new GearReq
         {
             Level = raw.Props.GetValueOrDefault(GearPropType.reqLevel, 0),
-            Job = raw.Props.GetValueOrDefault(GearPropType.reqJob, 0),
-            Class = raw.Props.GetValueOrDefault(GearPropType.reqSpecJob, 0),
+            Job = GetGearReqJob(raw)
         };
+    }
+
+    private GearReqJob GetGearReqJob(RawGear raw)
+    {
+        if (raw.ReqSpecJobs != null && raw.ReqSpecJobs.Length > 0)
+        {
+            var fullJobs = new List<int>();
+            foreach (var reqSpecJob in raw.ReqSpecJobs)
+            {
+                switch (reqSpecJob)
+                {
+                    case 1: break;
+                    case 2: break;
+                    case 4: break;
+                    case 11: fullJobs.Add(1112); break;
+                    case 12: fullJobs.Add(1212); break;
+                    case 22: fullJobs.Add(2217); break;
+                    case 32: fullJobs.Add(3212); break;
+                    case 36: break; // 제논 컨트롤러
+                    default: throw new NotImplementedException($"Unknown reqSpecJob in {raw.Id}: {reqSpecJob}");
+                }
+            }
+
+            return new GearReqJob
+            {
+                Class = raw.Props.GetValueOrDefault(GearPropType.reqJob, 0),
+                FullJobs = fullJobs.ToArray()
+            };
+        }
+        else if (raw.Props.TryGetValue(GearPropType.reqSpecJob, out var value))
+        {
+            return new GearReqJob
+            {
+                Class = raw.Props.GetValueOrDefault(GearPropType.reqJob, 0),
+                Jobs = [value]
+            };
+        }
+        else
+        {
+            return new GearReqJob
+            {
+                Class = raw.Props.GetValueOrDefault(GearPropType.reqJob, 0),
+            };
+        }
     }
 
     private Dictionary<GearPropType, int> GetRawAttributes(RawGear raw)

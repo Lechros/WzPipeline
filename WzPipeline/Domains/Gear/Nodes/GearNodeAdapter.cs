@@ -72,4 +72,19 @@ public class GearNodeAdapter(Wz_Node node, Wz_Node infoNode, GlobalFindNodeFunct
             }
         }
     }
+
+    public IEnumerable<int> ReqSpecJobs
+    {
+        get
+        {
+            var reqSpecJobsNode = infoNode.FindNodeByPath("reqSpecJobs");
+            if (reqSpecJobsNode != null)
+            {
+                foreach (var jobNode in reqSpecJobsNode.Nodes)
+                {
+                    yield return jobNode.GetValue<int>();
+                }
+            }
+        }
+    }
 }

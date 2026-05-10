@@ -38,7 +38,7 @@ public static class Gear
             var converter = provider.GetRequiredService<RawGearConverter>();
             var processor1 = provider.GetRequiredService<RawGearToGearProcessor>();
             var processor2 = provider.GetRequiredService<GearRawAttributesProcessor>();
-            var processor3 = provider.GetRequiredService<GearAstraSubWeaponMaxStarProcessor>();
+            var processor3 = provider.GetRequiredService<GearAstraSubWeaponProcessor>();
             var processor4 = provider.GetRequiredService<GearSkillsProcessor>();
             var collector = DictionaryCollector.Create((MalibGear g) => g.Id,
                 () => new SortedDictionary<int, MalibGear>());
@@ -204,7 +204,7 @@ public static class Gear
     private static void TryAddGearAstraSubWeaponMaxStarProcessor(this IServiceCollection services)
     {
         services.TryAddAstraSubWeaponData();
-        services.TryAddSingleton<GearAstraSubWeaponMaxStarProcessor>();
+        services.TryAddSingleton<GearAstraSubWeaponProcessor>();
     }
 
     private static void TryAddGearSkillsProcessor(this IServiceCollection services)

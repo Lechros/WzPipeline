@@ -7,4 +7,5 @@ public class RawGear
     public string? Desc { get; init; }
     public GearPotential[]? Potentials { get; init; }
     public required Dictionary<GearPropType, int> Props { get; init; }
+    public int[]? ReqSpecJobs { get; init; }
 }

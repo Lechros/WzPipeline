@@ -2,7 +2,7 @@ namespace WzPipeline.Domains.Gear.Models;
 
 public class MalibGear
 {
-    public int Version => 2;
+    public int Version => 3;
     public required int Id { get; set; }
     public required string Name { get; set; }
     public string? Desc { get; set; }

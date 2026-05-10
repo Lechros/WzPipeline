@@ -5,12 +5,12 @@ import { InputGear } from "./schema";
 test("Test gender", () => {
   const gearData: InputGear = {
     id: 1040122,
-    version: 2,
+    version: 3,
     name: "블랙 네오스",
     icon: "1040122",
     type: GearType.coat,
     req: {
-      job: 1,
+      job: { class: 1 },
       level: 100,
     },
     attributes: {},

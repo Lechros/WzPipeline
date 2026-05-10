@@ -6,7 +6,7 @@ describe("getCanScroll", () => {
   it("returns Cannot for tuc === undefined", () => {
     const input: InputGear = {
       id: 0,
-      version: 2,
+      version: 3,
       icon: "",
       name: "",
       type: GearType.cap,
@@ -21,7 +21,7 @@ describe("getCanScroll", () => {
   it("returns Cannot for tuc === 0", () => {
     const input: InputGear = {
       id: 0,
-      version: 2,
+      version: 3,
       icon: "",
       name: "",
       type: GearType.cap,
@@ -36,7 +36,7 @@ describe("getCanScroll", () => {
   it("returns Fixed for exceptUpgrade === 1", () => {
     const input: InputGear = {
       id: 0,
-      version: 2,
+      version: 3,
       icon: "",
       name: "",
       type: GearType.cap,
@@ -54,7 +54,7 @@ describe("getCanScroll", () => {
   it("returns Can for tuc > 0", () => {
     const input: InputGear = {
       id: 0,
-      version: 2,
+      version: 3,
       icon: "",
       name: "",
       type: GearType.cap,

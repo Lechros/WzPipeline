@@ -11,7 +11,18 @@ public class AstraSubWeaponCollector : AbstractProcessor<List<AstraSubWeaponEntr
         {
             foreach (var entry in entries)
             {
-                data.TryAdd(entry.Id, entry);
+                if (data.TryGetValue(entry.Id, out var prev))
+                {
+                    if (prev.Index != entry.Index)
+                    {
+                        throw new InvalidDataException($"Index is different for {prev.Id}");
+                    }
+                    prev.Jobs.Add(entry.Jobs[0]);
+                }
+                else
+                {
+                    data.Add(entry.Id, entry);
+                }
             }
         }
 

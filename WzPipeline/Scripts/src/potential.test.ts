@@ -10,7 +10,7 @@ describe("getCanPotential", () => {
   it("returns Can for tuc > 0", () => {
     const input: InputGear = {
       id: 0,
-      version: 2,
+      version: 3,
       icon: "",
       name: "",
       type: GearType.cap,
@@ -25,7 +25,7 @@ describe("getCanPotential", () => {
   it("returns true for tuc === 0 and tucIgnoreForPotential === 1", () => {
     const input: InputGear = {
       id: 0,
-      version: 2,
+      version: 3,
       icon: "",
       name: "",
       type: GearType.cap,
@@ -52,7 +52,7 @@ describe("getCanPotential", () => {
   ])("returns false for tuc > 0 and type === %p", (type) => {
     const input: InputGear = {
       id: 0,
-      version: 2,
+      version: 3,
       icon: "",
       name: "",
       type: type,
@@ -67,7 +67,7 @@ describe("getCanPotential", () => {
   it("returns false for noPotential === 1", () => {
     const input: InputGear = {
       id: 0,
-      version: 2,
+      version: 3,
       icon: "",
       name: "",
       type: GearType.cap,
@@ -85,7 +85,7 @@ describe("getCanPotential", () => {
   it("returns Fixed for fixedPotential === 1", () => {
     const input: InputGear = {
       id: 0,
-      version: 2,
+      version: 3,
       icon: "",
       name: "",
       type: GearType.cap,
@@ -103,7 +103,7 @@ describe("getCanPotential", () => {
   it("returns by type for other cases", () => {
     const input: InputGear = {
       id: 0,
-      version: 2,
+      version: 3,
       icon: "",
       name: "",
       type: GearType.katara,
@@ -120,7 +120,7 @@ describe("getCanAdditionalPotential", () => {
   it("returns Can for tuc > 0", () => {
     const input: InputGear = {
       id: 0,
-      version: 2,
+      version: 3,
       icon: "",
       name: "",
       type: GearType.cap,
@@ -135,7 +135,7 @@ describe("getCanAdditionalPotential", () => {
   it("returns true for tuc === 0 and tucIgnoreForPotential === 1", () => {
     const input: InputGear = {
       id: 0,
-      version: 2,
+      version: 3,
       icon: "",
       name: "",
       type: GearType.cap,
@@ -163,7 +163,7 @@ describe("getCanAdditionalPotential", () => {
   ])("returns false for tuc > 0 and type === %p", (type) => {
     const input: InputGear = {
       id: 0,
-      version: 2,
+      version: 3,
       icon: "",
       name: "",
       type: type,
@@ -178,7 +178,7 @@ describe("getCanAdditionalPotential", () => {
   it("returns false for noPotential === 1", () => {
     const input: InputGear = {
       id: 0,
-      version: 2,
+      version: 3,
       icon: "",
       name: "",
       type: GearType.cap,
@@ -196,7 +196,7 @@ describe("getCanAdditionalPotential", () => {
   it("returns Cannot for fixedPotential === 1", () => {
     const input: InputGear = {
       id: 0,
-      version: 2,
+      version: 3,
       icon: "",
       name: "",
       type: GearType.cap,
@@ -214,7 +214,7 @@ describe("getCanAdditionalPotential", () => {
   it("returns by type for other cases", () => {
     const input: InputGear = {
       id: 0,
-      version: 2,
+      version: 3,
       icon: "",
       name: "",
       type: GearType.katara,

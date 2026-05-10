@@ -29,7 +29,8 @@ public class RawGearConverter(
             Name = gearNameDesc.Name,
             Desc = gearNameDesc.Desc,
             Props = ConvertProps(node.Properties),
-            Potentials = ConvertGearPotentials(node.Options)
+            Potentials = ConvertGearPotentials(node.Options),
+            ReqSpecJobs = ConvertReqSpecJobs(node.ReqSpecJobs)
         };
 
         return gear;
@@ -74,5 +75,10 @@ public class RawGearConverter(
         }
 
         return potentials.ToArray();
+    }
+
+    private int[] ConvertReqSpecJobs(IEnumerable<int> reqSpecJobs)
+    {
+        return reqSpecJobs.ToArray();
     }
 }
