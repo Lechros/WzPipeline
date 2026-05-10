@@ -8,7 +8,7 @@ public interface IWzProvider
 {
     public Wz_Node BaseNode { get; }
 
-    public Wz_Node? FindNode(string fullPath);
+    public Wz_Node? FindNode(string fullPath, Wz_File? sourceWzFile = null);
 }
 
 
@@ -21,7 +21,6 @@ public class WzProvider : IWzProvider
         Wz_Structure.DefaultEncoding = Encoding.Default;
         Wz_Structure.DefaultAutoDetectExtFiles = true;
         Wz_Structure.DefaultImgCheckDisabled = true;
-        Wz_Structure.DefaultWzVersionVerifyMode = WzVersionVerifyMode.Fast;
     }
 
     public WzProvider(string baseWzPath)
@@ -45,7 +44,7 @@ public class WzProvider : IWzProvider
         _openedWz = wz;
     }
 
-    public Wz_Node? FindNode(string fullPath)
+    public Wz_Node? FindNode(string fullPath, Wz_File? sourceWzFile = null)
     {
         var wzType = Wz_Type.Unknown;
         Wz_Node? wzNode = null;

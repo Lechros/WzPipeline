@@ -186,6 +186,7 @@ public enum GearPropType
     colorvar,
     noMoveToLocker,
     onlyUpgrade,
+    onlyUpgradeThousand,
     cantRepair,
     noPetEquipStatMoveItem,
     BTSLabel,
@@ -310,4 +311,6 @@ public enum GearPropType
     origin,
     minMVPGrade,
     maxMVPGrade,
+    activeSkillRing,
+    passiveSkillRing,
 }
