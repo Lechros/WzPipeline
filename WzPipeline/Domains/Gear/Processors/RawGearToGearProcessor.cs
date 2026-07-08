@@ -43,14 +43,18 @@ public class RawGearToGearProcessor : AbstractProcessor<RawGear, MalibGear>
             case 1213:
             case 1214:
             case 1215:
+            case 1216:
             case 1252:
             case 1253:
+            case 1254:
             case 1259:
             case 1403:
             case 1404:
+            case 1433:
             case 1712:
             case 1713:
             case 1714:
+            case 1726:
                 return (GearType)(code / 1000);
         }
 

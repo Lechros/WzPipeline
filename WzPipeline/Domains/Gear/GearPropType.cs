@@ -313,4 +313,5 @@ public enum GearPropType
     maxMVPGrade,
     activeSkillRing,
     passiveSkillRing,
+    mvpCharacterWsr
 }
