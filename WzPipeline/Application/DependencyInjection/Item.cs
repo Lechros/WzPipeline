@@ -2,13 +2,13 @@ using System.Drawing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using WzPipeline.Core.Pipeline.Graph;
-using WzPipeline.Domains.Icon;
+using WzPipeline.OldDomains.Icon;
 using WzPipeline.Shared;
 using WzPipeline.Shared.Exporter;
 using WzPipeline.Shared.Processor;
 using WzPipeline.Shared.Traverser;
-using Icon_IconConverter = WzPipeline.Domains.Icon.IconConverter;
-using IconConverter = WzPipeline.Domains.Icon.IconConverter;
+using Icon_IconConverter = WzPipeline.OldDomains.Icon.IconConverter;
+using IconConverter = WzPipeline.OldDomains.Icon.IconConverter;
 
 namespace WzPipeline.Application.DependencyInjection;
 

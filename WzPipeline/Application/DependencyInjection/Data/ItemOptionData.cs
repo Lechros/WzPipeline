@@ -2,7 +2,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using WzPipeline.Core.Pipeline;
 using WzPipeline.Core.Pipeline.Runner;
-using WzPipeline.Domains.ItemOption;
+using WzPipeline.OldDomains.ItemOption;
 using WzPipeline.Shared;
 using WzPipeline.Shared.Processor;
 using WzPipeline.Shared.Traverser;
@@ -24,7 +24,7 @@ public static class ItemOptionData
         var wzProvider = provider.GetRequiredService<IWzProvider>();
         var traverser = GlobTraverser.Create<IItemOptionNode>(wzProvider, NodePath, ItemOptionNodeAdapter.Create);
         var converter = provider.GetRequiredService<ItemOptionConverter>();
-        var collector = DictionaryCollector.Create((ItemOptionEntry io) => io.Code, () => new Domains.ItemOption.ItemOptionData());
+        var collector = DictionaryCollector.Create((ItemOptionEntry io) => io.Code, () => new OldDomains.ItemOption.ItemOptionData());
 
         var pipeline = Builders.LinearPipelineBuilder("ItemOptionData")
             .Traverser("Traverse", traverser)

@@ -2,10 +2,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using WzPipeline.Core.Pipeline;
 using WzPipeline.Core.Pipeline.Runner;
-using WzPipeline.Domains.Soul.Converters;
-using WzPipeline.Domains.Soul.Models;
-using WzPipeline.Domains.Soul.Nodes;
-using WzPipeline.Domains.Soul.Processors;
+using WzPipeline.OldDomains.Soul.Converters;
+using WzPipeline.OldDomains.Soul.Models;
+using WzPipeline.OldDomains.Soul.Nodes;
+using WzPipeline.OldDomains.Soul.Processors;
 using WzPipeline.Shared;
 using WzPipeline.Shared.Traverser;
 

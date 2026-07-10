@@ -1,10 +1,10 @@
 using Microsoft.Extensions.DependencyInjection;
 using WzPipeline.Core.Pipeline;
 using WzPipeline.Core.Pipeline.Runner;
-using WzPipeline.Domains.Soul.Converters;
-using WzPipeline.Domains.Soul.Models;
-using WzPipeline.Domains.Soul.Nodes;
-using WzPipeline.Domains.Soul.Processors;
+using WzPipeline.OldDomains.Soul.Converters;
+using WzPipeline.OldDomains.Soul.Models;
+using WzPipeline.OldDomains.Soul.Nodes;
+using WzPipeline.OldDomains.Soul.Processors;
 using WzPipeline.Shared;
 using WzPipeline.Shared.Processor;
 using WzPipeline.Shared.Traverser;
@@ -29,7 +29,7 @@ public static class SoulInfoData
             GlobTraverser.Create<ISoulCollectionNode>(wzProvider, NodePath, SoulCollectionNodeAdapter.Create);
         var converter = provider.GetRequiredService<SoulCollectionConverter>();
         var processor = provider.GetRequiredService<SoulCollectionProcessor>();
-        var collector = DictionaryCollector.Create((SoulInfo si) => si.SoulId, () => new Domains.Soul.Models.SoulInfoData());
+        var collector = DictionaryCollector.Create((SoulInfo si) => si.SoulId, () => new OldDomains.Soul.Models.SoulInfoData());
 
         var pipeline = Builders.LinearPipelineBuilder("SoulInfoData")
             .Traverser("Traverse", traverser)

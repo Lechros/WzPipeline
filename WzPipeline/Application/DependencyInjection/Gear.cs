@@ -5,18 +5,18 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Newtonsoft.Json.Linq;
 using WzPipeline.Application.DependencyInjection.Data;
 using WzPipeline.Core.Pipeline.Graph;
-using WzPipeline.Domains.Gear.Converters;
-using WzPipeline.Domains.Gear.Models;
-using WzPipeline.Domains.Gear.Nodes;
-using WzPipeline.Domains.Gear.Processors;
-using WzPipeline.Domains.Icon;
+using WzPipeline.OldDomains.Gear.Converters;
+using WzPipeline.OldDomains.Gear.Models;
+using WzPipeline.OldDomains.Gear.Nodes;
+using WzPipeline.OldDomains.Gear.Processors;
+using WzPipeline.OldDomains.Icon;
 using WzPipeline.Shared;
 using WzPipeline.Shared.Converter;
 using WzPipeline.Shared.Exporter;
 using WzPipeline.Shared.Node;
 using WzPipeline.Shared.Processor;
 using WzPipeline.Shared.Traverser;
-using IconConverter = WzPipeline.Domains.Icon.IconConverter;
+using IconConverter = WzPipeline.OldDomains.Icon.IconConverter;
 
 namespace WzPipeline.Application.DependencyInjection;
 

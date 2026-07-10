@@ -1,7 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using WzPipeline.Application.DependencyInjection.Data;
-using WzPipeline.Domains.SetItem;
+using WzPipeline.OldDomains.SetItem;
 using WzPipeline.Shared;
 using WzPipeline.Shared.Exporter;
 using WzPipeline.Shared.Processor;

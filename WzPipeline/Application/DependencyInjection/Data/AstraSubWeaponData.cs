@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using WzPipeline.Core.Pipeline;
 using WzPipeline.Core.Pipeline.Runner;
-using WzPipeline.Domains.SubWeaponTransfer;
+using WzPipeline.OldDomains.SubWeaponTransfer;
 using WzPipeline.Shared;
 using WzPipeline.Shared.Traverser;
 

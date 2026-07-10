@@ -1,9 +1,9 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using WzPipeline.Application.DependencyInjection.Data;
-using WzPipeline.Domains.Soul.Converters;
-using WzPipeline.Domains.Soul.Models;
-using WzPipeline.Domains.Soul.Nodes;
+using WzPipeline.OldDomains.Soul.Converters;
+using WzPipeline.OldDomains.Soul.Models;
+using WzPipeline.OldDomains.Soul.Nodes;
 using WzPipeline.Shared;
 using WzPipeline.Shared.Exporter;
 using WzPipeline.Shared.Processor;

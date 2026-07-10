@@ -2,7 +2,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using WzPipeline.Core.Pipeline;
 using WzPipeline.Core.Pipeline.Runner;
-using WzPipeline.Domains.String;
+using WzPipeline.OldDomains.String;
 using WzPipeline.Shared;
 using WzPipeline.Shared.Processor;
 using WzPipeline.Shared.Traverser;
@@ -24,7 +24,7 @@ public static class SkillNameData
         var wzProvider = provider.GetRequiredService<IWzProvider>();
         var traverser = GlobTraverser.Create<INameDescNode>(wzProvider, NodePath, NameDescNode.Create);
         var converter = provider.GetRequiredService<NameDescConverter>();
-        var collector = DictionaryCollector.Create((NameDesc nd) => nd.Id, nd => nd.Name!, () => new Domains.String.SkillNameData());
+        var collector = DictionaryCollector.Create((NameDesc nd) => nd.Id, nd => nd.Name!, () => new OldDomains.String.SkillNameData());
 
         var pipeline = Builders.LinearPipelineBuilder("SkillNameData")
             .Traverser("Traverse", traverser)
