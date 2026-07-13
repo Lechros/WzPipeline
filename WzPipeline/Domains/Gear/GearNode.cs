@@ -7,7 +7,7 @@ namespace WzPipeline.Domains.Gear;
 public class GearNode(Wz_Node node)
 {
     private Wz_Node InfoNode => node.Nodes["info"] ?? throw DataFormatException.MissingRequiredNode(node, "info");
-    public int Id => SafeIdParse(node.Text) ?? -1;
+    public int? Id => SafeIdParse(node.Text);
     public Wz_Node? IconNode => InfoNode.FindNodeByPath("icon");
     public Wz_Node? RawIconNode => InfoNode.FindNodeByPath("iconRaw");
 

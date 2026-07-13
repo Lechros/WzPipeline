@@ -1,109 +1,81 @@
-﻿using System.Threading.Tasks.Dataflow;
-using WzPipeline.Domains.AstraSubWeapon;
+﻿using WzPipeline.Domains.AstraSubWeapon;
 using WzPipeline.Domains.Shared;
 using WzPipeline.Domains.Shared.ItemOption;
-using WzPipeline.Shared;
-using WzPipeline.Wz;
 
 namespace WzPipeline.Domains.Gear;
 
-public class GearDataBlockFactory(WzTree tree)
+public class GearParser
 {
-    public const string Pattern =
-        "Character/{Accessory,Android,Cap,Cape,Coat,Dragon,Glove,Longcoat,Mechanic,Pants,Ring,Shield,Shoes,Weapon}/*.img";
-
-    public ISourceBlock<GearNode> CreateSource()
+    public IEnumerable<MalibGear> Parse(GearNode node, GearParseContext context)
     {
-        return tree.MatchNodes(Pattern).ToSourceBlock().Map(node => new GearNode(node));
-    }
-
-    public TransformManyBlock<GearNode, MalibGear> CreateParser(
-        IReadOnlyDictionary<string, GearStrings> gearStringData,
-        ItemOptionData itemOptionData,
-        AstraSubWeaponData astraSubWeaponData,
-        IReadOnlyDictionary<string, string> skillNameData)
-    {
-        return new TransformManyBlock<GearNode, MalibGear>(Parse);
-
-        IEnumerable<MalibGear> Parse(GearNode node)
+        if (node.Id is null)
         {
-            if (node.Id < 0)
-            {
-                yield break;
-            }
-
-            if (!gearStringData.TryGetValue(node.Id.ToString(), out var strings) || strings.Name == null)
-            {
-                yield break;
-            }
-
-            if (node.IsCash)
-            {
-                yield break;
-            }
-
-            var type = GetGearType(node.Id);
-
-            var gear = new MalibGear
-            {
-                Id = node.Id,
-                Name = strings.Name,
-                Desc = strings.Desc,
-                Icon = node.Id.ToString(),
-                Type = type,
-                Req = GetGearReq(node, type),
-                Attributes = GetGearAttribute(node),
-                BaseOption = GetBaseOption(node),
-                ScrollUpgradeableCount = node.Properties.GetValueOrDefault(GearPropType.tuc),
-                PotentialGrade =
-                    GetPotentialGradeFromFixedGrade(node.Properties.GetValueOrDefault(GearPropType.fixedGrade)),
-                Potentials = GetGearPotentials(node.Options, itemOptionData),
-                ExceptionalUpgradeableCount = node.Properties.GetValueOrDefault(GearPropType.Etuc)
-            };
-
-            gear.Attributes.CanStarforce = (int)GetCanStarforce(gear, node);
-            gear.Attributes.CanScroll = (int)GetCanScroll(gear, node);
-            gear.Attributes.CanAddOption = (int)GetCanAddOption(gear, node);
-            gear.Attributes.CanPotential = (int)GetCanPotential(gear, node);
-            gear.Attributes.CanAdditionalPotential = (int)GetCanAdditionalPotential(gear, node);
-
-            var fixedMaxStar = GetFixedMaxStar(gear.Id, astraSubWeaponData);
-            if (fixedMaxStar != null)
-            {
-                gear.Attributes.FixedMaxStar = fixedMaxStar;
-                gear.Attributes.CanStarforce = (int)GearCapability.Can;
-            }
-
-            var fullJobs = GetFullJobs(gear.Id, astraSubWeaponData);
-            if (fullJobs != null)
-            {
-                if (gear.Req.Job.FullJobs != null && gear.Req.Job.FullJobs.Length > 0)
-                {
-                    if (!gear.Req.Job.FullJobs.SequenceEqual(fullJobs))
-                    {
-                        throw new InvalidDataException(
-                            $"Gear {gear.Id} already has different fullJobs: {string.Join(",", gear.Req.Job.FullJobs)} != {string.Join(",", fullJobs)}");
-                    }
-                }
-                else
-                {
-                    gear.Req.Job.FullJobs = fullJobs;
-                }
-            }
-
-            var skills = GetSpecialWeaponSkills(gear);
-            gear.Attributes.Skills.AddRange(skills.Select(skillId => skillNameData[skillId.ToString()]));
-
-            yield return gear;
+            yield break;
         }
-    }
 
-    public ITargetBlock<MalibGear> CreateDictionaryCollector(IDictionary<int, MalibGear> dictionary)
-    {
-        return new ActionBlock<MalibGear>(gear => { dictionary.Add(gear.Id, gear); }, new ExecutionDataflowBlockOptions
+        if (!context.GearStringData.TryGetValue(node.Id.Value.ToString(), out var strings) || strings.Name == null)
         {
-            MaxDegreeOfParallelism = 1
-        });
+            yield break;
+        }
+
+        if (node.IsCash)
+        {
+            yield break;
+        }
+
+        var type = GetGearType(node.Id.Value);
+
+        var gear = new MalibGear
+        {
+            Id = node.Id.Value,
+            Name = strings.Name,
+            Desc = strings.Desc,
+            Icon = node.Id.Value.ToString(),
+            Type = type,
+            Req = GetGearReq(node, type),
+            Attributes = GetGearAttribute(node),
+            BaseOption = GetBaseOption(node),
+            ScrollUpgradeableCount = node.Properties.GetValueOrDefault(GearPropType.tuc),
+            PotentialGrade =
+                GetPotentialGradeFromFixedGrade(node.Properties.GetValueOrDefault(GearPropType.fixedGrade)),
+            Potentials = GetGearPotentials(node.Options, context.ItemOptionData),
+            ExceptionalUpgradeableCount = node.Properties.GetValueOrDefault(GearPropType.Etuc)
+        };
+
+        gear.Attributes.CanStarforce = (int)GetCanStarforce(gear, node);
+        gear.Attributes.CanScroll = (int)GetCanScroll(gear, node);
+        gear.Attributes.CanAddOption = (int)GetCanAddOption(gear, node);
+        gear.Attributes.CanPotential = (int)GetCanPotential(gear, node);
+        gear.Attributes.CanAdditionalPotential = (int)GetCanAdditionalPotential(gear, node);
+
+        var fixedMaxStar = GetFixedMaxStar(gear.Id, context.AstraSubWeaponData);
+        if (fixedMaxStar != null)
+        {
+            gear.Attributes.FixedMaxStar = fixedMaxStar;
+            gear.Attributes.CanStarforce = (int)GearCapability.Can;
+        }
+
+        var fullJobs = GetFullJobs(gear.Id, context.AstraSubWeaponData);
+        if (fullJobs != null)
+        {
+            if (gear.Req.Job.FullJobs != null && gear.Req.Job.FullJobs.Length > 0)
+            {
+                if (!gear.Req.Job.FullJobs.SequenceEqual(fullJobs))
+                {
+                    throw new InvalidDataException(
+                        $"Gear {gear.Id} already has different fullJobs: {string.Join(",", gear.Req.Job.FullJobs)} != {string.Join(",", fullJobs)}");
+                }
+            }
+            else
+            {
+                gear.Req.Job.FullJobs = fullJobs;
+            }
+        }
+
+        var skills = GetSpecialWeaponSkills(gear);
+        gear.Attributes.Skills.AddRange(skills.Select(skillId => context.SkillNameData[skillId.ToString()]));
+
+        yield return gear;
     }
 
     private static GearType GetGearType(int code)
@@ -264,7 +236,7 @@ public class GearDataBlockFactory(WzTree tree)
                 return null;
         }
 
-        var value = node.Id / 1000 % 10;
+        var value = node.Id!.Value / 1000 % 10;
         return (GearGender)value switch
         {
             GearGender.Male => GearGender.Male,
@@ -579,7 +551,7 @@ public class GearDataBlockFactory(WzTree tree)
     }
 }
 
-static class GearNodeExtensions
+internal static class GearNodeExtensions
 {
     public static bool GetBooleanValue(this GearNode node, GearPropType type)
     {

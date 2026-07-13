@@ -6,7 +6,6 @@ using WzPipeline.Domains.AstraSubWeapon;
 using WzPipeline.Domains.Gear;
 using WzPipeline.Domains.SetItem;
 using WzPipeline.Domains.Shared.ItemOption;
-using WzPipeline.Domains.Skill;
 using WzPipeline.Wz;
 
 namespace WzPipeline.Application;
@@ -24,18 +23,10 @@ public class Bootstrap
 
         AddItemOptionDataProvider(services);
         AddSetItemDataProvider(services);
-
-        // Block Factory
-        services.AddSingleton<AstraSubWeaponBlockFactory>();
-        services.AddSingleton<GearStringBlockFactory>();
-        services.AddSingleton<GearDataBlockFactory>();
-        services.AddSingleton<SkillNameDataBlockFactory>();
-
-        // Data Provider
-        services.AddSingleton<AstraSubWeaponDataProvider>();
-        services.AddSingleton<GearStringDataProvider>();
-        services.AddSingleton<GearDataProvider>();
-        services.AddSingleton<SkillNameDataProvider>();
+        AddAstraSubWeaponDataProvider(services);
+        AddSkillNameDataProvider(services);
+        AddGearStringDataProvider(services);
+        AddGearDataProvider(services);
 
         await using var provider = services.BuildServiceProvider();
         var sw = new Stopwatch();
@@ -73,5 +64,31 @@ public class Bootstrap
         services.AddSingleton<SetItemParser>();
         services.AddSingleton<SetItemDataBuilder>();
         services.AddSingleton<SetItemDataProvider>();
+    }
+
+    static void AddAstraSubWeaponDataProvider(IServiceCollection services)
+    {
+        services.AddSingleton<AstraSubWeaponParser>();
+        services.AddSingleton<AstraSubWeaponDataBuilder>();
+        services.AddSingleton<AstraSubWeaponDataProvider>();
+    }
+
+    static void AddSkillNameDataProvider(IServiceCollection services)
+    {
+        services.AddSingleton<SkillNameDataBuilder>();
+        services.AddSingleton<SkillNameDataProvider>();
+    }
+
+    static void AddGearStringDataProvider(IServiceCollection services)
+    {
+        services.AddSingleton<GearStringDataBuilder>();
+        services.AddSingleton<GearStringDataProvider>();
+    }
+
+    static void AddGearDataProvider(IServiceCollection services)
+    {
+        services.AddSingleton<GearParser>();
+        services.AddSingleton<GearDataBuilder>();
+        services.AddSingleton<GearDataProvider>();
     }
 }

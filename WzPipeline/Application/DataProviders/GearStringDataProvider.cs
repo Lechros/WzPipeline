@@ -1,26 +1,14 @@
-﻿using System.Threading.Tasks.Dataflow;
-using WzPipeline.Domains.Gear;
+﻿using WzPipeline.Application.DataBuilders;
 using WzPipeline.Domains.Shared.String;
 using WzPipeline.Shared;
 
 namespace WzPipeline.Application.DataProviders;
 
-public class GearStringDataProvider(GearStringBlockFactory factory)
-    : AsyncDataProvider<IReadOnlyDictionary<string, GearStrings>>
+public class GearStringDataProvider(GearStringDataBuilder builder)
+    : AsyncDataProvider<Dictionary<string, NameDesc>>
 {
-    protected override async Task<IReadOnlyDictionary<string, GearStrings>> CreateAsync()
+    protected override Task<Dictionary<string, NameDesc>> CreateAsync()
     {
-        var data = new Dictionary<string, GearStrings>();
-
-        var source = factory.CreateSource();
-        var converter = factory.CreateConverter();
-        var sink = factory.CreateDictionaryCollector(data);
-
-        source.LinkTo(converter, new DataflowLinkOptions { PropagateCompletion = true });
-        converter.LinkTo(sink, new DataflowLinkOptions { PropagateCompletion = true });
-
-        await sink.Completion;
-
-        return data;
+        return builder.BuildAsync();
     }
 }
