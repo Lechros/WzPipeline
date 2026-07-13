@@ -2,9 +2,9 @@
 using WzPipeline.Domains.Shared.ItemOption;
 using WzPipeline.Shared;
 
-namespace WzPipeline;
+namespace WzPipeline.Application.DataProviders;
 
-class ItemOptionDataProvider(ItemOptionBlockFactory factory) : AsyncDataProvider<ItemOptionData>
+public class ItemOptionDataProvider(ItemOptionBlockFactory factory) : AsyncDataProvider<ItemOptionData>
 {
     protected override async Task<ItemOptionData> CreateAsync()
     {
