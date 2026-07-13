@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
+using WzPipeline.Application.DataBuilders;
 using WzPipeline.Application.DataProviders;
 using WzPipeline.Domains.AstraSubWeapon;
 using WzPipeline.Domains.Gear;
@@ -21,17 +22,16 @@ public class Bootstrap
         // WzTree
         services.AddSingleton<WzTree>(_ => WzTree.Load(BaseWzPath));
 
+        AddItemOptionDataProvider(services);
+        AddSetItemDataProvider(services);
+
         // Block Factory
-        services.AddSingleton<ItemOptionBlockFactory>();
-        services.AddSingleton<SetItemDataBlockFactory>();
         services.AddSingleton<AstraSubWeaponBlockFactory>();
         services.AddSingleton<GearStringBlockFactory>();
         services.AddSingleton<GearDataBlockFactory>();
         services.AddSingleton<SkillNameDataBlockFactory>();
 
         // Data Provider
-        services.AddSingleton<ItemOptionDataProvider>();
-        services.AddSingleton<SetItemDataProvider>();
         services.AddSingleton<AstraSubWeaponDataProvider>();
         services.AddSingleton<GearStringDataProvider>();
         services.AddSingleton<GearDataProvider>();
@@ -59,5 +59,19 @@ public class Bootstrap
         var gearData = await gearDataProvider.GetAsync();
         sw.Stop();
         Console.WriteLine($"Loaded Gear({gearData.Count}) in {sw.ElapsedMilliseconds}ms");
+    }
+
+    static void AddItemOptionDataProvider(IServiceCollection services)
+    {
+        services.AddSingleton<ItemOptionParser>();
+        services.AddSingleton<ItemOptionDataBuilder>();
+        services.AddSingleton<ItemOptionDataProvider>();
+    }
+
+    static void AddSetItemDataProvider(IServiceCollection services)
+    {
+        services.AddSingleton<SetItemParser>();
+        services.AddSingleton<SetItemDataBuilder>();
+        services.AddSingleton<SetItemDataProvider>();
     }
 }

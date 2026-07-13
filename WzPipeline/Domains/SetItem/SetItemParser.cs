@@ -1,36 +1,21 @@
-﻿using System.Threading.Tasks.Dataflow;
-using WzPipeline.Domains.Shared;
+﻿using WzPipeline.Domains.Shared;
 using WzPipeline.Domains.Shared.ItemOption;
-using WzPipeline.Shared;
-using WzPipeline.Wz;
 
 namespace WzPipeline.Domains.SetItem;
 
-public class SetItemDataBlockFactory(WzTree tree)
+public class SetItemParser
 {
-    public const string Pattern = "Etc/SetItemInfo.img/*";
-
-    public ISourceBlock<SetItemNode> CreateSource()
+    public MalibSetItem Parse(SetItemNode node, SetItemParseContext context)
     {
-        return tree.MatchNodes(Pattern).ToSourceBlock().Map(node => new SetItemNode(node));
-    }
-
-    public TransformBlock<SetItemNode, MalibSetItem> CreateParser(ItemOptionData itemOptionData)
-    {
-        return new TransformBlock<SetItemNode, MalibSetItem>(node => new MalibSetItem
+        return new MalibSetItem
         {
             Id = int.Parse(node.Id),
             Name = node.Name,
             ItemIds = node.ItemIds.ToArray(),
-            Effects = ConvertEffects(node.Effects, itemOptionData),
+            Effects = ConvertEffects(node.Effects, context.ItemOptionData),
             JokerPossible = node.JokerPossible,
             ZeroWeaponJokerPossible = node.ZeroWeaponJokerPossible
-        });
-    }
-
-    public ITargetBlock<MalibSetItem> CreateDictionaryCollector(IDictionary<int, MalibSetItem> dictionary)
-    {
-        return new ActionBlock<MalibSetItem>(entry => { dictionary.Add(entry.Id, entry); });
+        };
     }
 
     private static SortedDictionary<int, GearOption> ConvertEffects(IEnumerable<SetItemNode.EffectNode> effectNodes,
