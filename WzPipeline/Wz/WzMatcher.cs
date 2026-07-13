@@ -20,16 +20,12 @@ public class WzMatcher(string pattern)
 
     private IEnumerable<Wz_Node> Match(Wz_Node node, int depth)
     {
+        node = EnsureExtracted(node);
+
         if (depth == selectors.Count)
         {
             yield return node;
             yield break;
-        }
-
-        var wzImg = EnsureExtracted(node);
-        if (wzImg != null)
-        {
-            node = wzImg.Node;
         }
 
         foreach (var child in selectors[depth].Select(node))
@@ -41,18 +37,23 @@ public class WzMatcher(string pattern)
         }
     }
 
-    private Wz_Image? EnsureExtracted(Wz_Node node)
+    private static Wz_Node EnsureExtracted(Wz_Node node)
     {
-        var wzImg = node.GetNodeWzImage();
-        if (wzImg != null)
+        var image = node.GetValue<Wz_Image?>();
+        if (image == null)
         {
-            if (!wzImg.TryExtract(out var ex))
+            return node;
+        }
+
+        lock (image.WzFile.ReadLock)
+        {
+            if (!image.TryExtract(out var exception))
             {
-                throw ex;
+                throw exception;
             }
         }
 
-        return wzImg;
+        return image.Node;
     }
 
     private static List<IPathSegmentSelector> CreateSelectors(string pattern)
@@ -108,7 +109,7 @@ public class WzMatcher(string pattern)
             if (required)
             {
                 throw new InvalidOperationException(
-                    $"Required path segment '{value}' was not found under '{node.FullPath}'.");
+                    $"Required path segment '{value}' was not found under '{node.FullPathToFile}'.");
             }
         }
     }
