@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using WzPipeline.Application.DataBuilders;
 using WzPipeline.Application.DataProviders;
 using WzPipeline.Domains.AstraSubWeapon;
+using WzPipeline.Domains.ExclusiveEquip;
 using WzPipeline.Domains.Gear;
 using WzPipeline.Domains.SetItem;
 using WzPipeline.Domains.Shared.ItemOption;
@@ -27,6 +28,7 @@ public class Bootstrap
         AddSkillNameDataProvider(services);
         AddGearStringDataProvider(services);
         AddGearDataProvider(services);
+        AddExclusiveEquipDataProvider(services);
 
         await using var provider = services.BuildServiceProvider();
         var sw = new Stopwatch();
@@ -44,12 +46,19 @@ public class Bootstrap
         sw.Stop();
         Console.WriteLine($"Loaded SetItem({setItemData.Count}) in {sw.ElapsedMilliseconds}ms");
 
-        Console.WriteLine("Loading Gear");
+        Console.WriteLine("Loading ExclusiveEquip");
         sw.Restart();
-        var gearDataProvider = provider.GetRequiredService<GearDataProvider>();
-        var gearData = await gearDataProvider.GetAsync();
+        var exclusiveEquipDataProvider = provider.GetRequiredService<ExclusiveEquipDataProvider>();
+        var exclusiveEquipData = await exclusiveEquipDataProvider.GetAsync();
         sw.Stop();
-        Console.WriteLine($"Loaded Gear({gearData.Count}) in {sw.ElapsedMilliseconds}ms");
+        Console.WriteLine($"Loaded ExclusiveEquip({exclusiveEquipData.Count}) in {sw.ElapsedMilliseconds}ms");
+
+        // Console.WriteLine("Loading Gear");
+        // sw.Restart();
+        // var gearDataProvider = provider.GetRequiredService<GearDataProvider>();
+        // var gearData = await gearDataProvider.GetAsync();
+        // sw.Stop();
+        // Console.WriteLine($"Loaded Gear({gearData.Count}) in {sw.ElapsedMilliseconds}ms");
     }
 
     static void AddItemOptionDataProvider(IServiceCollection services)
@@ -90,5 +99,12 @@ public class Bootstrap
         services.AddSingleton<GearParser>();
         services.AddSingleton<GearDataBuilder>();
         services.AddSingleton<GearDataProvider>();
+    }
+    
+    static void AddExclusiveEquipDataProvider(IServiceCollection services)
+    {
+        services.AddSingleton<ExclusiveEquipParser>();
+        services.AddSingleton<ExclusiveEquipDataBuilder>();
+        services.AddSingleton<ExclusiveEquipDataProvider>();
     }
 }
