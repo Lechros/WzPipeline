@@ -1,8 +1,6 @@
-﻿using System.Threading.Tasks.Dataflow;
-using WzPipeline.Application.DataBuilders;
-using WzPipeline.Shared;
+﻿using WzPipeline.Shared;
 
-namespace WzPipeline.Application.DataProviders;
+namespace WzPipeline.Application.Skill;
 
 public class SkillNameDataProvider(SkillNameDataBuilder builder) : AsyncDataProvider<Dictionary<string, string>>
 {

@@ -5,7 +5,7 @@ using WzPipeline.Domains.Shared.String;
 using WzPipeline.Shared;
 using WzPipeline.Wz;
 
-namespace WzPipeline.Application.DataBuilders;
+namespace WzPipeline.Application.Gear;
 
 public class GearStringDataBuilder(WzTree tree)
 {

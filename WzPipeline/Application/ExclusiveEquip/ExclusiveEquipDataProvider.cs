@@ -1,8 +1,7 @@
-﻿using WzPipeline.Application.DataBuilders;
-using WzPipeline.Domains.ExclusiveEquip;
+﻿using WzPipeline.Domains.ExclusiveEquip;
 using WzPipeline.Shared;
 
-namespace WzPipeline.Application.DataProviders;
+namespace WzPipeline.Application.ExclusiveEquip;
 
 public class ExclusiveEquipDataProvider(ExclusiveEquipDataBuilder builder)
     : AsyncDataProvider<SortedDictionary<int, MalibExclusiveEquip>>

@@ -5,7 +5,7 @@ using WzPipeline.Domains.Shared.ItemOption;
 using WzPipeline.Shared;
 using WzPipeline.Wz;
 
-namespace WzPipeline.Application.DataBuilders;
+namespace WzPipeline.Application.ItemOption;
 
 public sealed class ItemOptionDataBuilder(WzTree tree, ItemOptionParser parser)
 {

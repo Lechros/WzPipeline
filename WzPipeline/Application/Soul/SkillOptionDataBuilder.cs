@@ -1,11 +1,11 @@
 ﻿using System.Threading.Tasks.Dataflow;
 using WzComparerR2.WzLib;
-using WzPipeline.Application.DataProviders;
+using WzPipeline.Application.ItemOption;
 using WzPipeline.Domains.Soul;
 using WzPipeline.Shared;
 using WzPipeline.Wz;
 
-namespace WzPipeline.Application.DataBuilders;
+namespace WzPipeline.Application.Soul;
 
 public class SkillOptionDataBuilder(
     WzTree tree,

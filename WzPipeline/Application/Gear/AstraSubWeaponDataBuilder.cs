@@ -4,7 +4,7 @@ using WzPipeline.Domains.AstraSubWeapon;
 using WzPipeline.Shared;
 using WzPipeline.Wz;
 
-namespace WzPipeline.Application.DataBuilders;
+namespace WzPipeline.Application.Gear;
 
 public class AstraSubWeaponDataBuilder(WzTree tree, AstraSubWeaponParser parser)
 {

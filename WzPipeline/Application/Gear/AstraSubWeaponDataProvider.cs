@@ -1,8 +1,7 @@
-﻿using WzPipeline.Application.DataBuilders;
-using WzPipeline.Domains.AstraSubWeapon;
+﻿using WzPipeline.Domains.AstraSubWeapon;
 using WzPipeline.Shared;
 
-namespace WzPipeline.Application.DataProviders;
+namespace WzPipeline.Application.Gear;
 
 public class AstraSubWeaponDataProvider(AstraSubWeaponDataBuilder builder) : AsyncDataProvider<AstraSubWeaponData>
 {

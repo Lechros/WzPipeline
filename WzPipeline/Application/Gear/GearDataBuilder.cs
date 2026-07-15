@@ -1,12 +1,13 @@
 ﻿using System.Threading.Tasks.Dataflow;
 using WzComparerR2.WzLib;
 using WzPipeline.Application.Dataflow;
-using WzPipeline.Application.DataProviders;
+using WzPipeline.Application.ItemOption;
+using WzPipeline.Application.Skill;
 using WzPipeline.Domains.Gear;
 using WzPipeline.Shared;
 using WzPipeline.Wz;
 
-namespace WzPipeline.Application.DataBuilders;
+namespace WzPipeline.Application.Gear;
 
 public class GearDataBuilder(
     WzTree tree,

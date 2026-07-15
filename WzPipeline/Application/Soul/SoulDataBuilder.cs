@@ -1,12 +1,13 @@
 ﻿using System.Threading.Tasks.Dataflow;
 using WzComparerR2.WzLib;
 using WzPipeline.Application.Dataflow;
-using WzPipeline.Application.DataProviders;
+using WzPipeline.Application.Item;
+using WzPipeline.Application.Skill;
 using WzPipeline.Domains.Soul;
 using WzPipeline.Shared;
 using WzPipeline.Wz;
 
-namespace WzPipeline.Application.DataBuilders;
+namespace WzPipeline.Application.Soul;
 
 public class SoulDataBuilder(
     WzTree tree,

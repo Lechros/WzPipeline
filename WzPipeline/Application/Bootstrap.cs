@@ -1,8 +1,12 @@
 ﻿using System.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Xna.Framework.Content;
-using WzPipeline.Application.DataBuilders;
-using WzPipeline.Application.DataProviders;
+using WzPipeline.Application.ExclusiveEquip;
+using WzPipeline.Application.Gear;
+using WzPipeline.Application.Item;
+using WzPipeline.Application.ItemOption;
+using WzPipeline.Application.SetItem;
+using WzPipeline.Application.Skill;
+using WzPipeline.Application.Soul;
 using WzPipeline.Domains.AstraSubWeapon;
 using WzPipeline.Domains.ExclusiveEquip;
 using WzPipeline.Domains.Gear;

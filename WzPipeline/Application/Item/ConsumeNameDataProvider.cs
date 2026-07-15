@@ -1,7 +1,6 @@
-﻿using WzPipeline.Application.DataBuilders;
-using WzPipeline.Shared;
+﻿using WzPipeline.Shared;
 
-namespace WzPipeline.Application.DataProviders;
+namespace WzPipeline.Application.Item;
 
 public class ConsumeNameDataProvider(ConsumeNameDataBuilder builder) : AsyncDataProvider<Dictionary<string, string>>
 {

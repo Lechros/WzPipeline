@@ -1,8 +1,7 @@
-﻿using WzPipeline.Application.DataBuilders;
-using WzPipeline.Domains.Gear;
+﻿using WzPipeline.Domains.Gear;
 using WzPipeline.Shared;
 
-namespace WzPipeline.Application.DataProviders;
+namespace WzPipeline.Application.Gear;
 
 public class GearDataProvider(GearDataBuilder builder) : AsyncDataProvider<SortedDictionary<int, MalibGear>>
 {

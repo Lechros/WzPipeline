@@ -1,9 +1,7 @@
-﻿using System.Threading.Tasks.Dataflow;
-using WzPipeline.Application.DataBuilders;
-using WzPipeline.Domains.SetItem;
+﻿using WzPipeline.Domains.SetItem;
 using WzPipeline.Shared;
 
-namespace WzPipeline.Application.DataProviders;
+namespace WzPipeline.Application.SetItem;
 
 class SetItemDataProvider(SetItemDataBuilder builder) : AsyncDataProvider<SortedDictionary<int, MalibSetItem>>
 {

@@ -1,8 +1,7 @@
-﻿using WzPipeline.Application.DataBuilders;
-using WzPipeline.Domains.Shared.ItemOption;
+﻿using WzPipeline.Domains.Shared.ItemOption;
 using WzPipeline.Shared;
 
-namespace WzPipeline.Application.DataProviders;
+namespace WzPipeline.Application.ItemOption;
 
 public class ItemOptionDataProvider(ItemOptionDataBuilder builder) : AsyncDataProvider<ItemOptionData>
 {

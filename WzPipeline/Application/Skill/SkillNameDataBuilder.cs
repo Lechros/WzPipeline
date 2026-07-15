@@ -5,15 +5,15 @@ using WzPipeline.Domains.Shared.String;
 using WzPipeline.Shared;
 using WzPipeline.Wz;
 
-namespace WzPipeline.Application.DataBuilders;
+namespace WzPipeline.Application.Skill;
 
-public class ConsumeNameDataBuilder(WzTree tree)
+public class SkillNameDataBuilder(WzTree tree)
 {
     public async Task<Dictionary<string, string>> BuildAsync()
     {
         var data = new Dictionary<string, string>();
 
-        var source = tree.MatchNodes(StringSource.ConsumeNamePattern).ToSourceBlock();
+        var source = tree.MatchNodes(StringSource.SkillNamePattern).ToSourceBlock();
         var wrap = new TransformBlock<Wz_Node, StringNode>(node => new StringNode(node));
         var parse = new TransformBlock<StringNode, KeyValuePair<string, string>>(node =>
             KeyValuePair.Create(node.Key, node.Name!));

@@ -1,8 +1,7 @@
-﻿using WzPipeline.Application.DataBuilders;
-using WzPipeline.Domains.Shared.String;
+﻿using WzPipeline.Domains.Shared.String;
 using WzPipeline.Shared;
 
-namespace WzPipeline.Application.DataProviders;
+namespace WzPipeline.Application.Gear;
 
 public class GearStringDataProvider(GearStringDataBuilder builder)
     : AsyncDataProvider<Dictionary<string, NameDesc>>

@@ -5,7 +5,7 @@ using WzPipeline.Domains.Soul;
 using WzPipeline.Shared;
 using WzPipeline.Wz;
 
-namespace WzPipeline.Application.DataBuilders;
+namespace WzPipeline.Application.Soul;
 
 public class SoulInfoDataBuilder(WzTree tree, SoulCollectionParser parser)
 {

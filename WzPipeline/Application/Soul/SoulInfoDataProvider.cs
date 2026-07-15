@@ -1,8 +1,7 @@
-﻿using WzPipeline.Application.DataBuilders;
-using WzPipeline.Domains.Soul;
+﻿using WzPipeline.Domains.Soul;
 using WzPipeline.Shared;
 
-namespace WzPipeline.Application.DataProviders;
+namespace WzPipeline.Application.Soul;
 
 public class SoulInfoDataProvider(SoulInfoDataBuilder builder) : AsyncDataProvider<Dictionary<int, SoulInfo>>
 {
