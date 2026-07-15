@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Xna.Framework.Content;
 using WzPipeline.Application.DataBuilders;
 using WzPipeline.Application.DataProviders;
 using WzPipeline.Domains.AstraSubWeapon;
@@ -7,6 +8,7 @@ using WzPipeline.Domains.ExclusiveEquip;
 using WzPipeline.Domains.Gear;
 using WzPipeline.Domains.SetItem;
 using WzPipeline.Domains.Shared.ItemOption;
+using WzPipeline.Domains.Soul;
 using WzPipeline.Wz;
 
 namespace WzPipeline.Application;
@@ -29,9 +31,15 @@ public class Bootstrap
         AddGearStringDataProvider(services);
         AddGearDataProvider(services);
         AddExclusiveEquipDataProvider(services);
+        AddSoulInfoDataProvider(services);
+        AddSkillOptionDataProvider(services);
+        AddConsumeNameDataProvider(services);
+        AddSoulDataProvider(services);
 
         await using var provider = services.BuildServiceProvider();
         var sw = new Stopwatch();
+
+        var nodes = provider.GetRequiredService<WzTree>().MatchNodes("Item/SkillOption.img").ToList();
 
         Console.WriteLine($"Loading Base.wz: {BaseWzPath}");
         sw.Restart();
@@ -52,6 +60,13 @@ public class Bootstrap
         var exclusiveEquipData = await exclusiveEquipDataProvider.GetAsync();
         sw.Stop();
         Console.WriteLine($"Loaded ExclusiveEquip({exclusiveEquipData.Count}) in {sw.ElapsedMilliseconds}ms");
+
+        Console.WriteLine("Loading Soul");
+        sw.Restart();
+        var soulDataProvider = provider.GetRequiredService<SoulDataProvider>();
+        var soulData = await soulDataProvider.GetAsync();
+        sw.Stop();
+        Console.WriteLine($"Loaded Soul({soulData.Count}) in {sw.ElapsedMilliseconds}ms");
 
         // Console.WriteLine("Loading Gear");
         // sw.Restart();
@@ -100,11 +115,38 @@ public class Bootstrap
         services.AddSingleton<GearDataBuilder>();
         services.AddSingleton<GearDataProvider>();
     }
-    
+
     static void AddExclusiveEquipDataProvider(IServiceCollection services)
     {
         services.AddSingleton<ExclusiveEquipParser>();
         services.AddSingleton<ExclusiveEquipDataBuilder>();
         services.AddSingleton<ExclusiveEquipDataProvider>();
+    }
+
+    static void AddSoulInfoDataProvider(IServiceCollection services)
+    {
+        services.AddSingleton<SoulCollectionParser>();
+        services.AddSingleton<SoulInfoDataBuilder>();
+        services.AddSingleton<SoulInfoDataProvider>();
+    }
+
+    static void AddSkillOptionDataProvider(IServiceCollection services)
+    {
+        services.AddSingleton<SkillOptionParser>();
+        services.AddSingleton<SkillOptionDataBuilder>();
+        services.AddSingleton<SkillOptionDataProvider>();
+    }
+
+    static void AddConsumeNameDataProvider(IServiceCollection services)
+    {
+        services.AddSingleton<ConsumeNameDataBuilder>();
+        services.AddSingleton<ConsumeNameDataProvider>();
+    }
+
+    static void AddSoulDataProvider(IServiceCollection services)
+    {
+        services.AddSingleton<SoulParser>();
+        services.AddSingleton<SoulDataBuilder>();
+        services.AddSingleton<SoulDataProvider>();
     }
 }
