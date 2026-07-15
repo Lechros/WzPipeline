@@ -80,74 +80,74 @@ public class Bootstrap
         // Console.WriteLine($"Loaded Gear({gearData.Count}) in {sw.ElapsedMilliseconds}ms");
     }
 
-    static void AddItemOptionDataProvider(IServiceCollection services)
+    private static void AddItemOptionDataProvider(IServiceCollection services)
     {
         services.AddSingleton<ItemOptionParser>();
         services.AddSingleton<ItemOptionDataBuilder>();
         services.AddSingleton<ItemOptionDataProvider>();
     }
 
-    static void AddSetItemDataProvider(IServiceCollection services)
+    private static void AddSetItemDataProvider(IServiceCollection services)
     {
         services.AddSingleton<SetItemParser>();
         services.AddSingleton<SetItemDataBuilder>();
         services.AddSingleton<SetItemDataProvider>();
     }
 
-    static void AddAstraSubWeaponDataProvider(IServiceCollection services)
+    private static void AddAstraSubWeaponDataProvider(IServiceCollection services)
     {
         services.AddSingleton<AstraSubWeaponParser>();
         services.AddSingleton<AstraSubWeaponDataBuilder>();
         services.AddSingleton<AstraSubWeaponDataProvider>();
     }
 
-    static void AddSkillNameDataProvider(IServiceCollection services)
+    private static void AddSkillNameDataProvider(IServiceCollection services)
     {
         services.AddSingleton<SkillNameDataBuilder>();
         services.AddSingleton<SkillNameDataProvider>();
     }
 
-    static void AddGearStringDataProvider(IServiceCollection services)
+    private static void AddGearStringDataProvider(IServiceCollection services)
     {
         services.AddSingleton<GearStringDataBuilder>();
         services.AddSingleton<GearStringDataProvider>();
     }
 
-    static void AddGearDataProvider(IServiceCollection services)
+    private static void AddGearDataProvider(IServiceCollection services)
     {
         services.AddSingleton<GearParser>();
         services.AddSingleton<GearDataBuilder>();
         services.AddSingleton<GearDataProvider>();
     }
 
-    static void AddExclusiveEquipDataProvider(IServiceCollection services)
+    private static void AddExclusiveEquipDataProvider(IServiceCollection services)
     {
         services.AddSingleton<ExclusiveEquipParser>();
         services.AddSingleton<ExclusiveEquipDataBuilder>();
         services.AddSingleton<ExclusiveEquipDataProvider>();
     }
 
-    static void AddSoulInfoDataProvider(IServiceCollection services)
+    private static void AddSoulInfoDataProvider(IServiceCollection services)
     {
         services.AddSingleton<SoulCollectionParser>();
         services.AddSingleton<SoulInfoDataBuilder>();
         services.AddSingleton<SoulInfoDataProvider>();
     }
 
-    static void AddSkillOptionDataProvider(IServiceCollection services)
+    private static void AddSkillOptionDataProvider(IServiceCollection services)
     {
         services.AddSingleton<SkillOptionParser>();
         services.AddSingleton<SkillOptionDataBuilder>();
         services.AddSingleton<SkillOptionDataProvider>();
     }
 
-    static void AddConsumeNameDataProvider(IServiceCollection services)
+    private static void AddConsumeNameDataProvider(IServiceCollection services)
     {
         services.AddSingleton<ConsumeNameDataBuilder>();
         services.AddSingleton<ConsumeNameDataProvider>();
     }
 
-    static void AddSoulDataProvider(IServiceCollection services)
+    private static void AddSoulDataProvider(IServiceCollection services)
     {
         services.AddSingleton<SoulParser>();
         services.AddSingleton<SoulDataBuilder>();

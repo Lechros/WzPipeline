@@ -39,11 +39,9 @@ public class AstraSubWeaponDataBuilder(WzTree tree, AstraSubWeaponParser parser)
         }
 
         if (existing.Index != occurrence.Index)
-        {
             throw new InvalidDataException(
                 $"Astra sub-weapon '{occurrence.Id}' has conflicting indices: " +
                 $"{existing.Index} and {occurrence.Index}.");
-        }
 
         existing.Jobs.Add(occurrence.Job);
     }

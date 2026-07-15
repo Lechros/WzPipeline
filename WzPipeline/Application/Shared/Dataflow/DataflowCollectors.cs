@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks.Dataflow;
 
-namespace WzPipeline.Application.Dataflow;
+namespace WzPipeline.Application.Shared.Dataflow;
 
 public static class DataflowCollectors
 {

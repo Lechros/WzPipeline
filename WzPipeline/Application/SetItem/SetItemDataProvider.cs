@@ -3,7 +3,7 @@ using WzPipeline.Shared;
 
 namespace WzPipeline.Application.SetItem;
 
-class SetItemDataProvider(SetItemDataBuilder builder) : AsyncDataProvider<SortedDictionary<int, MalibSetItem>>
+internal class SetItemDataProvider(SetItemDataBuilder builder) : AsyncDataProvider<SortedDictionary<int, MalibSetItem>>
 {
     protected override Task<SortedDictionary<int, MalibSetItem>> CreateAsync()
     {

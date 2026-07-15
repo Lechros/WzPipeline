@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks.Dataflow;
 using WzComparerR2.WzLib;
-using WzPipeline.Application.Dataflow;
+using WzPipeline.Application.Shared.Dataflow;
 using WzPipeline.Domains.Soul;
 using WzPipeline.Shared;
 using WzPipeline.Wz;
