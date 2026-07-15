@@ -1,6 +1,8 @@
 ﻿using System.Collections;
+using WzComparerR2;
 using WzComparerR2.WzLib;
 using WzPipeline.Domains.Shared;
+using WzPipeline.Domains.Shared.Icon;
 
 namespace WzPipeline.Domains.Gear;
 
@@ -8,8 +10,6 @@ public class GearNode(Wz_Node node)
 {
     private Wz_Node InfoNode => node.Nodes["info"] ?? throw DataFormatException.MissingRequiredNode(node, "info");
     public int? Id => SafeIdParse(node.Text);
-    public Wz_Node? IconNode => InfoNode.FindNodeByPath("icon");
-    public Wz_Node? RawIconNode => InfoNode.FindNodeByPath("iconRaw");
 
     public bool IsCash
     {
@@ -52,6 +52,12 @@ public class GearNode(Wz_Node node)
             }
         }
     }
+
+    public IconNode? GetIconNode(GlobalFindNodeFunction findNode) =>
+        IconNode.Create(Id?.ToString() ?? "(null)", InfoNode.FindNodeByPath("icon"), findNode);
+
+    public IconNode? GetIconRawNode(GlobalFindNodeFunction findNode) =>
+        IconNode.Create(Id?.ToString() ?? "(null)", InfoNode.FindNodeByPath("iconRaw"), findNode);
 
     private static int? SafeIdParse(string text)
     {
