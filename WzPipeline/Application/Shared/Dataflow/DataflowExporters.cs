@@ -7,19 +7,19 @@ namespace WzPipeline.Application.Shared.Dataflow;
 
 public static class DataflowExporters
 {
-    public static ITargetBlock<KeyValuePair<string, Bitmap>> ImageExporter(ImageFileExporter exporter,
+    public static ITargetBlock<KeyValuePair<string, Image>> ImageExporter(ImageFileExporter exporter,
         string outputPath)
     {
         return ImageExporter(exporter, outputPath, ImageFormat.Png);
     }
 
-    public static ITargetBlock<KeyValuePair<string, Bitmap>> ImageExporter(ImageFileExporter exporter,
-        string filename, ImageFormat format)
+    public static ITargetBlock<KeyValuePair<string, Image>> ImageExporter(ImageFileExporter exporter,
+        string outputPath, ImageFormat format)
     {
-        return new ActionBlock<KeyValuePair<string, Bitmap>>(async icon =>
+        return new ActionBlock<KeyValuePair<string, Image>>(async icon =>
         {
             using var image = icon.Value;
-            var path = Path.Combine(filename, $"{icon.Key}.{format.ToString().ToLower()}");
+            var path = Path.Combine(outputPath, $"{icon.Key}.{format.ToString().ToLower()}");
             await exporter.ExportImageAsync(image, path);
         });
     }

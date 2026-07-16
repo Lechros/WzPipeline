@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using WzComparerR2;
 using WzComparerR2.WzLib;
 using WzPipeline.Domains.Shared;
@@ -53,11 +53,17 @@ public class GearNode(Wz_Node node)
         }
     }
 
-    public IconNode? GetIconNode(GlobalFindNodeFunction findNode) =>
-        IconNode.Create(Id?.ToString() ?? "(null)", InfoNode.FindNodeByPath("icon"), findNode);
+    public IconNode? GetIconNode(GlobalFindNodeFunction findNode)
+    {
+        var iconNode = InfoNode.FindNodeByPath("icon");
+        return iconNode is null ? null : IconNode.Create(Id?.ToString() ?? "(null)", iconNode, findNode);
+    }
 
-    public IconNode? GetIconRawNode(GlobalFindNodeFunction findNode) =>
-        IconNode.Create(Id?.ToString() ?? "(null)", InfoNode.FindNodeByPath("iconRaw"), findNode);
+    public IconNode? GetIconRawNode(GlobalFindNodeFunction findNode)
+    {
+        var iconRawNode = InfoNode.FindNodeByPath("iconRaw");
+        return iconRawNode is null ? null : IconNode.Create(Id?.ToString() ?? "(null)", iconRawNode, findNode);
+    }
 
     private static int? SafeIdParse(string text)
     {

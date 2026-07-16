@@ -17,6 +17,46 @@ public class GearDataBuilder(
     SkillNameDataProvider skillNameDataProvider,
     AstraSubWeaponDataProvider astraSubWeaponDataProvider)
 {
+    public ISourceBlock<GearNode> CreateSourceBlock()
+    {
+        return tree.MatchNodes(GearSource.Pattern).Select(node => new GearNode(node)).ToSourceBlock();
+    }
+
+    public async Task<IPropagatorBlock<GearNode, MalibGear>> CreateParserBlockAsync()
+    {
+        var gearStringDataTask = gearStringDataProvider.GetAsync();
+        var itemOptionDataTask = itemOptionDataProvider.GetAsync();
+        var skillNameDataTask = skillNameDataProvider.GetAsync();
+        var astraSubWeaponDataTask = astraSubWeaponDataProvider.GetAsync();
+
+        await Task.WhenAll(gearStringDataTask, itemOptionDataTask, skillNameDataTask, astraSubWeaponDataTask);
+
+        var context = new GearParseContext
+        {
+            GearStringData = await gearStringDataTask,
+            ItemOptionData = await itemOptionDataTask,
+            SkillNameData = await skillNameDataTask,
+            AstraSubWeaponData = await astraSubWeaponDataTask
+        };
+
+        return new TransformManyBlock<GearNode, MalibGear>(node => parser.Parse(node, context));
+    }
+
+    public DataflowCollector<MalibGear, SortedDictionary<int, MalibGear>> CreateDictionaryCollector()
+    {
+        var data = new SortedDictionary<int, MalibGear>();
+
+        var target = new ActionBlock<MalibGear>(gear => data.Add(gear.Id, gear),
+            new ExecutionDataflowBlockOptions { MaxDegreeOfParallelism = 1 });
+
+        return new DataflowCollector<MalibGear, SortedDictionary<int, MalibGear>>
+        {
+            Target = target,
+            Completion = target.Completion,
+            Result = data
+        };
+    }
+
     public async Task<SortedDictionary<int, MalibGear>> BuildAsync()
     {
         var gearStringDataTask = gearStringDataProvider.GetAsync();

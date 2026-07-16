@@ -1,10 +1,13 @@
 ﻿using System.Diagnostics;
+using System.Threading.Tasks.Dataflow;
 using Microsoft.Extensions.DependencyInjection;
 using WzPipeline.Application.ExclusiveEquip;
 using WzPipeline.Application.Gear;
 using WzPipeline.Application.Item;
 using WzPipeline.Application.ItemOption;
 using WzPipeline.Application.SetItem;
+using WzPipeline.Application.Shared.Dataflow;
+using WzPipeline.Application.Shared.Export;
 using WzPipeline.Application.Skill;
 using WzPipeline.Application.Soul;
 using WzPipeline.Domains.AstraSubWeapon;
@@ -39,9 +42,63 @@ public class Bootstrap
         AddSkillOptionDataProvider(services);
         AddConsumeNameDataProvider(services);
         AddSoulDataProvider(services);
+        services.AddSingleton<GearIconExporter>();
 
         await using var provider = services.BuildServiceProvider();
-        var sw = new Stopwatch();
+
+        var sw = Stopwatch.StartNew();
+
+        var tree = provider.GetRequiredService<WzTree>();
+        var gearDataBuilder = provider.GetRequiredService<GearDataBuilder>();
+        var gearIconExporter = provider.GetRequiredService<GearIconExporter>();
+        var source = gearDataBuilder.CreateSourceBlock();
+        var broadcaster = new BroadcastBlock<GearNode>(node => node);
+        
+        var parserBuffer = new BufferBlock<GearNode>();
+        var parser = await gearDataBuilder.CreateParserBlockAsync();
+        var collector = gearDataBuilder.CreateDictionaryCollector();
+        
+        var originConverterBuffer = new BufferBlock<GearNode>();
+        var originConverter = gearIconExporter.CreateIconOriginConverterBlock(tree.FindNode);
+        var originCollector = gearIconExporter.CreateOriginDictionaryCollector();
+        
+        var imageConverterBuffer= new BufferBlock<GearNode>();
+        var imageConverter = gearIconExporter.CreateIconImageConverterBlock(tree.FindNode);
+        var imageFileExporter = new ImageFileExporter();
+        var imageExporter = DataflowExporters.ImageExporter(imageFileExporter, "tempIcon");
+        
+        source.LinkTo(broadcaster, new DataflowLinkOptions { PropagateCompletion = true });
+
+        broadcaster.LinkTo(parserBuffer, new DataflowLinkOptions { PropagateCompletion = true });
+        parserBuffer.LinkTo(parser, new DataflowLinkOptions { PropagateCompletion = true });
+        parser.LinkTo(collector.Target, new DataflowLinkOptions { PropagateCompletion = true });
+        
+        broadcaster.LinkTo(originConverterBuffer, new DataflowLinkOptions { PropagateCompletion = true });
+        originConverterBuffer.LinkTo(originConverter, new DataflowLinkOptions { PropagateCompletion = true });
+        originConverter.LinkTo(originCollector.Target, new DataflowLinkOptions { PropagateCompletion = true });
+        
+        broadcaster.LinkTo(imageConverterBuffer, new DataflowLinkOptions { PropagateCompletion = true });
+        imageConverterBuffer.LinkTo(imageConverter, new DataflowLinkOptions { PropagateCompletion = true });
+        imageConverter.LinkTo(imageExporter, new DataflowLinkOptions { PropagateCompletion = true });
+
+        await collector.Completion;
+        await originCollector.Completion;
+        
+        sw.Stop();
+        
+        Console.WriteLine($"Elapsed ms: {sw.ElapsedMilliseconds}");
+        Console.WriteLine(collector.Result.Count);
+        Console.WriteLine(originCollector.Result.Count);
+        
+        sw.Restart();
+
+        await imageExporter.Completion;
+        
+        sw.Stop();
+        
+        Console.WriteLine($"All icon files written in {sw.ElapsedMilliseconds}ms after processing done");
+        
+        
 
         var nodes = provider.GetRequiredService<WzTree>().MatchNodes("Item/SkillOption.img").ToList();
 

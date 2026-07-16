@@ -19,11 +19,17 @@ public class IconNode
 
     public string Id { get; }
     public Bitmap Image => linkedSourceNode.GetValue<Wz_Png>().ExtractPng();
-    public Point Origin
+
+    public Point? Origin
     {
         get
         {
             var originNode = node.Nodes["origin"];
+            if (originNode == null)
+            {
+                return null;
+            }
+
             var vector = originNode.GetValue<Wz_Vector>();
             return new Point(vector.X, vector.Y);
         }
@@ -31,6 +37,7 @@ public class IconNode
 
     public static IconNode Create(string id, Wz_Node node, GlobalFindNodeFunction findNode)
     {
+        ArgumentNullException.ThrowIfNull(node);
         node = node.HandleFullUol(findNode);
         return new IconNode(id, node, node.GetLinkedSourceNode(findNode));
     }
