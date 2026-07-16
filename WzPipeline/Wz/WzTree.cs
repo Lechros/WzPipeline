@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Text;
 using System.Text.RegularExpressions;
 using WzComparerR2.WzLib;
@@ -135,7 +135,7 @@ public class WzTree
                 var img = searchNode.GetValueEx<Wz_Image?>(null);
                 if (img != null)
                 {
-                    searchNode = img.TryExtract() ? img.Node : null;
+                    searchNode = img.TryExtractThreadSafe() ? img.Node : null;
                 }
             }
 

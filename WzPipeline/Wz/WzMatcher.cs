@@ -1,4 +1,4 @@
-﻿using System.Text.RegularExpressions;
+using System.Text.RegularExpressions;
 using Sprache;
 using WzComparerR2.WzLib;
 
@@ -45,12 +45,9 @@ public class WzMatcher(string pattern)
             return node;
         }
 
-        lock (image.WzFile.ReadLock)
+        if (!image.TryExtractThreadSafe(out var exception))
         {
-            if (!image.TryExtract(out var exception))
-            {
-                throw exception;
-            }
+            throw exception;
         }
 
         return image.Node;

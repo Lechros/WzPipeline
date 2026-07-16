@@ -1,7 +1,8 @@
-﻿using System.Drawing;
+using System.Drawing;
 using WzComparerR2;
 using WzComparerR2.Common;
 using WzComparerR2.WzLib;
+using WzPipeline.Wz;
 
 namespace WzPipeline.Domains.Shared.Icon;
 
@@ -18,7 +19,18 @@ public class IconNode
     }
 
     public string Id { get; }
-    public Bitmap Image => linkedSourceNode.GetValue<Wz_Png>().ExtractPng();
+
+    public Bitmap Image
+    {
+        get
+        {
+            var wzPng = linkedSourceNode.GetValue<Wz_Png>();
+            lock (wzPng.WzFile.ReadLock)
+            {
+                return wzPng.ExtractPng();
+            }
+        }
+    }
 
     public Point? Origin
     {
@@ -39,6 +51,9 @@ public class IconNode
     {
         ArgumentNullException.ThrowIfNull(node);
         node = node.HandleFullUol(findNode);
-        return new IconNode(id, node, node.GetLinkedSourceNode(findNode));
+        var linkedSourceNode = node.GetLinkedSourceNodeThreadSafe(findNode)
+                               ?? throw new InvalidOperationException(
+                                   $"Linked icon source was not found: {node.FullPath}");
+        return new IconNode(id, node, linkedSourceNode);
     }
 }
