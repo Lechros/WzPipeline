@@ -22,16 +22,4 @@
         <ProjectReference Include="..\WzComparerR2\WzComparerR2.WzLib\WzComparerR2.WzLib.csproj" />
     </ItemGroup>
 
-    <!-- Build Scripts pnpm project -->
-    <Target Name="NpmBuild" BeforeTargets="PrepareForBuild">
-        <Exec Command="pnpm install --frozen-lockfile" EnvironmentVariables="CI=true" WorkingDirectory="$(ProjectDir)Scripts" ContinueOnError="false"/>
-        <Exec Command="pnpm build" WorkingDirectory="$(ProjectDir)Scripts" ContinueOnError="false" StandardErrorImportance="High"/>
-    </Target>
-    <!-- Include index.js in C# build output -->
-    <ItemGroup>
-        <Content Include="Scripts/dist/index.js">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-    </ItemGroup>
-
 </Project>

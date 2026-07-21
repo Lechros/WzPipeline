@@ -6,6 +6,7 @@ public class JsonFileExporter(JsonSerializer serializer)
 {
     public async Task ExportAsync<T>(T value, string filename, CancellationToken cancellationToken = default)
     {
+        cancellationToken.ThrowIfCancellationRequested();
         var directory = Path.GetDirectoryName(filename);
         if (directory != null) Directory.CreateDirectory(directory);
 
