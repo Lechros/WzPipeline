@@ -46,7 +46,7 @@ public abstract class IconStreamPipeline<TNode> : IPipeline
         var block = new TransformManyBlock<TNode, ImageArtifact>(node =>
         {
             var icon = selector(node, tree.FindNode);
-            return icon is null ? [] : [new ImageArtifact(icon.Id, icon.Image)];
+            return icon is null ? [] : [new ImageArtifact(icon.Id.TrimStart('0'), icon.Image)];
         }, new ExecutionDataflowBlockOptions { CancellationToken = cancellationToken });
         Input = block;
         Output = block;
@@ -69,7 +69,7 @@ public abstract class IconOriginPipeline<TNode> : IPipeline
         var input = new ActionBlock<TNode>(node =>
         {
             var icon = selector(node, tree.FindNode);
-            if (icon?.Origin is { } origin) data.TryAdd(icon.Id, origin);
+            if (icon?.Origin is { } origin) data.TryAdd(icon.Id.TrimStart('0'), origin);
         }, new ExecutionDataflowBlockOptions { CancellationToken = cancellationToken });
         Input = input;
         Completion = input.Completion;
