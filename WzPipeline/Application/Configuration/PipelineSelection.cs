@@ -10,6 +10,7 @@ public static class PipelineSelection
     private static readonly IReadOnlyDictionary<string, PipelineId> Choices =
         new Dictionary<string, PipelineId>(StringComparer.OrdinalIgnoreCase)
         {
+            [PipelineIds.ItemOptionData.Value] = PipelineIds.ItemOptionData,
             [PipelineIds.GearData.Value] = PipelineIds.GearData,
             [PipelineIds.GearIcon.Value] = PipelineIds.GearIcon,
             [PipelineIds.GearIconOrigin.Value] = PipelineIds.GearIconOrigin,

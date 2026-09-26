@@ -1,4 +1,6 @@
-﻿namespace WzPipeline.Domains.Shared.ItemOption;
+using Newtonsoft.Json;
+
+namespace WzPipeline.Domains.Shared.ItemOption;
 
 public class ItemOptionData : Dictionary<int, ItemOptionEntry>
 {
@@ -13,7 +15,7 @@ public class ItemOptionData : Dictionary<int, ItemOptionEntry>
 
 public class ItemOptionEntry
 {
-    public required int Code { get; init; }
+    [JsonIgnore] public required int Code { get; init; }
     public int? OptionType { get; init; }
     public int? ReqLevel { get; init; }
     public SortedDictionary<int, LevelOption> Level { get; init; } = new();

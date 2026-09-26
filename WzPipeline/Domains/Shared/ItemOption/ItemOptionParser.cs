@@ -1,4 +1,6 @@
-﻿namespace WzPipeline.Domains.Shared.ItemOption;
+using System.Globalization;
+
+namespace WzPipeline.Domains.Shared.ItemOption;
 
 public class ItemOptionParser
 {
@@ -41,13 +43,13 @@ public class ItemOptionParser
     {
         if (dict.ContainsKey("boss"))
         {
-            var value = int.Parse(dict["incDAMr"]);
+            var value = double.Parse(dict["incDAMr"], CultureInfo.InvariantCulture);
             return new GearOption { BossDamage = value };
         }
 
         var gearOption = new GearOption();
         foreach (var (type, valueStr) in dict)
-            if (int.TryParse(valueStr, out var value))
+            if (double.TryParse(valueStr, NumberStyles.Float, CultureInfo.InvariantCulture, out var value))
             {
                 var prop = Enum.Parse<GearPropType>(type);
                 gearOption.Add(prop, value);

@@ -44,6 +44,7 @@ public static class ApplicationConfiguration
             OutputRootPath = Path.GetFullPath("output"),
             OutputPaths = new Dictionary<PipelineId, string>
             {
+                [PipelineIds.ItemOptionData] = "item-option.json",
                 [PipelineIds.GearData] = "gear.json",
                 [PipelineIds.GearIcon] = "gear-icon",
                 [PipelineIds.GearIconOrigin] = "gear-icon-origin.json",

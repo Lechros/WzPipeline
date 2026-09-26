@@ -313,5 +313,6 @@ public enum GearPropType
     maxMVPGrade,
     activeSkillRing,
     passiveSkillRing,
-    mvpCharacterWsr
+    mvpCharacterWsr,
+    incCriticaldamageF
 }

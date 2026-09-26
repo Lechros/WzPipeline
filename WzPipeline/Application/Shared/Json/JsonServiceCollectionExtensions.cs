@@ -10,6 +10,7 @@ public static class JsonServiceCollectionExtensions
     public static IServiceCollection AddApplicationJson(this IServiceCollection services)
     {
         services.TryAddEnumerable(ServiceDescriptor.Singleton<JsonConverter, PointArrayConverter>());
+        services.TryAddEnumerable(ServiceDescriptor.Singleton<JsonConverter, DoubleJsonConverter>());
         services.TryAddSingleton<JsonSerializer>(CreateSerializer);
         return services;
     }

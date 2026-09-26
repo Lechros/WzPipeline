@@ -16,41 +16,41 @@ public class GearOption
         PropertyMap = Properties.ToDictionary(p => p.Name, p => p);
     }
 
-    public int Str { get; set; }
-    public int Dex { get; set; }
-    public int Int { get; set; }
-    public int Luk { get; set; }
-    public int StrRate { get; set; }
-    public int DexRate { get; set; }
-    public int IntRate { get; set; }
-    public int LukRate { get; set; }
-    public int MaxHp { get; set; }
-    public int MaxMp { get; set; }
-    public int MaxHpRate { get; set; }
-    public int MaxMpRate { get; set; }
-    public int MaxDemonForce { get; set; }
-    public int AttackPower { get; set; }
-    public int MagicPower { get; set; }
-    public int AttackPowerRate { get; set; }
-    public int MagicPowerRate { get; set; }
-    public int Armor { get; set; }
-    public int ArmorRate { get; set; }
-    public int Speed { get; set; }
-    public int Jump { get; set; }
-    public int BossDamage { get; set; }
-    public int IgnoreMonsterArmor { get; set; }
-    public int AllStat { get; set; }
-    public int Damage { get; set; }
-    public int ReqLevelDecrease { get; set; }
-    public int CriticalRate { get; set; }
-    public int CriticalDamage { get; set; }
-    public int CooltimeReduce { get; set; }
-    public int StrLv { get; set; }
-    public int DexLv { get; set; }
-    public int IntLv { get; set; }
-    public int LukLv { get; set; }
+    public double Str { get; set; }
+    public double Dex { get; set; }
+    public double Int { get; set; }
+    public double Luk { get; set; }
+    public double StrRate { get; set; }
+    public double DexRate { get; set; }
+    public double IntRate { get; set; }
+    public double LukRate { get; set; }
+    public double MaxHp { get; set; }
+    public double MaxMp { get; set; }
+    public double MaxHpRate { get; set; }
+    public double MaxMpRate { get; set; }
+    public double MaxDemonForce { get; set; }
+    public double AttackPower { get; set; }
+    public double MagicPower { get; set; }
+    public double AttackPowerRate { get; set; }
+    public double MagicPowerRate { get; set; }
+    public double Armor { get; set; }
+    public double ArmorRate { get; set; }
+    public double Speed { get; set; }
+    public double Jump { get; set; }
+    public double BossDamage { get; set; }
+    public double IgnoreMonsterArmor { get; set; }
+    public double AllStat { get; set; }
+    public double Damage { get; set; }
+    public double ReqLevelDecrease { get; set; }
+    public double CriticalRate { get; set; }
+    public double CriticalDamage { get; set; }
+    public double CooltimeReduce { get; set; }
+    public double StrLv { get; set; }
+    public double DexLv { get; set; }
+    public double IntLv { get; set; }
+    public double LukLv { get; set; }
 
-    public int AllStatsSetter
+    public double AllStatsSetter
     {
         set
         {
@@ -61,7 +61,7 @@ public class GearOption
         }
     }
 
-    public int AllStatRatesSetter
+    public double AllStatRatesSetter
     {
         set
         {
@@ -72,13 +72,13 @@ public class GearOption
         }
     }
 
-    public int this[string optionName]
+    public double this[string optionName]
     {
         get
         {
             if (!PropertyMap.TryGetValue(optionName, out var property) || !property.CanRead)
                 throw new ArgumentException("Invalid gear option name: " + optionName);
-            return (int)property.GetValue(this)!;
+            return (double)property.GetValue(this)!;
         }
         set
         {
@@ -124,7 +124,7 @@ public class GearOption
         LukLv += option.LukLv;
     }
 
-    public bool Add(GearPropType prop, int value)
+    public bool Add(GearPropType prop, double value)
     {
         switch (prop)
         {
@@ -212,6 +212,7 @@ public class GearOption
                 break;
             case GearPropType.incCDr:
             case GearPropType.criticaldamage:
+            case GearPropType.incCriticaldamageF:
             case GearPropType.incCriticaldamage:
                 CriticalDamage += value;
                 break;
@@ -259,7 +260,7 @@ public class GearOption
         sb.Append("GearOption { ");
         var values = (from property in Properties
             where property.CanRead
-            let value = (int)property.GetValue(this)!
+            let value = (double)property.GetValue(this)!
             where value != 0
             select $"{property.Name}={value}").ToList();
         if (values.Count > 0)

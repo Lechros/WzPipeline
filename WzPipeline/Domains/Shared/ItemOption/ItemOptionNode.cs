@@ -1,3 +1,4 @@
+using System.Globalization;
 using Wz;
 using WzPipeline.MapleData;
 
@@ -23,6 +24,11 @@ public class ItemOptionNode(IWzNode node)
 
     private static string GetLevelOptionValue(IWzNode node)
     {
+        if (node.Type == WzNodeType.Single)
+            return node.GetSingle().ToString(CultureInfo.InvariantCulture);
+        if (node.Type == WzNodeType.Double)
+            return node.GetDouble().ToString(CultureInfo.InvariantCulture);
+
         if (node.TryConvertString(out var value))
             return value;
 
