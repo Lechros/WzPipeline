@@ -11,6 +11,7 @@ public static class SourceIds
     public static readonly SourceId ConsumeNameNodes = new("ConsumeNameNodes");
     public static readonly SourceId SoulNodes = new("SoulNodes");
     public static readonly SourceId SoulCollectionNodes = new("SoulCollectionNodes");
+    public static readonly SourceId SoulAmplifyNodes = new("SoulAmplifyNodes");
     public static readonly SourceId SkillOptionNodes = new("SkillOptionNodes");
     public static readonly SourceId ItemOptionNodes = new("ItemOptionNodes");
     public static readonly SourceId GearStringNodes = new("GearStringNodes");

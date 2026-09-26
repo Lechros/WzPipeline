@@ -143,14 +143,18 @@ public static class PipelineRegistryFactory
                 c.GetRequiredPipeline<ItemOptionDataPipeline>(PipelineIds.ItemOptionData).Result, c.CancellationToken))
             .Consumes(SourceIds.SkillOptionNodes, p => p.Input).Produces(p => p.Result);
 
+        registry.Register<SoulAmplifyDataPipeline>(PipelineIds.SoulAmplifyData)
+            .Create(c => new SoulAmplifyDataPipeline(c.CancellationToken))
+            .Consumes(SourceIds.SoulAmplifyNodes, p => p.Input).Produces(p => p.Result);
+
         registry.Register<SoulDataPipeline>(PipelineIds.SoulData)
-            .DependsOn(PipelineIds.ConsumeNameData, PipelineIds.SkillNameData, PipelineIds.SoulInfoData,
-                PipelineIds.SkillOptionData)
+            .DependsOn(PipelineIds.ConsumeNameData, PipelineIds.SoulInfoData, PipelineIds.SkillOptionData,
+                PipelineIds.SoulAmplifyData)
             .Create(c => new SoulDataPipeline(c.Services.GetRequiredService<SoulParser>(),
                 c.GetRequiredPipeline<ConsumeNameDataPipeline>(PipelineIds.ConsumeNameData).Result,
-                c.GetRequiredPipeline<SkillNameDataPipeline>(PipelineIds.SkillNameData).Result,
                 c.GetRequiredPipeline<SoulInfoDataPipeline>(PipelineIds.SoulInfoData).Result,
                 c.GetRequiredPipeline<SkillOptionDataPipeline>(PipelineIds.SkillOptionData).Result,
+                c.GetRequiredPipeline<SoulAmplifyDataPipeline>(PipelineIds.SoulAmplifyData).Result,
                 c.CancellationToken)).Consumes(SourceIds.SoulNodes, p => p.Input).Produces(p => p.Result)
             .Exports((p, c) => c.Services.GetRequiredService<JsonPipelineExporter>().ExportAsync(p.Result, c));
 

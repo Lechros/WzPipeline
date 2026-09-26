@@ -11,6 +11,7 @@ public static class SourcePaths
     public const string ConsumeName = "String/Consume.img/*";
     public const string Soul = "Item/Consume/0259.img/*";
     public const string SoulCollection = "Etc/SoulCollection.img/*";
+    public const string SoulAmplify = "Etc/soulAmplify.img";
     public const string SkillOption = "Item/SkillOption.img/skill/*";
     public const string ItemOption = "Item/ItemOption.img/*";
     public const string GearString = "String/Eqp.img/Eqp/*/*";

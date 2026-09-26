@@ -19,6 +19,7 @@ public static class PipelineIds
     public static readonly PipelineId ConsumeNameData = new("ConsumeNameData");
     public static readonly PipelineId SoulInfoData = new("SoulInfoData");
     public static readonly PipelineId SkillOptionData = new("SkillOptionData");
+    public static readonly PipelineId SoulAmplifyData = new("SoulAmplifyData");
     public static readonly PipelineId ItemOptionData = new("ItemOptionData");
     public static readonly PipelineId GearStringData = new("GearStringData");
     public static readonly PipelineId SkillNameData = new("SkillNameData");

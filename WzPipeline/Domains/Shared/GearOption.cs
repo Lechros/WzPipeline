@@ -1,16 +1,19 @@
 ﻿using System.Reflection;
+using System.Text;
 
 namespace WzPipeline.Domains.Shared;
 
 public class GearOption
 {
-    private static readonly Dictionary<string, PropertyInfo> Properties;
+    private static readonly PropertyInfo[] Properties;
+    private static readonly Dictionary<string, PropertyInfo> PropertyMap;
 
     static GearOption()
     {
         Properties = typeof(GearOption).GetProperties()
             .Where(p => p.GetIndexParameters().Length == 0)
-            .ToDictionary(p => p.Name, p => p);
+            .ToArray();
+        PropertyMap = Properties.ToDictionary(p => p.Name, p => p);
     }
 
     public int Str { get; set; }
@@ -73,13 +76,13 @@ public class GearOption
     {
         get
         {
-            if (!Properties.TryGetValue(optionName, out var property) || !property.CanRead)
+            if (!PropertyMap.TryGetValue(optionName, out var property) || !property.CanRead)
                 throw new ArgumentException("Invalid gear option name: " + optionName);
             return (int)property.GetValue(this)!;
         }
         set
         {
-            if (!Properties.TryGetValue(optionName, out var property) || !property.CanWrite)
+            if (!PropertyMap.TryGetValue(optionName, out var property) || !property.CanWrite)
                 throw new ArgumentException("Invalid gear option name: " + optionName);
             property.SetValue(this, value);
         }
@@ -248,5 +251,25 @@ public class GearOption
                ArmorRate == 0 && Speed == 0 && Jump == 0 && BossDamage == 0 && IgnoreMonsterArmor == 0 &&
                AllStat == 0 && Damage == 0 && ReqLevelDecrease == 0 && CriticalRate == 0 && CriticalDamage == 0 &&
                CooltimeReduce == 0 && StrLv == 0 && DexLv == 0 && IntLv == 0 && LukLv == 0;
+    }
+
+    public override string ToString()
+    {
+        var sb = new StringBuilder();
+        sb.Append("GearOption { ");
+        var values = (from property in Properties
+            where property.CanRead
+            let value = (int)property.GetValue(this)!
+            where value != 0
+            select $"{property.Name}={value}").ToList();
+        if (values.Count > 0)
+        {
+            sb.Append(' ');
+            sb.Append(string.Join(", ", values));
+            sb.Append(' ');
+        }
+
+        sb.Append('}');
+        return sb.ToString();
     }
 }

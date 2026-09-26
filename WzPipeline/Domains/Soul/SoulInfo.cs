@@ -1,17 +1,14 @@
 ﻿namespace WzPipeline.Domains.Soul;
 
+/// <summary>
+/// SoulCollection.img/{}/soulList 내 하나의 항목의 정보
+/// </summary>
 public class SoulInfo
 {
-    public const int MagnificentIndex = 8;
+    public required int[] SoulIds { get; init; }
 
-    public int SoulId { get; init; }
-    public int SkillId { get; init; }
-    public int Index { get; init; }
-
-    public bool IsMagnificent => IsMagnificentIndex(Index);
-
-    public static bool IsMagnificentIndex(int index)
+    public static int GetSkillOptionId(int soulId)
     {
-        return index == MagnificentIndex;
+        return soulId % 1000 + 1;
     }
 }

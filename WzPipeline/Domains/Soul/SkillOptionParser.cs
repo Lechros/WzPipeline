@@ -7,15 +7,9 @@ public class SkillOptionParser
 {
     public IEnumerable<SkillOption> Parse(SkillOptionNode node, SkillOptionParseContext context)
     {
-        if (node.IncTableId == 0)
-        {
-            yield break;
-        }
-
         yield return new SkillOption
         {
-            SkillId = node.SkillId,
-            IncTableId = node.IncTableId,
+            SkillOptionId = node.Id,
             Options = node.TempOption.Select(o => ConvertToGearOption(o, context.ItemOptionData)).ToArray()
         };
     }

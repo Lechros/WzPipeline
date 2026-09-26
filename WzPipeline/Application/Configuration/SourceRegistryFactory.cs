@@ -64,6 +64,10 @@ public static class SourceRegistryFactory
             s => s.GetRequiredService<WzTree>().MatchNodes(SourcePaths.AstraSubWeapon)
                 .Select(n => new SubWeaponTransferNode(n)));
 
+        registry.Register(SourceIds.SoulAmplifyNodes,
+            s => s.GetRequiredService<WzTree>().MatchNodes(SourcePaths.SoulAmplify)
+                .Select(n => new SoulAmplifyNode(n)));
+
         return registry;
     }
 }
