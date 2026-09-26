@@ -36,11 +36,14 @@ public class GearParser
             Attributes = GetGearAttribute(node),
             BaseOption = GetBaseOption(node),
             ScrollUpgradeableCount = node.Properties.GetValueOrDefault(GearPropType.tuc),
-            PotentialGrade =
-                GetPotentialGradeFromFixedGrade(node.Properties.GetValueOrDefault(GearPropType.fixedGrade)),
             Potentials = GetGearPotentials(node.Options, context.ItemOptionData),
             ExceptionalUpgradeableCount = node.Properties.GetValueOrDefault(GearPropType.Etuc)
         };
+
+        if (node.Properties.TryGetValue(GearPropType.fixedGrade, out var fixedGrade))
+        {
+            gear.PotentialGrade = GetPotentialGradeFromFixedGrade(fixedGrade);
+        }
 
         gear.Attributes.CanStarforce = (int)GetCanStarforce(gear, node);
         gear.Attributes.CanScroll = (int)GetCanScroll(gear, node);
@@ -247,6 +250,10 @@ public class GearParser
 
     private static GearAttribute GetGearAttribute(GearNode node)
     {
+        int? cuttableCount = node.Properties.TryGetValue(GearPropType.CuttableCount, out var value)
+            ? value
+            : null;
+
         return new GearAttribute
         {
             Only = node.GetBooleanValue(GearPropType.only),
@@ -257,8 +264,8 @@ public class GearParser
             AttackSpeed = node.Properties.GetValueOrDefault(GearPropType.attackSpeed),
             SpecialGrade = node.GetBooleanValue(GearPropType.specialGrade),
             Cuttable = node.Properties.GetValueOrDefault(GearPropType.tradeAvailable),
-            CuttableCount = node.Properties.GetValueOrDefault(GearPropType.CuttableCount),
-            TotalCuttableCount = node.Properties.GetValueOrDefault(GearPropType.CuttableCount),
+            CuttableCount = cuttableCount,
+            TotalCuttableCount = cuttableCount,
             AccountShareTag = node.GetBooleanValue(GearPropType.accountShareTag),
             SetItemId = node.Properties.GetValueOrDefault(GearPropType.setItemID),
             Lucky = node.GetBooleanValue(GearPropType.jokerToSetItem),
